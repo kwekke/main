@@ -50,4 +50,5 @@ public interface Logic {
      */
     void setGuiSettings(GuiSettings guiSettings);
 
+    ObservableList<Exercise> getSuggestedExerciseList();
 }

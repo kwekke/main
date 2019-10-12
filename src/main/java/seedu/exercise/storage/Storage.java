@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
 
+import javax.xml.crypto.Data;
+
 import seedu.exercise.commons.exceptions.DataConversionException;
 import seedu.exercise.model.ReadOnlyExerciseBook;
 import seedu.exercise.model.ReadOnlyUserPrefs;
@@ -29,4 +31,7 @@ public interface Storage extends ExerciseBookStorage, UserPrefsStorage {
     @Override
     void saveExerciseBook(ReadOnlyExerciseBook exerciseBook) throws IOException;
 
+    Path getAllExerciseBookFilePath();
+
+    Optional<ReadOnlyExerciseBook> readAllExerciseBook() throws DataConversionException, IOException;
 }

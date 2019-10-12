@@ -15,6 +15,7 @@ import seedu.exercise.logic.commands.ExitCommand;
 import seedu.exercise.logic.commands.FindCommand;
 import seedu.exercise.logic.commands.HelpCommand;
 import seedu.exercise.logic.commands.ListCommand;
+import seedu.exercise.logic.commands.SuggestBasicCommand;
 import seedu.exercise.logic.parser.exceptions.ParseException;
 
 /**
@@ -67,6 +68,9 @@ public class ExerciseBookParser {
 
         case HelpCommand.COMMAND_WORD:
             return new HelpCommand();
+
+        case SuggestBasicCommand.COMMAND_WORD:
+            return new SuggestBasicCommand();
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

@@ -88,4 +88,5 @@ public interface Model {
      */
     void updateFilteredExerciseList(Predicate<Exercise> predicate);
 
+    ObservableList<Exercise> getSuggestedExerciseList();
 }

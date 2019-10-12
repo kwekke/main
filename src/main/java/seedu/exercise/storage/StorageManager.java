@@ -5,6 +5,8 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import javax.print.DocFlavor;
+
 import seedu.exercise.commons.core.LogsCenter;
 import seedu.exercise.commons.exceptions.DataConversionException;
 import seedu.exercise.model.ReadOnlyExerciseBook;
@@ -18,12 +20,15 @@ public class StorageManager implements Storage {
 
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private ExerciseBookStorage exerciseBookStorage;
+    private ExerciseBookStorage allExerciseBookStorage;
     private UserPrefsStorage userPrefsStorage;
 
 
-    public StorageManager(ExerciseBookStorage exerciseBookStorage, UserPrefsStorage userPrefsStorage) {
+    public StorageManager(ExerciseBookStorage exerciseBookStorage,
+                          ExerciseBookStorage allExerciseBookStorage, UserPrefsStorage userPrefsStorage) {
         super();
         this.exerciseBookStorage = exerciseBookStorage;
+        this.allExerciseBookStorage = allExerciseBookStorage;
         this.userPrefsStorage = userPrefsStorage;
     }
 
@@ -72,6 +77,21 @@ public class StorageManager implements Storage {
     public void saveExerciseBook(ReadOnlyExerciseBook exerciseBook, Path filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
         exerciseBookStorage.saveExerciseBook(exerciseBook, filePath);
+    }
+
+    // ================ AllExerciseBook methods ==============================
+
+    public Path getAllExerciseBookFilePath() {
+        return allExerciseBookStorage.getExerciseBookFilePath();
+    }
+
+    public Optional<ReadOnlyExerciseBook> readAllExerciseBook() throws DataConversionException, IOException {
+        return readExerciseBook(allExerciseBookStorage.getExerciseBookFilePath());
+    }
+
+    public Optional<ReadOnlyExerciseBook> readAllExerciseBook(Path filePath) throws DataConversionException, IOException {
+        logger.fine("Attempting to read data from file: " + filePath);
+        return allExerciseBookStorage.readExerciseBook();
     }
 
 }

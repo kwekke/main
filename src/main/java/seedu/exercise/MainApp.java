@@ -57,7 +57,8 @@ public class MainApp extends Application {
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
         ExerciseBookStorage exerciseBookStorage = new JsonExerciseBookStorage(userPrefs.getExerciseBookFilePath());
-        storage = new StorageManager(exerciseBookStorage, userPrefsStorage);
+        ExerciseBookStorage exerciseDatabaseStorage = new JsonExerciseBookStorage(userPrefs.getAllExerciseBookFilePath());
+        storage = new StorageManager(exerciseBookStorage, exerciseDatabaseStorage, userPrefsStorage);
 
         initLogging(config);
 
@@ -74,23 +75,29 @@ public class MainApp extends Application {
      * or an empty exercise book will be used instead if errors occur when reading {@code storage}'s exercise book.
      */
     private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
+        ReadOnlyExerciseBook initialData = readData(storage, storage.getExerciseBookFilePath());
+        ReadOnlyExerciseBook database = readData(storage, storage.getAllExerciseBookFilePath());
+
+        return new ModelManager(initialData, database, userPrefs);
+    }
+
+    private ReadOnlyExerciseBook readData(Storage storage, Path path) {
         Optional<ReadOnlyExerciseBook> exerciseBookOptional;
-        ReadOnlyExerciseBook initialData;
+        ReadOnlyExerciseBook exerciseDatabase;
         try {
-            exerciseBookOptional = storage.readExerciseBook();
+            exerciseBookOptional = storage.readExerciseBook(path);
             if (!exerciseBookOptional.isPresent()) {
                 logger.info("Data file not found. Will be starting with a sample ExerciseBook");
             }
-            initialData = exerciseBookOptional.orElseGet(SampleDataUtil::getSampleExerciseBook);
+            exerciseDatabase = exerciseBookOptional.orElseGet(SampleDataUtil::getSampleExerciseBook);
         } catch (DataConversionException e) {
-            logger.warning("Data file not in the correct format. Will be starting with an empty ExerciseBook");
-            initialData = new ExerciseBook();
+            logger.warning("Data file not in correct format. Will be starting with an empty ExerciseBook");
+            exerciseDatabase = new ExerciseBook();
         } catch (IOException e) {
             logger.warning("Problem while reading from the file. Will be starting with an empty ExerciseBook");
-            initialData = new ExerciseBook();
+            exerciseDatabase = new ExerciseBook();
         }
-
-        return new ModelManager(initialData, userPrefs);
+        return exerciseDatabase;
     }
 
     private void initLogging(Config config) {

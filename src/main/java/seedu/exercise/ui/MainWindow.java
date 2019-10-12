@@ -54,8 +54,8 @@ public class MainWindow extends UiPart<Stage> {
     @FXML
     private StackPane statusbarPlaceholder;
 
-    @FXML
-    private StackPane resultPanel;
+    //@FXML
+    //private StackPane resultPanel;
 
     public MainWindow(Stage primaryStage, Logic logic) {
         super(FXML, primaryStage);
@@ -112,6 +112,12 @@ public class MainWindow extends UiPart<Stage> {
         });
     }
 
+    ExerciseListPanel resultPanel;
+
+    @FXML
+    private StackPane resultPanelPlaceholder;
+
+
     /**
      * Fills up all the placeholders of this window.
      */
@@ -121,6 +127,9 @@ public class MainWindow extends UiPart<Stage> {
 
         sortedListPanel = new ExerciseListPanel(logic.getSortedExerciseList());
         sortedListPanelPlaceholder.getChildren().add(sortedListPanel.getRoot());
+
+        resultPanel = new ExerciseListPanel(logic.getSuggestedExerciseList());
+        resultPanelPlaceholder.getChildren().add(resultPanel.getRoot());
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -185,7 +194,6 @@ public class MainWindow extends UiPart<Stage> {
         try {
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
-            resultPanel.getChildren().add(filteredListPanel.getRoot());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
 
             if (commandResult.isShowHelp()) {

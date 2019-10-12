@@ -58,7 +58,7 @@
                                    BorderPane.alignment="CENTER"/>
                     </right>
                     <center>
-                        <StackPane fx:id="resultPanel" prefHeight="150.0" prefWidth="500.0"
+                        <StackPane fx:id="resultPanelPlaceholder" prefHeight="150.0" prefWidth="500.0"
                                    BorderPane.alignment="CENTER"/>
                     </center>
                 </BorderPane>

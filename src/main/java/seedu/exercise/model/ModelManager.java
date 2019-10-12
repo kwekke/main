@@ -24,25 +24,29 @@ public class ModelManager implements Model {
     private final UserPrefs userPrefs;
     private final FilteredList<Exercise> filteredExercises;
     private final SortedList<Exercise> sortedExercises;
+    private final FilteredList<Exercise> suggestedExercises;
+    private final SuggestManager suggestManager;
 
     /**
      * Initializes a ModelManager with the given exerciseBook and userPrefs.
      */
-    public ModelManager(ReadOnlyExerciseBook exerciseBook, ReadOnlyUserPrefs userPrefs) {
+    public ModelManager(ReadOnlyExerciseBook exerciseBook, ReadOnlyExerciseBook allExercises, ReadOnlyUserPrefs userPrefs) {
         super();
         requireAllNonNull(exerciseBook, userPrefs);
 
         logger.fine("Initializing with exercise book: " + exerciseBook + " and user prefs " + userPrefs);
 
         this.exerciseBook = new ExerciseBook(exerciseBook);
+        this.suggestManager = new SuggestManager(allExercises);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredExercises = new FilteredList<>(this.exerciseBook.getExerciseList());
         sortedExercises = new SortedList<>(this.exerciseBook.getExerciseList());
+        suggestedExercises = new FilteredList<>(this.suggestManager.getExerciseList());
 
     }
 
     public ModelManager() {
-        this(new ExerciseBook(), new UserPrefs());
+        this(new ExerciseBook(), new ExerciseBook(), new UserPrefs());
     }
 
     //=========== UserPrefs ==================================================================================
@@ -137,6 +141,11 @@ public class ModelManager implements Model {
     public void updateFilteredExerciseList(Predicate<Exercise> predicate) {
         requireNonNull(predicate);
         filteredExercises.setPredicate(predicate);
+    }
+
+    @Override
+    public ObservableList<Exercise> getSuggestedExerciseList() {
+        return suggestedExercises;
     }
 
     @Override

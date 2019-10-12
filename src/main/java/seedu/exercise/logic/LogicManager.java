@@ -81,4 +81,9 @@ public class LogicManager implements Logic {
         model.setGuiSettings(guiSettings);
     }
 
+    @Override
+    public ObservableList<Exercise> getSuggestedExerciseList() {
+        return model.getSuggestedExerciseList();
+    }
+
 }
