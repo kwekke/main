@@ -6,16 +6,16 @@ import static seedu.exercise.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import seedu.exercise.logic.commands.AddCommand;
+import seedu.exercise.logic.commands.AddExerciseCommand;
 import seedu.exercise.logic.commands.ClearCommand;
 import seedu.exercise.logic.commands.Command;
-import seedu.exercise.logic.commands.DeleteCommand;
+import seedu.exercise.logic.commands.DeleteExerciseCommand;
 import seedu.exercise.logic.commands.EditCommand;
 import seedu.exercise.logic.commands.ExitCommand;
 import seedu.exercise.logic.commands.FindCommand;
 import seedu.exercise.logic.commands.HelpCommand;
 import seedu.exercise.logic.commands.ListCommand;
-import seedu.exercise.logic.commands.SuggestBasicCommand;
+import seedu.exercise.logic.commands.SuggestCommand;
 import seedu.exercise.logic.parser.exceptions.ParseException;
 
 /**
@@ -45,13 +45,13 @@ public class ExerciseBookParser {
         final String arguments = matcher.group("arguments");
         switch (commandWord) {
 
-        case AddCommand.COMMAND_WORD:
+        case AddExerciseCommand.COMMAND_WORD:
             return new AddCommandParser().parse(arguments);
 
         case EditCommand.COMMAND_WORD:
             return new EditCommandParser().parse(arguments);
 
-        case DeleteCommand.COMMAND_WORD:
+        case DeleteExerciseCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
 
         case ClearCommand.COMMAND_WORD:
@@ -69,8 +69,8 @@ public class ExerciseBookParser {
         case HelpCommand.COMMAND_WORD:
             return new HelpCommand();
 
-        case SuggestBasicCommand.COMMAND_WORD:
-            return new SuggestBasicCommand();
+        case SuggestCommand.COMMAND_WORD:
+            return new SuggestCommandParser().parse(arguments);
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

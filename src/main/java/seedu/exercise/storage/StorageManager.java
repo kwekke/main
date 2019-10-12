@@ -5,11 +5,10 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import javax.print.DocFlavor;
-
 import seedu.exercise.commons.core.LogsCenter;
 import seedu.exercise.commons.exceptions.DataConversionException;
 import seedu.exercise.model.ReadOnlyExerciseBook;
+import seedu.exercise.model.ReadOnlyRegimeBook;
 import seedu.exercise.model.ReadOnlyUserPrefs;
 import seedu.exercise.model.UserPrefs;
 
@@ -21,14 +20,16 @@ public class StorageManager implements Storage {
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private ExerciseBookStorage exerciseBookStorage;
     private ExerciseBookStorage allExerciseBookStorage;
+    private RegimeBookStorage regimeBookStorage;
     private UserPrefsStorage userPrefsStorage;
 
 
-    public StorageManager(ExerciseBookStorage exerciseBookStorage,
+    public StorageManager(ExerciseBookStorage exerciseBookStorage, RegimeBookStorage regimeBookStorage,
                           ExerciseBookStorage allExerciseBookStorage, UserPrefsStorage userPrefsStorage) {
         super();
         this.exerciseBookStorage = exerciseBookStorage;
         this.allExerciseBookStorage = allExerciseBookStorage;
+        this.regimeBookStorage = regimeBookStorage;
         this.userPrefsStorage = userPrefsStorage;
     }
 
@@ -81,17 +82,48 @@ public class StorageManager implements Storage {
 
     // ================ AllExerciseBook methods ==============================
 
+    @Override
     public Path getAllExerciseBookFilePath() {
         return allExerciseBookStorage.getExerciseBookFilePath();
     }
 
+    @Override
     public Optional<ReadOnlyExerciseBook> readAllExerciseBook() throws DataConversionException, IOException {
         return readExerciseBook(allExerciseBookStorage.getExerciseBookFilePath());
     }
 
-    public Optional<ReadOnlyExerciseBook> readAllExerciseBook(Path filePath) throws DataConversionException, IOException {
+    @Override
+    public Optional<ReadOnlyExerciseBook> readAllExerciseBook(Path filePath)
+            throws DataConversionException, IOException {
         logger.fine("Attempting to read data from file: " + filePath);
         return allExerciseBookStorage.readExerciseBook();
     }
 
+    //===============RegimeBook methods=============================================
+    @Override
+    public Path getRegimeBookFilePath() {
+        return regimeBookStorage.getRegimeBookFilePath();
+    }
+
+    @Override
+    public Optional<ReadOnlyRegimeBook> readRegimeBook() throws DataConversionException, IOException {
+        return readRegimeBook(regimeBookStorage.getRegimeBookFilePath());
+    }
+
+    @Override
+    public Optional<ReadOnlyRegimeBook> readRegimeBook(Path filePath) throws DataConversionException, IOException {
+        logger.fine("Attempting to read data from file: " + filePath);
+        return regimeBookStorage.readRegimeBook(filePath);
+    }
+
+    @Override
+    public void saveRegimeBook(ReadOnlyRegimeBook regimeBook) throws IOException {
+        saveRegimeBook(regimeBook, regimeBookStorage.getRegimeBookFilePath());
+    }
+
+    @Override
+    public void saveRegimeBook(ReadOnlyRegimeBook regimeBook, Path filePath) throws IOException {
+        logger.fine("Attempting to write to data file: " + filePath);
+        regimeBookStorage.saveRegimeBook(regimeBook, filePath);
+    }
 }

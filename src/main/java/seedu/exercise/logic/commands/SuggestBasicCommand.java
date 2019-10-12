@@ -1,28 +1,27 @@
 package seedu.exercise.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-
-import java.util.function.Predicate;
+import static seedu.exercise.logic.parser.CliSyntax.PREFIX_SUGGEST;
+import static seedu.exercise.model.Model.PREDICATE_SHOW_ALL_EXERCISES;
 
 import seedu.exercise.logic.commands.exceptions.CommandException;
 import seedu.exercise.model.Model;
-import seedu.exercise.model.exercise.Exercise;
 
-public class SuggestBasicCommand extends Command {
+/**
+ * Lists basic exercises in the exercise database to the user.
+ */
+public class SuggestBasicCommand extends SuggestCommand {
 
-    public static final String COMMAND_WORD = "suggest-basic";
+    public static final String MESSAGE_SUCCESS = "Listed all suggested basic exercises.";
 
-    public static final String MESSAGE_SUCCESS = "Listed all suggested exercises";
+    public static final String MESSAGE_USAGE_SUGGEST_BASIC = "Parameters: "
+            + PREFIX_SUGGEST + "SUGGEST TYPE ";
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        model.updateFilteredExerciseList(new Predicate<Exercise>() {
-            @Override
-            public boolean test(Exercise exercise) {
-                return true;
-            }
-        });
+        model.updateSuggestedExerciseList(PREDICATE_SHOW_ALL_EXERCISES);
         return new CommandResult(MESSAGE_SUCCESS);
     }
+
 }

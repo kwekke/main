@@ -19,12 +19,16 @@ import seedu.exercise.model.ExerciseBook;
 import seedu.exercise.model.Model;
 import seedu.exercise.model.ModelManager;
 import seedu.exercise.model.ReadOnlyExerciseBook;
+import seedu.exercise.model.ReadOnlyRegimeBook;
 import seedu.exercise.model.ReadOnlyUserPrefs;
+import seedu.exercise.model.RegimeBook;
 import seedu.exercise.model.UserPrefs;
 import seedu.exercise.model.util.SampleDataUtil;
 import seedu.exercise.storage.ExerciseBookStorage;
 import seedu.exercise.storage.JsonExerciseBookStorage;
+import seedu.exercise.storage.JsonRegimeBookStorage;
 import seedu.exercise.storage.JsonUserPrefsStorage;
+import seedu.exercise.storage.RegimeBookStorage;
 import seedu.exercise.storage.Storage;
 import seedu.exercise.storage.StorageManager;
 import seedu.exercise.storage.UserPrefsStorage;
@@ -57,8 +61,11 @@ public class MainApp extends Application {
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
         ExerciseBookStorage exerciseBookStorage = new JsonExerciseBookStorage(userPrefs.getExerciseBookFilePath());
-        ExerciseBookStorage exerciseDatabaseStorage = new JsonExerciseBookStorage(userPrefs.getAllExerciseBookFilePath());
-        storage = new StorageManager(exerciseBookStorage, exerciseDatabaseStorage, userPrefsStorage);
+        ExerciseBookStorage exerciseDatabaseStorage =
+                new JsonExerciseBookStorage(userPrefs.getAllExerciseBookFilePath());
+        RegimeBookStorage regimeBookStorage = new JsonRegimeBookStorage(userPrefs.getRegimeBookFilePath());
+        storage = new StorageManager(exerciseBookStorage, regimeBookStorage,
+                exerciseDatabaseStorage, userPrefsStorage);
 
         initLogging(config);
 
@@ -78,12 +85,32 @@ public class MainApp extends Application {
         ReadOnlyExerciseBook initialData = readData(storage, storage.getExerciseBookFilePath());
         ReadOnlyExerciseBook database = readData(storage, storage.getAllExerciseBookFilePath());
 
-        return new ModelManager(initialData, database, userPrefs);
+        Optional<ReadOnlyRegimeBook> regimeBookOptional;
+        ReadOnlyRegimeBook initialRegimeData;
+        try {
+            regimeBookOptional = storage.readRegimeBook();
+            if (!regimeBookOptional.isPresent()) {
+                logger.info("Data file not found. Will be starting with a sample RegimeBook");
+            }
+            initialRegimeData = regimeBookOptional.orElseGet(SampleDataUtil::getSampleRegimeBook);
+        } catch (DataConversionException e) {
+            logger.warning("Data file not in the correct format. Will be starting with an empty RegimeBook");
+            initialRegimeData = new RegimeBook();
+        } catch (IOException e) {
+            logger.warning("Problem while reading from the file. Will be starting with an empty RegimeBook");
+            initialRegimeData = new RegimeBook();
+        }
+        return new ModelManager(initialData, initialRegimeData, database, userPrefs);
     }
 
+    /**
+     * Returns a {@code ReadOnlyExerciseBook} using the file at {@code path}. <br>
+     * The data is read from {@code storage}.
+     */
     private ReadOnlyExerciseBook readData(Storage storage, Path path) {
         Optional<ReadOnlyExerciseBook> exerciseBookOptional;
         ReadOnlyExerciseBook exerciseDatabase;
+
         try {
             exerciseBookOptional = storage.readExerciseBook(path);
             if (!exerciseBookOptional.isPresent()) {

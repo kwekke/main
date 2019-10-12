@@ -16,6 +16,7 @@ public class UserPrefs implements ReadOnlyUserPrefs {
     private GuiSettings guiSettings = new GuiSettings();
     private Path exerciseBookFilePath = Paths.get("data" , "exercisebook.json");
     private Path exerciseDatabaseFilePath = Paths.get("data", "exercisedatabase.json");
+    private Path regimeBookFilePath = Paths.get("data", "regimebook.json");
 
     /**
      * Creates a {@code UserPrefs} with default values.
@@ -37,6 +38,7 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         requireNonNull(newUserPrefs);
         setGuiSettings(newUserPrefs.getGuiSettings());
         setExerciseBookFilePath(newUserPrefs.getExerciseBookFilePath());
+        setRegimeBookFilePath(newUserPrefs.getRegimeBookFilePath());
     }
 
     public GuiSettings getGuiSettings() {
@@ -57,7 +59,16 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         this.exerciseBookFilePath = exerciseBookFilePath;
     }
 
-   public Path getAllExerciseBookFilePath() {
+    public Path getRegimeBookFilePath() {
+        return regimeBookFilePath;
+    }
+
+    public void setRegimeBookFilePath(Path regimeBookFilePath) {
+        requireNonNull(regimeBookFilePath);
+        this.regimeBookFilePath = regimeBookFilePath;
+    }
+
+    public Path getAllExerciseBookFilePath() {
         return exerciseDatabaseFilePath;
     }
 
@@ -73,7 +84,9 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         UserPrefs o = (UserPrefs) other;
 
         return guiSettings.equals(o.guiSettings)
-                && exerciseBookFilePath.equals(o.exerciseBookFilePath);
+                && exerciseBookFilePath.equals(o.exerciseBookFilePath)
+                && regimeBookFilePath.equals(o.regimeBookFilePath)
+                && exerciseDatabaseFilePath.equals(o.exerciseDatabaseFilePath);
     }
 
     @Override
@@ -88,6 +101,5 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         sb.append("\nLocal data file location : " + exerciseBookFilePath);
         return sb.toString();
     }
-
 
 }
