@@ -5,6 +5,7 @@ import static seedu.exercise.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
 import java.util.function.Predicate;
+import java.util.logging.Filter;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -137,6 +138,7 @@ public class ModelManager implements Model {
 
         exerciseBook.setExercise(target, editedExercise);
     }
+
     //===================RegimeBook==============================================================================
     @Override
     public void setRegimeBook(ReadOnlyRegimeBook anotherBook) {

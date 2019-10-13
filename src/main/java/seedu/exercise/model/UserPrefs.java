@@ -39,6 +39,7 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         setGuiSettings(newUserPrefs.getGuiSettings());
         setExerciseBookFilePath(newUserPrefs.getExerciseBookFilePath());
         setRegimeBookFilePath(newUserPrefs.getRegimeBookFilePath());
+        setAllExerciseBookFilePath(newUserPrefs.getAllExerciseBookFilePath());
     }
 
     public GuiSettings getGuiSettings() {
@@ -70,6 +71,11 @@ public class UserPrefs implements ReadOnlyUserPrefs {
 
     public Path getAllExerciseBookFilePath() {
         return exerciseDatabaseFilePath;
+    }
+
+    public void setAllExerciseBookFilePath(Path AllExerciseFilePath) {
+        requireNonNull(AllExerciseFilePath);
+        this.exerciseDatabaseFilePath = AllExerciseFilePath;
     }
 
     @Override

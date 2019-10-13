@@ -162,5 +162,5 @@ public interface Model {
     /**
      * Returns the data of all exercises in the database
      */
-    public ReadOnlyExerciseBook getAllExerciseBookData();
+    ReadOnlyExerciseBook getAllExerciseBookData();
 }

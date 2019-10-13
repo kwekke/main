@@ -59,18 +59,23 @@
                     <center>
                         <BorderPane>
                             <top>
-                                <StackPane fx:id="exerciseListPanelPlaceholder" prefHeight="500.0" prefWidth="500.0"
+                                <StackPane fx:id="exerciseListPanelPlaceholder" prefHeight="450.0" prefWidth="500.0"
                                            BorderPane.alignment="CENTER"/>
                             </top>
                             <bottom>
-                                <StackPane fx:id="suggestionPanelPlaceholder" prefHeight="500.0" prefWidth="500.0"
+                                <StackPane fx:id="suggestionPanelPlaceholder" prefHeight="450.0" prefWidth="500.0"
                                            BorderPane.alignment="CENTER"/>
                             </bottom>
                         </BorderPane>
                     </center>
                     <right>
-                        <StackPane fx:id="resultPanelPlaceholder" prefHeight="150.0" prefWidth="400.0"
-                                   BorderPane.alignment="CENTER"/>
+                        <StackPane fx:id="resultPanelPlaceholder" prefHeight="100.0" prefWidth="400.0"
+                                   BorderPane.alignment="CENTER">
+                            <padding>
+                                <Insets bottom="67" />
+                            </padding>
+                        </StackPane>
+
                     </right>
                     <bottom>
                         <StackPane fx:id="statusbarPlaceholder" BorderPane.alignment="CENTER"/>
