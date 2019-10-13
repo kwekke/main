@@ -5,12 +5,10 @@ import static seedu.exercise.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
 import java.util.function.Predicate;
-import java.util.logging.Filter;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import seedu.exercise.commons.core.GuiSettings;
 import seedu.exercise.commons.core.LogsCenter;
 import seedu.exercise.model.exercise.Exercise;
@@ -27,7 +25,6 @@ public class ModelManager implements Model {
     private final ExerciseBook allExerciseBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Exercise> filteredExercises;
-    private final SortedList<Exercise> sortedExercises;
     private final FilteredList<Exercise> suggestedExercises;
     private final FilteredList<Regime> filteredRegimes;
 
@@ -46,7 +43,6 @@ public class ModelManager implements Model {
         this.regimeBook = new RegimeBook(regimeBook);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredExercises = new FilteredList<>(this.exerciseBook.getExerciseList());
-        sortedExercises = new SortedList<>(this.exerciseBook.getExerciseList());
         suggestedExercises = new FilteredList<>(this.allExerciseBook.getExerciseList());
         filteredRegimes = new FilteredList<>(this.regimeBook.getRegimeList());
 
@@ -140,6 +136,7 @@ public class ModelManager implements Model {
     }
 
     //===================RegimeBook==============================================================================
+
     @Override
     public void setRegimeBook(ReadOnlyRegimeBook anotherBook) {
         this.regimeBook.resetData(anotherBook);
@@ -245,7 +242,6 @@ public class ModelManager implements Model {
         ModelManager other = (ModelManager) obj;
         return exerciseBook.equals(other.exerciseBook)
                 && userPrefs.equals(other.userPrefs)
-                && filteredExercises.equals(other.filteredExercises)
-                && sortedExercises.equals(other.sortedExercises);
+                && filteredExercises.equals(other.filteredExercises);
     }
 }
