@@ -73,9 +73,9 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         return exerciseDatabaseFilePath;
     }
 
-    public void setAllExerciseBookFilePath(Path AllExerciseFilePath) {
-        requireNonNull(AllExerciseFilePath);
-        this.exerciseDatabaseFilePath = AllExerciseFilePath;
+    public void setAllExerciseBookFilePath(Path allExerciseFilePath) {
+        requireNonNull(allExerciseFilePath);
+        this.exerciseDatabaseFilePath = allExerciseFilePath;
     }
 
     @Override
