@@ -6,7 +6,6 @@ import static seedu.exercise.testutil.TypicalExercises.getTypicalExerciseBook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import seedu.exercise.model.ExerciseBook;
 import seedu.exercise.model.Model;
 import seedu.exercise.model.ModelManager;
 import seedu.exercise.model.RegimeBook;
