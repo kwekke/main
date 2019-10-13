@@ -173,7 +173,6 @@ public class EditCommandParserTest {
 
         // unit
         userInput = targetIndex.getOneBased() + UNIT_DESC_AEROBICS;
-        System.out.println("userinput: " + userInput);
         descriptor = new EditExerciseDescriptorBuilder().withUnit(VALID_UNIT_AEROBICS).build();
         expectedCommand = new EditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);

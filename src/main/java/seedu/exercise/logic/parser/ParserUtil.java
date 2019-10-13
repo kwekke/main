@@ -236,7 +236,6 @@ public class ParserUtil {
     static Prefix parseShortName(String shortName) throws ParseException {
         requireNonNull(shortName);
         String trimmedShortName = shortName.trim();
-        System.out.println(trimmedShortName);
         if (!CustomProperty.isValidShortName(trimmedShortName)) {
             throw new ParseException(CustomProperty.SHORT_NAME_CONSTRAINTS);
         }
