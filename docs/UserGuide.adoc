@@ -387,21 +387,21 @@ Takes exercise 1, 2, 3 from scheduled regime and exercise 2, 4 from conflicting 
 ==== Suggest basic exercises
 Recommends exercises from ExerHealth's inbuilt database for beginners.
 
-Format: `suggest s/basic`
+Format: `suggest g/basic`
 
 ==== Suggest possible exercises
 Suggests exercises matching specified tags.
 
 ===== Based on matching muscle tags
-Format: `suggest s/possible m/MUSCLE`
+Format: `suggest g/possible m/MUSCLE`
 
 Example:
 
-* `suggest s/possible m/chest`
+* `suggest g/possible m/chest`
 
 A list of exercises with chest muscle tag will be displayed.
 
-* `suggest s/possible m/chest m/tricep`
+* `suggest g/possible m/chest m/tricep`
 
 A list of exercises tagged with chest or triceps will be displayed.
 
@@ -410,8 +410,8 @@ A list of exercises tagged with chest or triceps will be displayed.
 ==== Suggest intensity
 Recommends an increased quantity for the indexed exercise/regime based on its past record.
 
-Format: `suggest intensity t/exercise i/INDEX`
-`suggest intensity t/regime i/INDEX`
+Format: `suggest g/intensity t/exercise i/INDEX`
+`suggest g/intensity t/regime i/INDEX`
 
 ****
 * Takes the exercise at the specified `INDEX`.
@@ -483,11 +483,11 @@ e.g. `stats t/exercise h/barchart s/20/09/2019 e/27/09/2019`
 e.g. `schedule n/cardio d/19/9/2019`
 * *Resolve* : `resolve n/REGIME_TO_TAKE`
 e.g. `resolve n/cardio`
-* *Suggest basic* : `suggest s/basic`
-* *Suggest possible* : `suggest s/possible [m/MUSCLE]...`
-e.g. `suggest t/possible m/chest`
-* *Suggest intensity* : `suggest s/intensity i/INDEX`
-eg. `suggest intensity 1`
+* *Suggest basic* : `suggest g/basic`
+* *Suggest possible* : `suggest g/possible [m/MUSCLE]...`
+e.g. `suggest g/possible m/chest`
+* *Suggest intensity* : `suggest g/intensity i/INDEX`
+eg. `suggest g/intensity 1`
 * *Custom* : `custom s/SHORT_NAME f/FULL_NAME p/PARAMETER_TYPE`
 e.g. `custom s/c f/End Date p/Date`
 * *Exit* : `exit`
