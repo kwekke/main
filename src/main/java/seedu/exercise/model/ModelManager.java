@@ -241,7 +241,9 @@ public class ModelManager implements Model {
         // state check
         ModelManager other = (ModelManager) obj;
         return exerciseBook.equals(other.exerciseBook)
+                && regimeBook.equals(other.regimeBook)
                 && userPrefs.equals(other.userPrefs)
-                && filteredExercises.equals(other.filteredExercises);
+                && filteredExercises.equals(other.filteredExercises)
+                && suggestedExercises.equals(other.suggestedExercises);
     }
 }
