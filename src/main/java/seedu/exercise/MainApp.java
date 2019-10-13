@@ -1,5 +1,7 @@
 package seedu.exercise;
 
+import static seedu.exercise.model.util.DefaultPropertyManagerUtil.getDefaultPropertyManager;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -23,11 +25,15 @@ import seedu.exercise.model.ReadOnlyRegimeBook;
 import seedu.exercise.model.ReadOnlyUserPrefs;
 import seedu.exercise.model.RegimeBook;
 import seedu.exercise.model.UserPrefs;
+import seedu.exercise.model.exercise.PropertyManager;
+import seedu.exercise.model.util.DefaultPropertyManagerUtil;
 import seedu.exercise.model.util.SampleDataUtil;
 import seedu.exercise.storage.ExerciseBookStorage;
 import seedu.exercise.storage.JsonExerciseBookStorage;
+import seedu.exercise.storage.JsonPropertyManagerStorage;
 import seedu.exercise.storage.JsonRegimeBookStorage;
 import seedu.exercise.storage.JsonUserPrefsStorage;
+import seedu.exercise.storage.PropertyManagerStorage;
 import seedu.exercise.storage.RegimeBookStorage;
 import seedu.exercise.storage.Storage;
 import seedu.exercise.storage.StorageManager;
@@ -64,8 +70,11 @@ public class MainApp extends Application {
         ExerciseBookStorage exerciseDatabaseStorage =
                 new JsonExerciseBookStorage(userPrefs.getAllExerciseBookFilePath());
         RegimeBookStorage regimeBookStorage = new JsonRegimeBookStorage(userPrefs.getRegimeBookFilePath());
+        PropertyManagerStorage propertyManagerStorage =
+            new JsonPropertyManagerStorage(userPrefs.getPropertyManagerFilePath());
+
         storage = new StorageManager(exerciseBookStorage, regimeBookStorage,
-                exerciseDatabaseStorage, userPrefsStorage);
+                exerciseDatabaseStorage, userPrefsStorage, propertyManagerStorage);
 
         initLogging(config);
 
@@ -83,10 +92,11 @@ public class MainApp extends Application {
      */
     private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
         ReadOnlyExerciseBook initialData = readExerciseData(storage, storage.getExerciseBookFilePath());
-        ReadOnlyExerciseBook allExerciseDatabase = readExerciseData(storage, storage.getAllExerciseBookFilePath());
         ReadOnlyRegimeBook initialRegimeData = readRegimeData(storage, storage.getRegimeBookFilePath());
+        ReadOnlyExerciseBook exerciseDatabase = readExerciseData(storage, storage.getAllExerciseBookFilePath());
+        PropertyManager initialPropertyManager = getInitialPropertyManager(storage);
 
-        return new ModelManager(initialData, initialRegimeData, allExerciseDatabase, userPrefs);
+        return new ModelManager(initialData, initialRegimeData, exerciseDatabase, userPrefs, initialPropertyManager);
     }
 
     /**
@@ -98,7 +108,7 @@ public class MainApp extends Application {
         ReadOnlyRegimeBook regimeData;
         try {
             regimeBookOptional = storage.readRegimeBook();
-            if (!regimeBookOptional.isPresent()) {
+            if (regimeBookOptional.isEmpty()) {
                 logger.info("Data file not found. Will be starting with a sample RegimeBook");
             }
             regimeData = regimeBookOptional.orElseGet(SampleDataUtil::getSampleRegimeBook);
@@ -122,7 +132,7 @@ public class MainApp extends Application {
 
         try {
             exerciseBookOptional = storage.readExerciseBook(path);
-            if (!exerciseBookOptional.isPresent()) {
+            if (exerciseBookOptional.isEmpty()) {
                 logger.info("Data file not found. Will be starting with a sample ExerciseBook");
             }
             exerciseData = exerciseBookOptional.orElseGet(SampleDataUtil::getSampleExerciseBook);
@@ -134,6 +144,33 @@ public class MainApp extends Application {
             exerciseData = new ExerciseBook();
         }
         return exerciseData;
+    }
+
+    /**
+     * Returns a {@code PropertyManager} from {@code storage}.
+     */
+    private PropertyManager getInitialPropertyManager(Storage storage) {
+        Optional<PropertyManager> propertyManagerOptional;
+        PropertyManager initialPropertyManager;
+
+        try {
+            propertyManagerOptional = storage.readPropertyManager();
+            if (propertyManagerOptional.isEmpty()) {
+                logger.info("Data for PropertyManager not found. Will be starting with a"
+                    + " default PropertyManager");
+            }
+            initialPropertyManager =
+                propertyManagerOptional.orElseGet(DefaultPropertyManagerUtil::getDefaultPropertyManager);
+        } catch (DataConversionException e) {
+            logger.warning("Data file not in the correct format. Will be starting with "
+                + " a default PropertyManager");
+            initialPropertyManager = getDefaultPropertyManager();
+        } catch (IOException e) {
+            logger.warning("Problem while reading from the file. Will be starting with "
+                + "a default PropertyManager");
+            initialPropertyManager = getDefaultPropertyManager();
+        }
+        return initialPropertyManager;
     }
 
     private void initLogging(Config config) {
@@ -163,7 +200,7 @@ public class MainApp extends Application {
             initializedConfig = configOptional.orElse(new Config());
         } catch (DataConversionException e) {
             logger.warning("Config file at " + configFilePathUsed + " is not in the correct format. "
-                    + "Using default config properties");
+                + "Using default config properties");
             initializedConfig = new Config();
         }
 
@@ -191,7 +228,7 @@ public class MainApp extends Application {
             initializedPrefs = prefsOptional.orElse(new UserPrefs());
         } catch (DataConversionException e) {
             logger.warning("UserPrefs file at " + prefsFilePath + " is not in the correct format. "
-                    + "Using default user prefs");
+                + "Using default user prefs");
             initializedPrefs = new UserPrefs();
         } catch (IOException e) {
             logger.warning("Problem while reading from the file. Will be starting with an empty ExerciseBook");

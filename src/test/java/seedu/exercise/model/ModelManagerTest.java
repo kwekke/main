@@ -3,6 +3,7 @@ package seedu.exercise.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.exercise.model.util.DefaultPropertyManagerUtil.getDefaultPropertyManager;
 import static seedu.exercise.testutil.Assert.assertThrows;
 import static seedu.exercise.testutil.TypicalExercises.SWIM;
 import static seedu.exercise.testutil.TypicalExercises.WALK;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.exercise.commons.core.GuiSettings;
 import seedu.exercise.model.exercise.NameContainsKeywordsPredicate;
+import seedu.exercise.model.exercise.PropertyManager;
 import seedu.exercise.testutil.ExerciseBookBuilder;
 
 public class ModelManagerTest {
@@ -25,7 +27,7 @@ public class ModelManagerTest {
     public void constructor() {
         assertEquals(new UserPrefs(), modelManager.getUserPrefs());
         assertEquals(new GuiSettings(), modelManager.getGuiSettings());
-        assertEquals(new ExerciseBook(), new ExerciseBook(modelManager.getUserExerciseBookData()));
+        assertEquals(new ExerciseBook(), new ExerciseBook(modelManager.getExerciseBookData()));
     }
 
     @Test
@@ -99,10 +101,13 @@ public class ModelManagerTest {
         ExerciseBook allExerciseBook = new ExerciseBookBuilder().withExercise(WALK).withExercise(SWIM).build();
         ExerciseBook differentExerciseBook = new ExerciseBook();
         UserPrefs userPrefs = new UserPrefs();
+        PropertyManager propertyManager = getDefaultPropertyManager();
 
         // same values -> returns true
-        modelManager = new ModelManager(exerciseBook, regimeBook, allExerciseBook, userPrefs);
-        ModelManager modelManagerCopy = new ModelManager(exerciseBook, regimeBook, allExerciseBook, userPrefs);
+        modelManager = new ModelManager(exerciseBook, regimeBook,
+                allExerciseBook, userPrefs, propertyManager);
+        ModelManager modelManagerCopy = new ModelManager(exerciseBook, regimeBook,
+                allExerciseBook, userPrefs, propertyManager);
         assertTrue(modelManager.equals(modelManagerCopy));
 
         // same object -> returns true
@@ -116,12 +121,13 @@ public class ModelManagerTest {
 
         // different exerciseBook -> returns false
         assertFalse(modelManager.equals(new ModelManager(differentExerciseBook, regimeBook,
-                allExerciseBook, userPrefs)));
+                allExerciseBook, userPrefs, propertyManager)));
 
         // different filteredList -> returns false
         String[] keywords = WALK.getName().fullName.split("\\s+");
         modelManager.updateFilteredExerciseList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
-        assertFalse(modelManager.equals(new ModelManager(exerciseBook, regimeBook, allExerciseBook, userPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(exerciseBook, regimeBook,
+                allExerciseBook, userPrefs, propertyManager)));
 
         // resets modelManager to initial state for upcoming tests
         modelManager.updateFilteredExerciseList(Model.PREDICATE_SHOW_ALL_EXERCISES);
@@ -130,6 +136,6 @@ public class ModelManagerTest {
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setExerciseBookFilePath(Paths.get("differentFilePath"));
         assertFalse(modelManager.equals(new ModelManager(exerciseBook, regimeBook,
-                allExerciseBook, differentUserPrefs)));
+                allExerciseBook, differentUserPrefs, propertyManager)));
     }
 }

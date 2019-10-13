@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.exercise.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.exercise.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.exercise.logic.commands.CommandTestUtil.showExerciseAtIndex;
+import static seedu.exercise.model.util.DefaultPropertyManagerUtil.getDefaultPropertyManager;
 import static seedu.exercise.testutil.TypicalExercises.getTypicalExerciseBook;
 import static seedu.exercise.testutil.TypicalIndexes.INDEX_FIRST_EXERCISE;
 import static seedu.exercise.testutil.TypicalIndexes.INDEX_SECOND_EXERCISE;
@@ -27,7 +28,7 @@ import seedu.exercise.model.exercise.Exercise;
 public class DeleteExerciseCommandTest {
 
     private Model model = new ModelManager(getTypicalExerciseBook(), new RegimeBook(),
-            new ExerciseBook(), new UserPrefs());
+            new ExerciseBook(), new UserPrefs(), getDefaultPropertyManager());
 
     @Test
     public void execute_validIndexUnfilteredList_success() {
@@ -36,8 +37,8 @@ public class DeleteExerciseCommandTest {
 
         String expectedMessage = String.format(DeleteExerciseCommand.MESSAGE_DELETE_EXERCISE_SUCCESS, exerciseToDelete);
 
-        ModelManager expectedModel = new ModelManager(model.getUserExerciseBookData(), new RegimeBook(),
-                new ExerciseBook(), new UserPrefs());
+        ModelManager expectedModel = new ModelManager(model.getExerciseBookData(), new RegimeBook(),
+                new ExerciseBook(), new UserPrefs(), getDefaultPropertyManager());
         expectedModel.deleteExercise(exerciseToDelete);
 
         assertCommandSuccess(deleteExerciseCommand, model, expectedMessage, expectedModel);
@@ -60,8 +61,8 @@ public class DeleteExerciseCommandTest {
 
         String expectedMessage = String.format(DeleteExerciseCommand.MESSAGE_DELETE_EXERCISE_SUCCESS, exerciseToDelete);
 
-        Model expectedModel = new ModelManager(model.getUserExerciseBookData(), new RegimeBook(),
-                new ExerciseBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getExerciseBookData(), new RegimeBook(),
+                new ExerciseBook(), new UserPrefs(), getDefaultPropertyManager());
         expectedModel.deleteExercise(exerciseToDelete);
         showNoExercise(expectedModel);
 
@@ -74,7 +75,7 @@ public class DeleteExerciseCommandTest {
 
         Index outOfBoundIndex = INDEX_SECOND_EXERCISE;
         // ensures that outOfBoundIndex is still in bounds of exercise book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getUserExerciseBookData().getExerciseList().size());
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getExerciseBookData().getExerciseList().size());
 
         DeleteExerciseCommand deleteExerciseCommand = new DeleteExerciseCommand(outOfBoundIndex);
 

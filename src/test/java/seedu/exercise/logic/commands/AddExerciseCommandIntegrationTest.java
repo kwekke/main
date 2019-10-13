@@ -2,6 +2,7 @@ package seedu.exercise.logic.commands;
 
 import static seedu.exercise.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.exercise.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.exercise.model.util.DefaultPropertyManagerUtil.getDefaultPropertyManager;
 import static seedu.exercise.testutil.TypicalExercises.getTypicalExerciseBook;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,15 +25,16 @@ public class AddExerciseCommandIntegrationTest {
 
     @BeforeEach
     public void setUp() {
-        model = new ModelManager(getTypicalExerciseBook(), new RegimeBook(), new ExerciseBook(), new UserPrefs());
+        model = new ModelManager(getTypicalExerciseBook(), new RegimeBook(), new ExerciseBook(),
+                new UserPrefs(), getDefaultPropertyManager());
     }
 
     @Test
     public void execute_newExercise_success() {
         Exercise validExercise = new ExerciseBuilder().build();
 
-        Model expectedModel = new ModelManager(model.getUserExerciseBookData(), new RegimeBook(),
-                new ExerciseBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getExerciseBookData(), new RegimeBook(), new ExerciseBook(),
+            new UserPrefs(), getDefaultPropertyManager());
         expectedModel.addExercise(validExercise);
 
         assertCommandSuccess(new AddExerciseCommand(validExercise), model,
@@ -41,7 +43,7 @@ public class AddExerciseCommandIntegrationTest {
 
     @Test
     public void execute_duplicateExercise_throwsCommandException() {
-        Exercise exerciseInList = model.getUserExerciseBookData().getExerciseList().get(0);
+        Exercise exerciseInList = model.getExerciseBookData().getExerciseList().get(0);
         assertCommandFailure(new AddExerciseCommand(exerciseInList), model,
                 AddExerciseCommand.MESSAGE_DUPLICATE_EXERCISE);
     }

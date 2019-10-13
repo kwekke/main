@@ -45,13 +45,15 @@ public class LogicManager implements Logic {
         commandResult = command.execute(model);
 
         try {
-            storage.saveExerciseBook(model.getUserExerciseBookData());
+            storage.saveExerciseBook(model.getExerciseBookData());
         } catch (IOException ioe) {
             throw new CommandException(FILE_OPS_ERROR_MESSAGE + ioe, ioe);
         }
 
         try {
             storage.saveRegimeBook(model.getAllRegimeData());
+            storage.saveExerciseBook(model.getExerciseBookData());
+            storage.savePropertyManager(model.getPropertyManager());
         } catch (IOException ioe) {
             throw new CommandException(FILE_OPS_ERROR_MESSAGE + ioe, ioe);
         }
@@ -61,7 +63,7 @@ public class LogicManager implements Logic {
 
     @Override
     public ReadOnlyExerciseBook getExerciseBook() {
-        return model.getUserExerciseBookData();
+        return model.getExerciseBookData();
     }
 
     @Override
@@ -90,6 +92,11 @@ public class LogicManager implements Logic {
     }
 
     @Override
+    public ObservableList<Exercise> getSuggestedExerciseList() {
+        return model.getSuggestedExerciseList();
+    }
+
+    @Override
     public GuiSettings getGuiSettings() {
         return model.getGuiSettings();
     }
@@ -97,11 +104,6 @@ public class LogicManager implements Logic {
     @Override
     public void setGuiSettings(GuiSettings guiSettings) {
         model.setGuiSettings(guiSettings);
-    }
-
-    @Override
-    public ObservableList<Exercise> getSuggestedExerciseList() {
-        return model.getSuggestedExerciseList();
     }
 
 }

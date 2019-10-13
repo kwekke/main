@@ -2,6 +2,7 @@ package seedu.exercise.model;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.exercise.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.exercise.model.util.DefaultPropertyManagerUtil.getDefaultPropertyManager;
 
 import java.nio.file.Path;
 import java.util.function.Predicate;
@@ -11,7 +12,10 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.exercise.commons.core.GuiSettings;
 import seedu.exercise.commons.core.LogsCenter;
+import seedu.exercise.logic.parser.Prefix;
+import seedu.exercise.model.exercise.CustomProperty;
 import seedu.exercise.model.exercise.Exercise;
+import seedu.exercise.model.exercise.PropertyManager;
 import seedu.exercise.model.regime.Regime;
 
 /**
@@ -22,8 +26,9 @@ public class ModelManager implements Model {
 
     private final ExerciseBook exerciseBook;
     private final RegimeBook regimeBook;
-    private final ExerciseBook allExerciseBook;
+    private final ExerciseBook databaseBook;
     private final UserPrefs userPrefs;
+    private final PropertyManager propertyManager;
     private final FilteredList<Exercise> filteredExercises;
     private final FilteredList<Exercise> suggestedExercises;
     private final FilteredList<Regime> filteredRegimes;
@@ -32,24 +37,27 @@ public class ModelManager implements Model {
      * Initializes a ModelManager with the given exerciseBook and userPrefs.
      */
     public ModelManager(ReadOnlyExerciseBook exerciseBook, ReadOnlyRegimeBook regimeBook,
-                        ReadOnlyExerciseBook allExercises, ReadOnlyUserPrefs userPrefs) {
+                        ReadOnlyExerciseBook databaseBook, ReadOnlyUserPrefs userPrefs,
+                        PropertyManager propertyManager) {
         super();
         requireAllNonNull(exerciseBook, userPrefs);
 
         logger.fine("Initializing with exercise book: " + exerciseBook + " and user prefs " + userPrefs);
 
         this.exerciseBook = new ExerciseBook(exerciseBook);
-        this.allExerciseBook = new ExerciseBook(allExercises);
+        this.databaseBook = new ExerciseBook(databaseBook);
         this.regimeBook = new RegimeBook(regimeBook);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredExercises = new FilteredList<>(this.exerciseBook.getExerciseList());
-        suggestedExercises = new FilteredList<>(this.allExerciseBook.getExerciseList());
+        suggestedExercises = new FilteredList<>(this.databaseBook.getExerciseList());
         filteredRegimes = new FilteredList<>(this.regimeBook.getRegimeList());
 
+        this.propertyManager = propertyManager;
+        this.propertyManager.updatePropertyPrefixes();
     }
 
     public ModelManager() {
-        this(new ExerciseBook(), new RegimeBook(), new ExerciseBook(), new UserPrefs());
+        this(new ExerciseBook(), new RegimeBook(), new ExerciseBook(), new UserPrefs(), getDefaultPropertyManager());
     }
 
     //=========== UserPrefs ==================================================================================
@@ -106,7 +114,7 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public ReadOnlyExerciseBook getUserExerciseBookData() {
+    public ReadOnlyExerciseBook getExerciseBookData() {
         return exerciseBook;
     }
 
@@ -209,12 +217,32 @@ public class ModelManager implements Model {
         filteredRegimes.setPredicate(predicate);
     }
 
-    //=========== Suggestion List Accessors ===============================================================
+    //=========== Property Manager Accessors =============================================================
+
+    public PropertyManager getPropertyManager() {
+        return propertyManager;
+    }
+
+    public boolean isPrefixPresent(Prefix prefix) {
+        return propertyManager.isPrefixPresent(prefix);
+    }
+
+    public boolean isFullNamePresent(String fullName) {
+        return propertyManager.isFullNamePresent(fullName);
+    }
+
+    public void addCustomProperty(CustomProperty customProperty) {
+        propertyManager.addCustomProperty(customProperty);
+    }
+
+    //=========== ExerciseDatabase ===============================================================
 
     @Override
-    public ReadOnlyExerciseBook getAllExerciseBookData() {
-        return allExerciseBook;
+    public ReadOnlyExerciseBook getDatabaseBook() {
+        return databaseBook;
     }
+
+    //=========== Suggested Exercise Accessors ===============================================================
 
     @Override
     public ObservableList<Exercise> getSuggestedExerciseList() {
@@ -244,6 +272,10 @@ public class ModelManager implements Model {
                 && regimeBook.equals(other.regimeBook)
                 && userPrefs.equals(other.userPrefs)
                 && filteredExercises.equals(other.filteredExercises)
-                && suggestedExercises.equals(other.suggestedExercises);
+                && filteredRegimes.equals(other.filteredRegimes)
+                && databaseBook.equals(other.databaseBook)
+                && suggestedExercises.equals(other.suggestedExercises)
+                && propertyManager.equals(other.propertyManager);
     }
+
 }

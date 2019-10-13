@@ -5,17 +5,24 @@ import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.exercise.commons.core.GuiSettings;
+import seedu.exercise.logic.parser.Prefix;
+import seedu.exercise.model.exercise.CustomProperty;
 import seedu.exercise.model.exercise.Exercise;
+import seedu.exercise.model.exercise.PropertyManager;
 import seedu.exercise.model.regime.Regime;
 
 /**
  * The API of the Model component.
  */
 public interface Model {
-    /** {@code Predicate} that always evaluate to true */
+    /**
+     * {@code Predicate} that always evaluate to true
+     */
     Predicate<Exercise> PREDICATE_SHOW_ALL_EXERCISES = unused -> true;
 
-    /** {@code Predicate} that always evaluate to true*/
+    /**
+     * {@code Predicate} that always evaluate to true
+     */
     Predicate<Regime> PREDICATE_SHOW_ALL_REGIMES = unused -> true;
 
     /**
@@ -54,7 +61,7 @@ public interface Model {
     void setExerciseBook(ReadOnlyExerciseBook anotherBook);
 
     /** Returns the data in the exercise book */
-    ReadOnlyExerciseBook getUserExerciseBookData();
+    ReadOnlyExerciseBook getExerciseBookData();
 
     /**
      * Returns true if an exercise with the same identity as {@code exercise} exists in the exercise book.
@@ -81,14 +88,19 @@ public interface Model {
      */
     void setExercise(Exercise target, Exercise editedExercise);
 
-    /** Returns an unmodifiable view of the filtered exercise list */
+    /**
+     * Returns an unmodifiable view of the filtered exercise list
+     */
     ObservableList<Exercise> getFilteredExerciseList();
 
-    /** Returns an unmodifiable view of the filtered regime list */
+    /**
+     * Returns an unmodifiable view of the filtered regime list
+     */
     ObservableList<Regime> getFilteredRegimeList();
 
     /**
      * Updates the filter of the filtered exercise list to filter by the given {@code predicate}.
+     *
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredExerciseList(Predicate<Exercise> predicate);
@@ -149,6 +161,26 @@ public interface Model {
     void updateFilteredRegimeList(Predicate<Regime> predicate);
 
     /**
+     * Returns the {@code PropertyManager} object that is contained in {@code Model}.
+     */
+    PropertyManager getPropertyManager();
+
+    /**
+     * Returns true if a prefix with the same identity as {@code prefix} is present in the PropertyManager.
+     */
+    boolean isPrefixPresent(Prefix prefix);
+
+    /**
+     * Returns true if {@code fullName} is present in the PropertyManager.
+     */
+    boolean isFullNamePresent(String fullName);
+
+    /**
+     * Adds the given {@code customProperty} into the PropertyManager.
+     */
+    void addCustomProperty(CustomProperty customProperty);
+
+    /**
      * Returns an unmodifiable view of the list of suggested exercises
      * */
     ObservableList<Exercise> getSuggestedExerciseList();
@@ -162,5 +194,5 @@ public interface Model {
     /**
      * Returns the data of all exercises in the database
      */
-    ReadOnlyExerciseBook getAllExerciseBookData();
+    ReadOnlyExerciseBook getDatabaseBook();
 }
