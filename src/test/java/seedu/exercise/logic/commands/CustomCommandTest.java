@@ -20,6 +20,7 @@ import static seedu.exercise.testutil.TypicalExercises.getTypicalExerciseBook;
 import org.junit.jupiter.api.Test;
 
 import seedu.exercise.logic.commands.exceptions.CommandException;
+import seedu.exercise.model.ExerciseBook;
 import seedu.exercise.model.Model;
 import seedu.exercise.model.ModelManager;
 import seedu.exercise.model.RegimeBook;
@@ -29,7 +30,7 @@ import seedu.exercise.testutil.CustomPropertyBuilder;
 
 class CustomCommandTest {
 
-    private Model model = new ModelManager(getTypicalExerciseBook(), new RegimeBook(),
+    private Model model = new ModelManager(getTypicalExerciseBook(), new RegimeBook(), new ExerciseBook(),
             new UserPrefs(), getDefaultPropertyManager());
 
     @Test
@@ -37,7 +38,7 @@ class CustomCommandTest {
         CustomProperty customPropertyToBeCreated = RATING;
         CustomCommand customCommand = new CustomCommand(customPropertyToBeCreated);
         String expectedMessage = String.format(CustomCommand.MESSAGE_SUCCESS, customPropertyToBeCreated);
-        Model expectedModel = new ModelManager(getTypicalExerciseBook(), new RegimeBook(),
+        Model expectedModel = new ModelManager(getTypicalExerciseBook(), new RegimeBook(), new ExerciseBook(),
                 new UserPrefs(), getDefaultPropertyManager());
         expectedModel.getPropertyManager().addCustomProperty(customPropertyToBeCreated);
         assertCommandSuccess(customCommand, model, expectedMessage, expectedModel);
@@ -49,7 +50,7 @@ class CustomCommandTest {
                 .withFullName(VALID_FULL_NAME_RATING).withParameterType(VALID_PARAMETER_TYPE_RATING).build();
         CustomProperty duplicateShortName = new CustomPropertyBuilder().withPrefix(VALID_SHORT_NAME_RATING)
                 .withFullName(VALID_FULL_NAME_REMARK).withParameterType(VALID_PARAMETER_TYPE_REMARK).build();
-        Model model1 = new ModelManager(getTypicalExerciseBook(), new RegimeBook(),
+        Model model1 = new ModelManager(getTypicalExerciseBook(), new RegimeBook(), new ExerciseBook(),
                 new UserPrefs(), getDefaultPropertyManager());
         model1.getPropertyManager().addCustomProperty(rating);
         CustomCommand customCommand = new CustomCommand(duplicateShortName);
@@ -63,7 +64,7 @@ class CustomCommandTest {
                 .withFullName(VALID_FULL_NAME_RATING).withParameterType(VALID_PARAMETER_TYPE_RATING).build();
         CustomProperty duplicateFullName = new CustomPropertyBuilder().withPrefix(VALID_SHORT_NAME_REMARK)
                 .withFullName(VALID_FULL_NAME_RATING).withParameterType(VALID_PARAMETER_TYPE_REMARK).build();
-        Model model1 = new ModelManager(getTypicalExerciseBook(), new RegimeBook(),
+        Model model1 = new ModelManager(getTypicalExerciseBook(), new RegimeBook(), new ExerciseBook(),
                 new UserPrefs(), getDefaultPropertyManager());
         model1.getPropertyManager().addCustomProperty(rating);
         CustomCommand customCommand = new CustomCommand(duplicateFullName);
