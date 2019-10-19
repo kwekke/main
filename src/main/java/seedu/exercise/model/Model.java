@@ -236,4 +236,10 @@ public interface Model {
      * Returns the data of all exercises in the database
      */
     ReadOnlyResourceBook<Exercise> getDatabaseBook();
+
+    /**
+     * Returns the data in the exercise database
+     */
+    public ReadOnlyResourceBook<Exercise> getExerciseDatabaseData();
+
 }

@@ -82,9 +82,7 @@ public class MainApp extends Application {
             scheduleBookStorage, userPrefsStorage, propertyManagerStorage);
 
         initLogging(config);
-
         model = initModelManager(storage, userPrefs);
-
         logic = new LogicManager(model, storage);
 
         ui = new UiManager(logic);

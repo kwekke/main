@@ -293,6 +293,10 @@ public class ModelManager implements Model {
         return databaseBook;
     }
 
+    public ReadOnlyResourceBook<Exercise> getExerciseDatabaseData() {
+        return databaseBook;
+    }
+
     //=========== Suggested Exercise Accessors ===============================================================
 
     @Override
