@@ -17,16 +17,15 @@ import javafx.collections.ObservableList;
 import seedu.exercise.commons.core.GuiSettings;
 import seedu.exercise.logic.commands.exceptions.CommandException;
 import seedu.exercise.logic.parser.Prefix;
-import seedu.exercise.model.ExerciseBook;
 import seedu.exercise.model.Model;
-import seedu.exercise.model.ReadOnlyExerciseBook;
-import seedu.exercise.model.ReadOnlyRegimeBook;
+import seedu.exercise.model.ReadOnlyResourceBook;
 import seedu.exercise.model.ReadOnlyUserPrefs;
-import seedu.exercise.model.exercise.CustomProperty;
-import seedu.exercise.model.exercise.Exercise;
-import seedu.exercise.model.exercise.PropertyManager;
-import seedu.exercise.model.regime.Regime;
-import seedu.exercise.testutil.ExerciseBuilder;
+import seedu.exercise.model.property.CustomProperty;
+import seedu.exercise.model.property.PropertyManager;
+import seedu.exercise.model.resource.Exercise;
+import seedu.exercise.model.resource.Regime;
+import seedu.exercise.model.resource.Schedule;
+import seedu.exercise.testutil.exercise.ExerciseBuilder;
 
 public class AddExerciseCommandTest {
 
@@ -104,6 +103,7 @@ public class AddExerciseCommandTest {
             throw new AssertionError("This method should not be called.");
         }
 
+        //=======================exercise=============================================================================
         @Override
         public Path getExerciseBookFilePath() {
             throw new AssertionError("This method should not be called.");
@@ -120,12 +120,12 @@ public class AddExerciseCommandTest {
         }
 
         @Override
-        public void setExerciseBook(ReadOnlyExerciseBook anotherBook) {
+        public void setExerciseBook(ReadOnlyResourceBook<Exercise> anotherBook) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public ReadOnlyExerciseBook getExerciseBookData() {
+        public ReadOnlyResourceBook<Exercise> getExerciseBookData() {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -161,12 +161,12 @@ public class AddExerciseCommandTest {
         }
 
         @Override
-        public void setRegimeBook(ReadOnlyRegimeBook anotherBook) {
+        public void setRegimeBook(ReadOnlyResourceBook<Regime> anotherBook) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public ReadOnlyRegimeBook getAllRegimeData() {
+        public ReadOnlyResourceBook<Regime> getAllRegimeData() {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -201,6 +201,11 @@ public class AddExerciseCommandTest {
         }
 
         @Override
+        public ObservableList<Schedule> getFilteredScheduleList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void updateFilteredExerciseList(Predicate<Exercise> predicate) {
             throw new AssertionError("This method should not be called.");
         }
@@ -230,10 +235,30 @@ public class AddExerciseCommandTest {
             throw new AssertionError("This method should not be called.");
         }
 
+        @Override
+        public boolean hasSchedule(Schedule schedule) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addSchedule(Schedule schedule) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ReadOnlyResourceBook<Schedule> getAllScheduleData() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void completeSchedule(Schedule schedule) {
+            throw new AssertionError("This method should not be called.");
+        }
+
         //=======================suggest================================================================================
 
         @Override
-        public ReadOnlyExerciseBook getDatabaseBook() {
+        public ReadOnlyResourceBook<Exercise> getDatabaseBook() {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -262,7 +287,7 @@ public class AddExerciseCommandTest {
         @Override
         public boolean hasExercise(Exercise exercise) {
             requireNonNull(exercise);
-            return this.exercise.isSameExercise(exercise);
+            return this.exercise.isSameResource(exercise);
         }
     }
 
@@ -275,7 +300,7 @@ public class AddExerciseCommandTest {
         @Override
         public boolean hasExercise(Exercise exercise) {
             requireNonNull(exercise);
-            return exercisesAdded.stream().anyMatch(exercise::isSameExercise);
+            return exercisesAdded.stream().anyMatch(exercise::isSameResource);
         }
 
         @Override
@@ -285,8 +310,8 @@ public class AddExerciseCommandTest {
         }
 
         @Override
-        public ReadOnlyExerciseBook getExerciseBookData() {
-            return new ExerciseBook();
+        public ReadOnlyResourceBook<Exercise> getExerciseBookData() {
+            return new ReadOnlyResourceBook<>();
         }
     }
 

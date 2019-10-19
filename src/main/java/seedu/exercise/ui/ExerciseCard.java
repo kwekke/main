@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import seedu.exercise.model.exercise.Exercise;
+import seedu.exercise.model.resource.Exercise;
 
 /**
  * An UI component that displays information of a {@code Exercise}.
@@ -53,8 +53,8 @@ public class ExerciseCard extends UiPart<Region> {
         quantity.setText(exercise.getQuantity().value);
         unit.setText(exercise.getUnit().unit);
         exercise.getMuscles().stream()
-            .sorted(Comparator.comparing(muscle -> muscle.muscleName))
-            .forEach(muscle -> tags.getChildren().add(new Label(muscle.muscleName)));
+                .sorted(Comparator.comparing(muscle -> muscle.muscleName))
+                .forEach(muscle -> tags.getChildren().add(new Label(muscle.muscleName)));
     }
 
     @Override
@@ -72,6 +72,6 @@ public class ExerciseCard extends UiPart<Region> {
         // state check
         ExerciseCard card = (ExerciseCard) other;
         return id.getText().equals(card.id.getText())
-            && exercise.equals(card.exercise);
+                && exercise.equals(card.exercise);
     }
 }

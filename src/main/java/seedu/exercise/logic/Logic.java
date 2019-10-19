@@ -7,10 +7,10 @@ import seedu.exercise.commons.core.GuiSettings;
 import seedu.exercise.logic.commands.CommandResult;
 import seedu.exercise.logic.commands.exceptions.CommandException;
 import seedu.exercise.logic.parser.exceptions.ParseException;
-import seedu.exercise.model.ReadOnlyExerciseBook;
-import seedu.exercise.model.ReadOnlyRegimeBook;
-import seedu.exercise.model.exercise.Exercise;
-import seedu.exercise.model.regime.Regime;
+import seedu.exercise.model.ReadOnlyResourceBook;
+import seedu.exercise.model.resource.Exercise;
+import seedu.exercise.model.resource.Regime;
+import seedu.exercise.model.resource.Schedule;
 
 /**
  * API of the Logic component
@@ -31,7 +31,7 @@ public interface Logic {
      *
      * @see seedu.exercise.model.Model#getExerciseBookData()
      */
-    ReadOnlyExerciseBook getExerciseBook();
+    ReadOnlyResourceBook<Exercise> getExerciseBook();
 
     /**
      * Returns an unmodifiable view of the filtered list of exercises.
@@ -43,9 +43,14 @@ public interface Logic {
      *
      * @see seedu.exercise.model.Model#getAllRegimeData()
      */
-    ReadOnlyRegimeBook getRegimeBook();
+    ReadOnlyResourceBook<Regime> getRegimeBook();
 
     ObservableList<Regime> getFilteredRegimeList();
+
+    /**
+     * Returns an unmodifiable view of the filtered list of schedules
+     */
+    ObservableList<Schedule> getFilteredScheduleList();
 
     /**
      * Returns the user prefs' exercise book file path.

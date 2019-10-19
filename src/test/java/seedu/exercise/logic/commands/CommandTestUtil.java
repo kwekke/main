@@ -4,13 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_CALORIES;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_CATEGORY;
+import static seedu.exercise.logic.parser.CliSyntax.PREFIX_CUSTOM_NAME;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_FULL_NAME;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_MUSCLE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_PARAMETER_TYPE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_QUANTITY;
-import static seedu.exercise.logic.parser.CliSyntax.PREFIX_SHORT_NAME;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_UNIT;
 import static seedu.exercise.testutil.Assert.assertThrows;
 
@@ -20,11 +20,11 @@ import java.util.List;
 
 import seedu.exercise.commons.core.index.Index;
 import seedu.exercise.logic.commands.exceptions.CommandException;
-import seedu.exercise.model.ExerciseBook;
 import seedu.exercise.model.Model;
-import seedu.exercise.model.exercise.Exercise;
-import seedu.exercise.model.exercise.NameContainsKeywordsPredicate;
-import seedu.exercise.testutil.EditExerciseDescriptorBuilder;
+import seedu.exercise.model.ReadOnlyResourceBook;
+import seedu.exercise.model.resource.Exercise;
+import seedu.exercise.model.resource.NameContainsKeywordsPredicate;
+import seedu.exercise.testutil.exercise.EditExerciseDescriptorBuilder;
 
 /**
  * Contains helper methods for testing commands.
@@ -72,9 +72,9 @@ public class CommandTestUtil {
     public static final EditCommand.EditExerciseDescriptor DESC_AEROBICS;
     public static final EditCommand.EditExerciseDescriptor DESC_BASKETBALL;
 
-    public static final String VALID_SHORT_NAME_RATING = "a";
-    public static final String VALID_SHORT_NAME_REMARK = "b";
-    public static final String VALID_SHORT_NAME_ENDDATE = "c";
+    public static final String VALID_PREFIX_NAME_RATING = "a";
+    public static final String VALID_PREFIX_NAME_REMARK = "b";
+    public static final String VALID_PREFIX_NAME_ENDDATE = "c";
     public static final String VALID_FULL_NAME_RATING = "Rating";
     public static final String VALID_FULL_NAME_REMARK = "Remark";
     public static final String VALID_FULL_NAME_ENDDATE = "End date";
@@ -82,9 +82,9 @@ public class CommandTestUtil {
     public static final String VALID_PARAMETER_TYPE_REMARK = "String";
     public static final String VALID_PARAMETER_TYPE_ENDDATE = "Date";
 
-    public static final String SHORT_NAME_DESC_RATING = " " + PREFIX_SHORT_NAME + VALID_SHORT_NAME_RATING;
-    public static final String SHORT_NAME_DESC_REMARK = " " + PREFIX_SHORT_NAME + VALID_SHORT_NAME_REMARK;
-    public static final String SHORT_NAME_DESC_ENDDATE = " " + PREFIX_SHORT_NAME + VALID_SHORT_NAME_ENDDATE;
+    public static final String PREFIX_NAME_DESC_RATING = " " + PREFIX_CUSTOM_NAME + VALID_PREFIX_NAME_RATING;
+    public static final String PREFIX_NAME_DESC_REMARK = " " + PREFIX_CUSTOM_NAME + VALID_PREFIX_NAME_REMARK;
+    public static final String PREFIX_NAME_DESC_ENDDATE = " " + PREFIX_CUSTOM_NAME + VALID_PREFIX_NAME_ENDDATE;
     public static final String FULL_NAME_DESC_RATING = " " + PREFIX_FULL_NAME + VALID_FULL_NAME_RATING;
     public static final String FULL_NAME_DESC_REMARK = " " + PREFIX_FULL_NAME + VALID_FULL_NAME_REMARK;
     public static final String FULL_NAME_DESC_ENDDATE = " " + PREFIX_FULL_NAME + VALID_FULL_NAME_ENDDATE;
@@ -92,8 +92,8 @@ public class CommandTestUtil {
     public static final String PARAMETER_TYPE_DESC_REMARK = " " + PREFIX_PARAMETER_TYPE + VALID_PARAMETER_TYPE_REMARK;
     public static final String PARAMETER_TYPE_DESC_ENDDATE = " " + PREFIX_PARAMETER_TYPE + VALID_PARAMETER_TYPE_ENDDATE;
 
-    public static final String INVALID_SHORT_NAME_DESC = " "
-            + PREFIX_SHORT_NAME + "r r"; // whitespace not allowed in short name
+    public static final String INVALID_PREFIX_NAME_DESC = " "
+            + PREFIX_CUSTOM_NAME + "r r"; // whitespace not allowed in short name
     public static final String INVALID_FULL_NAME_DESC = " "
             + PREFIX_FULL_NAME + "R3mark"; //'3' not allowed in full name
     public static final String INVALID_PARAMETER_TYPE_DESC = " "
@@ -144,7 +144,8 @@ public class CommandTestUtil {
     public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage) {
         // we are unable to defensively copy the model for comparison later, so we can
         // only do so by copying its components.
-        ExerciseBook expectedExerciseBook = new ExerciseBook(actualModel.getExerciseBookData());
+        ReadOnlyResourceBook<Exercise> expectedExerciseBook =
+            new ReadOnlyResourceBook<>(actualModel.getExerciseBookData());
         List<Exercise> expectedFilteredList = new ArrayList<>(actualModel.getFilteredExerciseList());
 
         assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
