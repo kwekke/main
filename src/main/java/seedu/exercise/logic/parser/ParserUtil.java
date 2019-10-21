@@ -254,6 +254,21 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code String suggestType} into a String.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException
+     */
+    public static String parseSuggestType(String suggestType) throws ParseException {
+        requireNonNull(suggestType);
+        String trimmedSuggestType = suggestType.trim();
+        if (!trimmedSuggestType.equals("basic") && !trimmedSuggestType.equals("possible")) {
+            throw new ParseException("Suggest type can only be \'basic\' or \'possible\'");
+        }
+        return trimmedSuggestType;
+    }
+
+    /**
      * Formats a single word by capitalising the first letter and setting the remaining
      * as lowercase.
      */
@@ -321,19 +336,4 @@ public class ParserUtil {
         return trimmedNumber;
     }
 
-
-    /**
-     * Parses a {@code String suggestType} into a String.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException
-     */
-    public static String parseSuggestType(String suggestType) throws ParseException {
-        requireNonNull(suggestType);
-        String trimmedSuggestType = suggestType.trim();
-        if (!trimmedSuggestType.equals("basic") && !trimmedSuggestType.equals("possible") ) {
-            throw new ParseException("Suggest type can only be \'basic\' or \'possible\'");
-        }
-        return trimmedSuggestType;
-    }
 }

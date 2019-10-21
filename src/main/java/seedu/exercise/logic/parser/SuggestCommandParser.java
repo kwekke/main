@@ -1,11 +1,11 @@
 package seedu.exercise.logic.parser;
 
 import static seedu.exercise.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.exercise.logic.parser.CliSyntax.PREFIX_CUSTOM_NAME;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_MUSCLE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_SUGGEST;
-import static seedu.exercise.logic.parser.CliSyntax.combinePrefixes;
+import static seedu.exercise.model.property.PropertyManager.getCustomProperties;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -14,7 +14,7 @@ import seedu.exercise.logic.commands.SuggestBasicCommand;
 import seedu.exercise.logic.commands.SuggestCommand;
 import seedu.exercise.logic.commands.SuggestPossibleCommand;
 import seedu.exercise.logic.parser.exceptions.ParseException;
-import seedu.exercise.model.property.Date;
+import seedu.exercise.model.property.CustomProperty;
 import seedu.exercise.model.property.Muscle;
 
 /**
@@ -29,11 +29,7 @@ public class SuggestCommandParser implements Parser<SuggestCommand> {
      * @throws ParseException if the user does not conform to the expected format
      */
     public SuggestCommand parse(String args) throws ParseException {
-        //add all the customProperties' prefixes into allPrefixes
-
-        Prefix[] allPrefixes = combinePrefixes(PREFIX_SUGGEST);
-
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_SUGGEST, PREFIX_MUSCLE);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, getPrefixes());
 
         if (!arePrefixesPresent(argMultimap, PREFIX_SUGGEST) || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SuggestCommand.MESSAGE_USAGE));
@@ -52,6 +48,16 @@ public class SuggestCommandParser implements Parser<SuggestCommand> {
         throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SuggestCommand.MESSAGE_USAGE));
     }
 
+    private Prefix[] getPrefixes() {
+        ArrayList<Prefix> prefixes = new ArrayList<>();
+        prefixes.add(PREFIX_SUGGEST);
+        prefixes.add(PREFIX_MUSCLE);
+        for (CustomProperty cp : getCustomProperties()) {
+            prefixes.add(cp.getPrefix());
+        }
+        return prefixes.toArray(new Prefix[prefixes.size() - 1]);
+    }
+
     /**
      * Returns true if none of the prefixes contains empty {@code Optional} values in the given
      * {@code ArgumentMultimap}.
@@ -60,13 +66,18 @@ public class SuggestCommandParser implements Parser<SuggestCommand> {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
+    /**
+     * Parses arguments and returns SuggestPossibleCommand for execution
+     */
     private static SuggestCommand parsePossible(ArgumentMultimap argMultimap) throws ParseException {
         if (!argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     SuggestCommand.MESSAGE_USAGE));
         }
         Set<Muscle> muscles = ParserUtil.parseMuscles(argMultimap.getAllValues(PREFIX_MUSCLE));
-        return new SuggestPossibleCommand(muscles);
+        Map<String, String> customPropertiesMap =
+                ParserUtil.parseCustomProperties(argMultimap.getAllCustomProperties());
+        return new SuggestPossibleCommand(muscles, customPropertiesMap);
     }
 
 }

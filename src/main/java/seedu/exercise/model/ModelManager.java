@@ -6,9 +6,11 @@ import static seedu.exercise.model.util.DefaultPropertyManagerUtil.getDefaultPro
 
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.exercise.commons.core.GuiSettings;
@@ -34,9 +36,9 @@ public class ModelManager implements Model {
     private final UserPrefs userPrefs;
     private final PropertyManager propertyManager;
     private final FilteredList<Exercise> filteredExercises;
-    private final FilteredList<Exercise> suggestedExercises;
     private final FilteredList<Regime> filteredRegimes;
     private final FilteredList<Schedule> filteredSchedules;
+    private final ObservableList<Exercise> suggestions = FXCollections.observableArrayList();
 
     /**
      * Initializes a ModelManager with the given exerciseBook and userPrefs.
@@ -55,7 +57,6 @@ public class ModelManager implements Model {
         this.scheduleBook = new ReadOnlyResourceBook<>(scheduleBook);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredExercises = new FilteredList<>(this.exerciseBook.getResourceList());
-        suggestedExercises = new FilteredList<>(this.databaseBook.getResourceList());
         filteredRegimes = new FilteredList<>(this.regimeBook.getResourceList());
         filteredSchedules = new FilteredList<>(this.scheduleBook.getResourceList());
 
@@ -301,12 +302,31 @@ public class ModelManager implements Model {
 
     @Override
     public ObservableList<Exercise> getSuggestedExerciseList() {
-        return suggestedExercises;
+        return suggestions;
+    }
+
+    @Override
+    public void setSuggestions(List<Exercise> suggestions) {
+        this.suggestions.setAll(suggestions);
     }
 
     @Override
     public void updateSuggestedExerciseList(Predicate<Exercise> predicate) {
-        suggestedExercises.setPredicate(predicate);
+        List<Exercise> filteredSuggestions = generateAllSuggestions().filtered(predicate);
+        setSuggestions(filteredSuggestions);
+    }
+
+    /**
+     * Returns an unmodifiable view of the list of {@code suggestions} backed by the internal list of
+     * {@code exerciseBook} and {@code databaseBook}
+     */
+    private ObservableList<Exercise> generateAllSuggestions() {
+        ObservableList<Exercise> allSuggestions = FXCollections.observableArrayList();
+        List<Exercise> trackedExercises = getExerciseBookData().getResourceList();
+        List<Exercise> databaseExercises = getDatabaseBook().getResourceList();
+        allSuggestions.addAll(trackedExercises);
+        allSuggestions.addAll(databaseExercises);
+        return allSuggestions;
     }
 
     @Override
@@ -331,7 +351,7 @@ public class ModelManager implements Model {
             && filteredRegimes.equals(other.filteredRegimes)
             && filteredSchedules.equals(other.filteredSchedules)
             && databaseBook.equals(other.databaseBook)
-            && suggestedExercises.equals(other.suggestedExercises)
+            && suggestions.equals(other.suggestions)
             && propertyManager.equals(other.propertyManager);
     }
 
