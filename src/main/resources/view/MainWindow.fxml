@@ -19,7 +19,7 @@
     <scene>
         <Scene>
             <stylesheets>
-                <URL value="@DarkTheme.css"/>
+                <URL value="@CustomTheme.css"/>
                 <URL value="@Extensions.css"/>
             </stylesheets>
 
@@ -49,22 +49,23 @@
                         <Insets bottom="5" left="10" right="10" top="5"/>
                     </padding>
                 </StackPane>
+
                 <BorderPane prefHeight="58.0" prefWidth="410.0" styleClass="pane-with-border" VBox.vgrow="ALWAYS">
                     <left>
-                        <StackPane fx:id="regimeListPanelPlaceholder" BorderPane.alignment="CENTER"/>
+                        <StackPane fx:id="regimeListPanelPlaceholder" styleClass="pane-with-border" BorderPane.alignment="CENTER"/>
                     </left>
                     <center>
                         <BorderPane>
                             <top>
-                                <StackPane fx:id="resultPanelPlaceholder" BorderPane.alignment="CENTER"/>
+                                <StackPane fx:id="resultPanelPlaceholder" styleClass="pane-with-border" BorderPane.alignment="CENTER"/>
                             </top>
                             <bottom>
-                                <StackPane fx:id="suggestionPanelPlaceholder" BorderPane.alignment="CENTER"/>
+                                <StackPane fx:id="suggestionPanelPlaceholder" styleClass="pane-with-border" BorderPane.alignment="CENTER"/>
                             </bottom>
                         </BorderPane>
                     </center>
                     <right>
-                        <StackPane fx:id="scheduleListPanelPlaceholder" BorderPane.alignment="CENTER"/>
+                        <StackPane fx:id="scheduleListPanelPlaceholder" styleClass="pane-with-border" BorderPane.alignment="CENTER"/>
                     </right>
                     <bottom>
                         <StackPane fx:id="statusbarPlaceholder" BorderPane.alignment="CENTER"/>
