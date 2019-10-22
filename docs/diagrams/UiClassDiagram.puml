@@ -10,11 +10,16 @@ Class "{abstract}\nUiPart" as UiPart
 Class UiManager
 Class MainWindow
 Class HelpWindow
-Class ResultDisplay
-Class PersonListPanel
-Class PersonCard
-Class StatusBarFooter
 Class CommandBox
+Class ResultDisplay
+Class ResolveWindow
+Class LeftRightDisplay
+Class ExerciseListPanel
+Class RegimeListPanel
+Class ScheduleListPanel
+Class SuggestionListPanel
+Class ExerciseCard
+Class RegimeCard
 }
 
 package Model <<Rectangle>> {
@@ -30,31 +35,41 @@ HiddenOutside ..> Ui
 
 UiManager .left.|> Ui
 UiManager -down-> MainWindow
-MainWindow --> HelpWindow
-MainWindow *-down-> CommandBox
-MainWindow *-down-> ResultDisplay
-MainWindow *-down-> PersonListPanel
-MainWindow *-down-> StatusBarFooter
 
-PersonListPanel -down-> PersonCard
+MainWindow *--> HelpWindow
+MainWindow *--> CommandBox
+MainWindow *--> ResultDisplay
+MainWindow *--> ResolveWindow
+MainWindow *--> ExerciseListPanel
+MainWindow *--> RegimeListPanel
+MainWindow *--> ScheduleListPanel
+MainWindow *--> SuggestionListPanel
 
-MainWindow -left-|> UiPart
+ExerciseListPanel --> ExerciseCard
+RegimeListPanel --> RegimeCard
 
+MainWindow --|> UiPart
+
+HelpWindow --|> UiPart
 ResultDisplay --|> UiPart
 CommandBox --|> UiPart
-PersonListPanel --|> UiPart
-PersonCard --|> UiPart
-StatusBarFooter --|> UiPart
-HelpWindow -down-|> UiPart
+ResolveWindow --|> UiPart
+LeftRightDisplay --|> UiPart
+ExerciseListPanel --|> UiPart
+ExerciseCard --|> UiPart
+RegimeListPanel --|> UiPart
+RegimeCard --|> UiPart
+ScheduleListPanel --|> UiPart
+SuggestionListPanel --|> UiPart
 
-PersonCard ..> Model
+ExerciseCard .right.> Model
 UiManager -right-> Logic
-MainWindow -left-> Logic
+MainWindow -right-> Logic
 
-PersonListPanel -[hidden]left- HelpWindow
-HelpWindow -[hidden]left- CommandBox
-CommandBox -[hidden]left- ResultDisplay
-ResultDisplay -[hidden]left- StatusBarFooter
+ResolveWindow -> LeftRightDisplay
 
+ExerciseListPanel -[hidden]left- HiddenLogic
+ExerciseCard -[hidden]left- HiddenLogic
+HelpWindow -[hidden]- CommandBox
 MainWindow -[hidden]-|> UiPart
 @enduml
