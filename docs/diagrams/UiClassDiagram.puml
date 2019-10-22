@@ -14,12 +14,8 @@ Class CommandBox
 Class ResultDisplay
 Class ResolveWindow
 Class LeftRightDisplay
-Class ExerciseListPanel
-Class RegimeListPanel
-Class ScheduleListPanel
-Class SuggestionListPanel
-Class ExerciseCard
-Class RegimeCard
+Class XYZResourceListPanel
+Class XYZResourceCard
 }
 
 package Model <<Rectangle>> {
@@ -40,36 +36,27 @@ MainWindow *--> HelpWindow
 MainWindow *--> CommandBox
 MainWindow *--> ResultDisplay
 MainWindow *--> ResolveWindow
-MainWindow *--> ExerciseListPanel
-MainWindow *--> RegimeListPanel
-MainWindow *--> ScheduleListPanel
-MainWindow *--> SuggestionListPanel
+MainWindow *--> "4" XYZResourceListPanel
+XYZResourceListPanel *--> XYZResourceCard
 
-ExerciseListPanel --> ExerciseCard
-RegimeListPanel --> RegimeCard
-
-MainWindow --|> UiPart
+MainWindow -left-|> UiPart
 
 HelpWindow --|> UiPart
 ResultDisplay --|> UiPart
 CommandBox --|> UiPart
 ResolveWindow --|> UiPart
 LeftRightDisplay --|> UiPart
-ExerciseListPanel --|> UiPart
-ExerciseCard --|> UiPart
-RegimeListPanel --|> UiPart
-RegimeCard --|> UiPart
-ScheduleListPanel --|> UiPart
-SuggestionListPanel --|> UiPart
+XYZResourceListPanel --|> UiPart
+XYZResourceCard --|> UiPart
 
-ExerciseCard .right.> Model
-UiManager -right-> Logic
+
+XYZResourceCard ..> Model
+UiManager --> Logic
 MainWindow -right-> Logic
 
 ResolveWindow -> LeftRightDisplay
 
-ExerciseListPanel -[hidden]left- HiddenLogic
-ExerciseCard -[hidden]left- HiddenLogic
 HelpWindow -[hidden]- CommandBox
+CommandBox -[hidden]- ResultDisplay
 MainWindow -[hidden]-|> UiPart
 @enduml
