@@ -67,9 +67,9 @@ public class AddRegimeCommand extends AddCommand implements PayloadCarrierComman
 
         CommandResult commandResult;
         if (!isRegimeInModel(model)) {
-            commandResult = addNewRegimeToModel(model);
+            commandResult = addNewRegimeToModel(model).showRegimes();
         } else {
-            commandResult = addExercisesToExistingRegime(model);
+            commandResult = addExercisesToExistingRegime(model).showRegimes();
         }
         EventHistory.getInstance().addCommandToUndoStack(this);
         return commandResult;

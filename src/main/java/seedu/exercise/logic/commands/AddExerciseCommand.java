@@ -64,7 +64,7 @@ public class AddExerciseCommand extends AddCommand implements PayloadCarrierComm
         model.addExercise(exerciseToAdd);
         eventPayload.put(KEY_EXERCISE_TO_ADD, exerciseToAdd);
         EventHistory.getInstance().addCommandToUndoStack(this);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, exerciseToAdd));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, exerciseToAdd)).showResults();
     }
 
     @Override

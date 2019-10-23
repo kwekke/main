@@ -21,13 +21,40 @@ public class CommandResult {
      */
     private final boolean exit;
 
+    private boolean showResultsList;
+    private boolean showRegimeList;
+    private boolean showScheduleList;
+    private boolean showSuggestionlist;
+
+
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
+
     public CommandResult(String feedbackToUser, boolean showHelp, boolean exit) {
         this.feedbackToUser = requireNonNull(feedbackToUser);
         this.showHelp = showHelp;
         this.exit = exit;
+    }
+
+    public CommandResult showResults() {
+        this.showResultsList = true;
+        return this;
+    }
+
+    public CommandResult showRegimes() {
+        this.showRegimeList = true;
+        return this;
+    }
+
+    public CommandResult showSchedules() {
+        this.showScheduleList = true;
+        return this;
+    }
+
+    public CommandResult showSuggestions() {
+        this.showSuggestionlist = true;
+        return this;
     }
 
     /**
@@ -48,6 +75,22 @@ public class CommandResult {
 
     public boolean isExit() {
         return exit;
+    }
+
+    public boolean isShowResultsList() {
+        return showResultsList;
+    }
+
+    public boolean isShowRegimeList() {
+        return showRegimeList;
+    }
+
+    public boolean isShowScheduleList() {
+        return showScheduleList;
+    }
+
+    public boolean isShowSuggestionList() {
+        return showSuggestionlist;
     }
 
     @Override
@@ -71,5 +114,7 @@ public class CommandResult {
     public int hashCode() {
         return Objects.hash(feedbackToUser, showHelp, exit);
     }
+
+
 
 }

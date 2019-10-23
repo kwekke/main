@@ -21,7 +21,7 @@ public class SuggestBasicCommand extends SuggestCommand {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         model.updateSuggestedExerciseList(PREDICATE_SHOW_ALL_EXERCISES);
-        return new CommandResult(MESSAGE_SUCCESS);
+        return new CommandResult(MESSAGE_SUCCESS).showSuggestions();
     }
 
     @Override

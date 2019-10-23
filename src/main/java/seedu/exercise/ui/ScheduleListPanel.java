@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
@@ -24,6 +25,10 @@ public class ScheduleListPanel extends UiPart<Region> {
         super(FXML);
         scheduleListView.setItems(scheduleList);
         scheduleListView.setCellFactory(listView -> new ScheduleListViewCell());
+    }
+
+    public ListView<Schedule> getScheduleListView() {
+        return scheduleListView;
     }
 
     /**

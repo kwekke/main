@@ -4,7 +4,10 @@ import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
@@ -37,7 +40,11 @@ public class MainWindow extends UiPart<Stage> {
     private HelpWindow helpWindow;
     private ResolveWindow resolveWindow;
     private ExerciseListPanel resultPanel;
-    private SuggestionListPanel suggestionPanel;
+    private SuggestionListPanel suggestionListPanel;
+
+    private ResourceListPanel resourceListPanel;
+    private InfoDisplayPanel infoDisplayPanel;
+    private StatsDisplayPanel statsDisplayPanel;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -61,10 +68,31 @@ public class MainWindow extends UiPart<Stage> {
     private StackPane statusbarPlaceholder;
 
     @FXML
-    private StackPane suggestionPanelPlaceholder;
+    private StackPane suggestionListPanelPlaceholder;
 
     @FXML
     private StackPane resultPanelPlaceholder;
+
+    @FXML
+    private TabPane resourceListPanelPlaceholder;
+
+    @FXML
+    private Tab resPlaceholder;
+
+    @FXML
+    private Tab regPlaceholder;
+
+    @FXML
+    private Tab schPlaceholder;
+
+    @FXML
+    private Tab sugPlaceholder;
+
+    @FXML
+    private StackPane infoDisplayPanelPlaceholder;
+
+    @FXML
+    private StackPane statsDisplayPanelPlaceholder;
 
     public MainWindow(Stage primaryStage, Logic logic) {
         super(FXML, primaryStage);
@@ -77,7 +105,7 @@ public class MainWindow extends UiPart<Stage> {
         setWindowDefaultSize(logic.getGuiSettings());
         primaryStage.setTitle("ExerHealth");
 
-        setAccelerators();
+        //setAccelerators();
 
         helpWindow = new HelpWindow();
         resolveWindow = new ResolveWindow(logic);
@@ -133,17 +161,44 @@ public class MainWindow extends UiPart<Stage> {
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
 
-        scheduleListPanel = new ScheduleListPanel(logic.getFilteredScheduleList());
-        scheduleListPanelPlaceholder.getChildren().add(scheduleListPanel.getRoot());
-
         resultPanel = new ExerciseListPanel(logic.getFilteredExerciseList());
-        resultPanelPlaceholder.getChildren().add(resultPanel.getRoot());
+        //resultPanelPlaceholder.getChildren().add(resultPanel.getRoot());
 
         regimeListPanel = new RegimeListPanel(logic.getFilteredRegimeList());
-        regimeListPanelPlaceholder.getChildren().add(regimeListPanel.getRoot());
+        //regimeListPanelPlaceholder.getChildren().add(regimeListPanel.getRoot());
 
-        suggestionPanel = new SuggestionListPanel(logic.getSuggestedExerciseList());
-        suggestionPanelPlaceholder.getChildren().add(suggestionPanel.getRoot());
+        scheduleListPanel = new ScheduleListPanel(logic.getFilteredScheduleList());
+        //scheduleListPanelPlaceholder.getChildren().add(scheduleListPanel.getRoot());
+
+        suggestionListPanel = new SuggestionListPanel(logic.getSuggestedExerciseList());
+        //suggestionListPanelPlaceholder.getChildren().add(suggestionListPanel.getRoot());
+
+        resPlaceholder = new Tab();
+        resPlaceholder.setContent((resultPanel).getExerciseListView());
+        regPlaceholder = new Tab();
+        regPlaceholder.setContent(regimeListPanel.getRegimeListView());
+        schPlaceholder = new Tab();
+        schPlaceholder.setContent(scheduleListPanel.getScheduleListView());
+        sugPlaceholder = new Tab();
+        sugPlaceholder.setContent(suggestionListPanel.getSuggestionListView());
+
+
+        resourceListPanel = new ResourceListPanel();
+        resourceListPanelPlaceholder.getTabs().add(resPlaceholder);
+        resourceListPanelPlaceholder.getTabs().add(regPlaceholder);
+        resourceListPanelPlaceholder.getTabs().add(schPlaceholder);
+        resourceListPanelPlaceholder.getTabs().add(sugPlaceholder);
+
+        resourceListPanelPlaceholder.getSelectionModel().select(resPlaceholder);
+        resourceListPanelPlaceholder.getSelectionModel().select(regPlaceholder);
+        resourceListPanelPlaceholder.getSelectionModel().select(schPlaceholder);
+        resourceListPanelPlaceholder.getSelectionModel().select(sugPlaceholder);
+
+        infoDisplayPanel = new InfoDisplayPanel();
+        infoDisplayPanelPlaceholder.getChildren().add(infoDisplayPanel.getRoot());
+
+        statsDisplayPanel = new StatsDisplayPanel();
+        statsDisplayPanelPlaceholder.getChildren().add(statsDisplayPanel.getRoot());
     }
 
     /**
@@ -201,6 +256,26 @@ public class MainWindow extends UiPart<Stage> {
         primaryStage.hide();
     }
 
+    private void changeTab(Tab tab) {
+        resourceListPanelPlaceholder.getSelectionModel().select(tab);
+    }
+
+    private void handleShowResultsList() {
+        resourceListPanelPlaceholder.getSelectionModel().select(resPlaceholder);
+    }
+
+    private void handleShowRegimeList() {
+        resourceListPanelPlaceholder.getSelectionModel().select(regPlaceholder);
+    }
+
+    private void handleShowScheduleList() {
+        resourceListPanelPlaceholder.getSelectionModel().select(schPlaceholder);
+    }
+
+    private void handleShowSuggestionList() {
+        resourceListPanelPlaceholder.getSelectionModel().select(sugPlaceholder);
+    }
+
     public ScheduleListPanel getScheduleListPanel() {
         return scheduleListPanel;
     }
@@ -219,6 +294,23 @@ public class MainWindow extends UiPart<Stage> {
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
+
+            if (commandResult.isShowResultsList()) {
+                handleShowResultsList();
+            }
+
+            if (commandResult.isShowRegimeList()) {
+                handleShowRegimeList();
+            }
+
+            if (commandResult.isShowScheduleList()) {
+                handleShowScheduleList();
+            }
+
+            if (commandResult.isShowSuggestionList()) {
+                handleShowSuggestionList();
+            }
+
 
             if (commandResult.isShowHelp()) {
                 handleHelp();
