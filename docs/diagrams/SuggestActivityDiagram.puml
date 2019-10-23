@@ -1,0 +1,21 @@
+@startuml
+skinparam activityShape rectangle
+
+start
+:Entered suggest command;
+
+if() then ([suggest type == "basic"])
+    :updates list to show basic exercises;
+else if () then ([suggest type == "possible"])
+    if() then ([valid arguments])
+        :Form predicate;
+        :updates list to show exercises with matching predicate;
+    else ([Invalid arguments])
+        :show invalid arguments exception;
+    endif
+else ([Invalid suggest type])
+    :show invalid suggest type exception;
+endif
+-> Program resumes;
+stop
+@enduml
