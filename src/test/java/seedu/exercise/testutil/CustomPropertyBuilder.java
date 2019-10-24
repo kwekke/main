@@ -18,9 +18,9 @@ public class CustomPropertyBuilder {
     private ParameterType parameterType;
 
     public CustomPropertyBuilder() {
-        prefix = new Prefix(DEFAULT_PREFIX);
-        fullName = DEFAULT_FULL_NAME;
-        parameterType = ParameterType.NUMBER;
+        this.withPrefix(DEFAULT_PREFIX);
+        this.withFullName(DEFAULT_FULL_NAME);
+        this.withParameterType(DEFAULT_PARAMETER_TYPE);
     }
 
     public CustomPropertyBuilder(CustomProperty customPropertyToCopy) {
@@ -32,8 +32,9 @@ public class CustomPropertyBuilder {
     /**
      * Sets the {@code Prefix} of the {@code CustomProperty} that we are building.
      */
-    public CustomPropertyBuilder withPrefix(String prefix) {
-        this.prefix = new Prefix(prefix + "/");
+    public CustomPropertyBuilder withPrefix(String prefixName) {
+        assert(!prefixName.equals(""));
+        this.prefix = new Prefix(prefixName + "/");
         return this;
     }
 
@@ -49,12 +50,22 @@ public class CustomPropertyBuilder {
      * Sets the {@code ParameterType} of the {@code CustomProperty} that we are building.
      */
     public CustomPropertyBuilder withParameterType(String parameterType) {
-        this.parameterType = parameterType.equals("Number")
-                ? ParameterType.NUMBER
-                : parameterType.equals("Text")
-                    ? ParameterType.TEXT
-                    : ParameterType.DATE;
-        return this;
+        switch (parameterType) {
+        case ("Number"):
+            this.parameterType = ParameterType.NUMBER;
+            return this;
+
+        case ("Text"):
+            this.parameterType = ParameterType.TEXT;
+            return this;
+
+        case ("Date"):
+            this.parameterType = ParameterType.DATE;
+            return this;
+
+        default:
+            throw new AssertionError("Invalid parameterType");
+        }
     }
 
     public CustomProperty build() {

@@ -79,7 +79,7 @@ public class CommandTestUtil {
     public static final String VALID_FULL_NAME_REMARK = "Remark";
     public static final String VALID_FULL_NAME_ENDDATE = "End date";
     public static final String VALID_PARAMETER_TYPE_RATING = "Number";
-    public static final String VALID_PARAMETER_TYPE_REMARK = "String";
+    public static final String VALID_PARAMETER_TYPE_REMARK = "Text";
     public static final String VALID_PARAMETER_TYPE_ENDDATE = "Date";
 
     public static final String PREFIX_NAME_DESC_RATING = " " + PREFIX_CUSTOM_NAME + VALID_PREFIX_NAME_RATING;

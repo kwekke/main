@@ -11,7 +11,7 @@ import static seedu.exercise.logic.commands.CommandTestUtil.VALID_PREFIX_NAME_RE
 import static seedu.exercise.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.exercise.logic.commands.CustomCommand.MESSAGE_DUPLICATE_FULL_NAME;
 import static seedu.exercise.logic.commands.CustomCommand.MESSAGE_DUPLICATE_PREFIX_NAME;
-import static seedu.exercise.model.util.DefaultPropertyManagerUtil.getDefaultPropertyManager;
+import static seedu.exercise.model.util.DefaultPropertyBookUtil.getDefaultPropertyBook;
 import static seedu.exercise.testutil.Assert.assertThrows;
 import static seedu.exercise.testutil.TypicalCustomProperties.RATING;
 import static seedu.exercise.testutil.TypicalCustomProperties.REMARK;
@@ -31,7 +31,7 @@ class CustomCommandTest {
 
 
     private Model model = new ModelManager(getTypicalExerciseBook(), new ReadOnlyResourceBook<>(),
-            new ReadOnlyResourceBook<>(), new ReadOnlyResourceBook<>(), new UserPrefs(), getDefaultPropertyManager());
+            new ReadOnlyResourceBook<>(), new ReadOnlyResourceBook<>(), new UserPrefs(), getDefaultPropertyBook());
 
     @Test
     public void execute_customCommandCreated_success() {
@@ -40,8 +40,8 @@ class CustomCommandTest {
         String expectedMessage = String.format(CustomCommand.MESSAGE_SUCCESS, customPropertyToBeCreated);
         Model expectedModel = new ModelManager(getTypicalExerciseBook(), new ReadOnlyResourceBook<>(),
                 new ReadOnlyResourceBook<>(), new ReadOnlyResourceBook<>(),
-                new UserPrefs(), getDefaultPropertyManager());
-        expectedModel.getPropertyManager().addCustomProperty(customPropertyToBeCreated);
+                new UserPrefs(), getDefaultPropertyBook());
+        expectedModel.getPropertyBook().addCustomProperty(customPropertyToBeCreated);
         assertCommandSuccess(customCommand, model, expectedMessage, expectedModel);
     }
 
@@ -53,8 +53,8 @@ class CustomCommandTest {
                 .withFullName(VALID_FULL_NAME_REMARK).withParameterType(VALID_PARAMETER_TYPE_REMARK).build();
         Model model1 = new ModelManager(getTypicalExerciseBook(), new ReadOnlyResourceBook<>(),
                 new ReadOnlyResourceBook<>(), new ReadOnlyResourceBook<>(),
-                new UserPrefs(), getDefaultPropertyManager());
-        model1.getPropertyManager().addCustomProperty(rating);
+                new UserPrefs(), getDefaultPropertyBook());
+        model1.getPropertyBook().addCustomProperty(rating);
         CustomCommand customCommand = new CustomCommand(duplicateShortName);
         assertThrows(CommandException.class,
                 MESSAGE_DUPLICATE_PREFIX_NAME, () -> customCommand.execute(model1));
@@ -68,8 +68,8 @@ class CustomCommandTest {
                 .withFullName(VALID_FULL_NAME_RATING).withParameterType(VALID_PARAMETER_TYPE_REMARK).build();
         Model model1 = new ModelManager(getTypicalExerciseBook(), new ReadOnlyResourceBook<>(),
                 new ReadOnlyResourceBook<>(), new ReadOnlyResourceBook<>(),
-                new UserPrefs(), getDefaultPropertyManager());
-        model1.getPropertyManager().addCustomProperty(rating);
+                new UserPrefs(), getDefaultPropertyBook());
+        model1.getPropertyBook().addCustomProperty(rating);
         CustomCommand customCommand = new CustomCommand(duplicateFullName);
         assertThrows(CommandException.class,
                 MESSAGE_DUPLICATE_FULL_NAME, () -> customCommand.execute(model1));
