@@ -10,6 +10,8 @@ import static seedu.exercise.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_QUANTITY;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_UNIT;
 import static seedu.exercise.logic.parser.CliSyntax.combinePrefixes;
+import static seedu.exercise.logic.parser.ParserUtil.ADD_CATEGORY_EXERCISE;
+import static seedu.exercise.logic.parser.ParserUtil.ADD_CATEGORY_REGIME;
 
 import java.util.List;
 import java.util.Map;
@@ -50,11 +52,11 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         String category = ParserUtil.parseCategory(argMultimap.getValue(PREFIX_CATEGORY).get());
 
-        if (category.equals("exercise")) {
+        if (category.equals(ADD_CATEGORY_EXERCISE)) {
             return parseExercise(argMultimap);
         }
 
-        if (category.equals("regime")) {
+        if (category.equals(ADD_CATEGORY_REGIME)) {
             return parseRegime(argMultimap);
         }
 

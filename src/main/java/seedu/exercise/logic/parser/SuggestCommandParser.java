@@ -2,13 +2,14 @@ package seedu.exercise.logic.parser;
 
 import static seedu.exercise.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_MUSCLE;
-import static seedu.exercise.logic.parser.CliSyntax.PREFIX_SUGGEST;
-import static seedu.exercise.model.property.PropertyManager.getCustomProperties;
+import static seedu.exercise.logic.parser.CliSyntax.PREFIX_SUGGEST_TYPE;
+import static seedu.exercise.logic.parser.ParserUtil.SUGGEST_TYPE_BASIC;
+import static seedu.exercise.logic.parser.ParserUtil.SUGGEST_TYPE_POSSIBLE;
+import static seedu.exercise.model.property.PropertyBook.getCustomProperties;
 
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import seedu.exercise.logic.commands.SuggestBasicCommand;
 import seedu.exercise.logic.commands.SuggestCommand;
@@ -31,17 +32,17 @@ public class SuggestCommandParser implements Parser<SuggestCommand> {
     public SuggestCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, getPrefixes());
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_SUGGEST) || !argMultimap.getPreamble().isEmpty()) {
+        if (!argMultimap.arePrefixesPresent(PREFIX_SUGGEST_TYPE) || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SuggestCommand.MESSAGE_USAGE));
         }
 
-        String suggestType = ParserUtil.parseSuggestType(argMultimap.getValue(PREFIX_SUGGEST).get());
+        String suggestType = ParserUtil.parseSuggestType(argMultimap.getValue(PREFIX_SUGGEST_TYPE).get());
 
-        if (suggestType.equals("basic")) {
+        if (suggestType.equals(SUGGEST_TYPE_BASIC)) {
             return new SuggestBasicCommand();
         }
 
-        if (suggestType.equals("possible")) {
+        if (suggestType.equals(SUGGEST_TYPE_POSSIBLE)) {
             return parsePossible(argMultimap);
         }
 
@@ -50,7 +51,7 @@ public class SuggestCommandParser implements Parser<SuggestCommand> {
 
     private Prefix[] getPrefixes() {
         ArrayList<Prefix> prefixes = new ArrayList<>();
-        prefixes.add(PREFIX_SUGGEST);
+        prefixes.add(PREFIX_SUGGEST_TYPE);
         prefixes.add(PREFIX_MUSCLE);
         for (CustomProperty cp : getCustomProperties()) {
             prefixes.add(cp.getPrefix());
@@ -62,9 +63,9 @@ public class SuggestCommandParser implements Parser<SuggestCommand> {
      * Returns true if none of the prefixes contains empty {@code Optional} values in the given
      * {@code ArgumentMultimap}.
      */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
-    }
+    //private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+    //    return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    //}
 
     /**
      * Parses arguments and returns SuggestPossibleCommand for execution

@@ -1,6 +1,7 @@
 package seedu.exercise;
 
-import static seedu.exercise.model.util.DefaultPropertyManagerUtil.getDefaultPropertyManager;
+import static seedu.exercise.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.exercise.model.util.DefaultPropertyBookUtil.getDefaultPropertyBook;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -11,6 +12,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import seedu.exercise.commons.core.Config;
 import seedu.exercise.commons.core.LogsCenter;
+import seedu.exercise.commons.core.State;
 import seedu.exercise.commons.core.Version;
 import seedu.exercise.commons.exceptions.DataConversionException;
 import seedu.exercise.commons.util.ConfigUtil;
@@ -22,17 +24,17 @@ import seedu.exercise.model.ModelManager;
 import seedu.exercise.model.ReadOnlyResourceBook;
 import seedu.exercise.model.ReadOnlyUserPrefs;
 import seedu.exercise.model.UserPrefs;
-import seedu.exercise.model.property.PropertyManager;
+import seedu.exercise.model.property.PropertyBook;
 import seedu.exercise.model.resource.Exercise;
 import seedu.exercise.model.resource.Regime;
 import seedu.exercise.model.resource.Schedule;
-import seedu.exercise.model.util.DefaultPropertyManagerUtil;
+import seedu.exercise.model.util.DefaultPropertyBookUtil;
 import seedu.exercise.model.util.SampleDataUtil;
-import seedu.exercise.storage.JsonPropertyManagerStorage;
+import seedu.exercise.storage.JsonPropertyBookStorage;
 import seedu.exercise.storage.JsonUserPrefsStorage;
-import seedu.exercise.storage.PropertyManagerStorage;
+import seedu.exercise.storage.PropertyBookStorage;
 import seedu.exercise.storage.Storage;
-import seedu.exercise.storage.StorageManager;
+import seedu.exercise.storage.StorageBook;
 import seedu.exercise.storage.UserPrefsStorage;
 import seedu.exercise.storage.bookstorage.JsonExerciseBookStorage;
 import seedu.exercise.storage.bookstorage.JsonRegimeBookStorage;
@@ -42,12 +44,15 @@ import seedu.exercise.ui.UiManager;
 
 /**
  * Runs the application.
+ *
+ * Additionally, the MainApp wil keep track of the state of the program.
  */
 public class MainApp extends Application {
 
     public static final Version VERSION = new Version(1, 2, 1, true);
 
     private static final Logger logger = LogsCenter.getLogger(MainApp.class);
+    private static State state;
 
     protected Ui ui;
     protected Logic logic;
@@ -75,11 +80,11 @@ public class MainApp extends Application {
 
         JsonScheduleBookStorage scheduleBookStorage = new JsonScheduleBookStorage(userPrefs.getScheduleBookFilePath());
 
-        PropertyManagerStorage propertyManagerStorage =
-            new JsonPropertyManagerStorage(userPrefs.getPropertyManagerFilePath());
+        PropertyBookStorage propertyBookStorage =
+            new JsonPropertyBookStorage(userPrefs.getPropertyBookFilePath());
 
-        storage = new StorageManager(exerciseBookStorage, exerciseDatabaseStorage, regimeBookStorage,
-            scheduleBookStorage, userPrefsStorage, propertyManagerStorage);
+        storage = new StorageBook(exerciseBookStorage, exerciseDatabaseStorage, regimeBookStorage,
+            scheduleBookStorage, userPrefsStorage, propertyBookStorage);
 
         initLogging(config);
         model = initModelManager(storage, userPrefs);
@@ -99,10 +104,10 @@ public class MainApp extends Application {
         ReadOnlyResourceBook<Exercise> initialDatabase =
             readExerciseData(storage, storage.getExerciseDatabaseFilePath());
         ReadOnlyResourceBook<Schedule> initialScheduleData = readScheduleData(storage);
-        PropertyManager initialPropertyManager = getInitialPropertyManager(storage);
+        PropertyBook initialPropertyBook = getInitialPropertyBook(storage);
 
         return new ModelManager(initialData, initialRegimeData,
-            initialDatabase, initialScheduleData, userPrefs, initialPropertyManager);
+            initialDatabase, initialScheduleData, userPrefs, initialPropertyBook);
     }
 
     /**
@@ -157,7 +162,7 @@ public class MainApp extends Application {
     }
 
     /**
-     * Returns a {@code PropertyManager} from {@code storage}.
+     * Returns a {@code PropertyBook} from {@code storage}.
      */
     private ReadOnlyResourceBook<Schedule> readScheduleData(Storage storage) {
         Optional<ReadOnlyResourceBook<Schedule>> scheduleBookOptional;
@@ -180,28 +185,28 @@ public class MainApp extends Application {
         return initialScheduleData;
     }
 
-    private PropertyManager getInitialPropertyManager(Storage storage) {
-        Optional<PropertyManager> propertyManagerOptional;
-        PropertyManager initialPropertyManager;
+    private PropertyBook getInitialPropertyBook(Storage storage) {
+        Optional<PropertyBook> propertyBookOptional;
+        PropertyBook initialPropertyBook;
 
         try {
-            propertyManagerOptional = storage.readPropertyManager();
-            if (propertyManagerOptional.isEmpty()) {
-                logger.info("Data for PropertyManager not found. Will be starting with a"
-                    + " default PropertyManager");
+            propertyBookOptional = storage.readPropertyBook();
+            if (propertyBookOptional.isEmpty()) {
+                logger.info("Data for PropertyBook not found. Will be starting with a"
+                    + " default PropertyBook");
             }
-            initialPropertyManager =
-                propertyManagerOptional.orElseGet(DefaultPropertyManagerUtil::getDefaultPropertyManager);
+            initialPropertyBook =
+                propertyBookOptional.orElseGet(DefaultPropertyBookUtil::getDefaultPropertyBook);
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with "
-                + " a default PropertyManager");
-            initialPropertyManager = getDefaultPropertyManager();
+                + " a default PropertyBook");
+            initialPropertyBook = getDefaultPropertyBook();
         } catch (IOException e) {
             logger.warning("Problem while reading from the file. Will be starting with "
-                + "a default PropertyManager");
-            initialPropertyManager = getDefaultPropertyManager();
+                + "a default PropertyBook");
+            initialPropertyBook = getDefaultPropertyBook();
         }
-        return initialPropertyManager;
+        return initialPropertyBook;
     }
 
     private void initLogging(Config config) {
@@ -279,6 +284,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         logger.info("Starting ExerciseBook " + MainApp.VERSION);
+        state = State.NORMAL;
         ui.start(primaryStage);
     }
 
@@ -290,5 +296,19 @@ public class MainApp extends Application {
         } catch (IOException e) {
             logger.severe("Failed to save preferences " + StringUtil.getDetails(e));
         }
+    }
+
+    public static State getState() {
+        return state;
+    }
+
+    /**
+     * Sets the current state of the program.
+     *
+     * Only subclasses of {@code Command} can and should call this method.
+     */
+    public static void setState(State newState) {
+        requireAllNonNull(newState);
+        state = newState;
     }
 }

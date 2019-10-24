@@ -1,7 +1,7 @@
 package seedu.exercise.logic.commands;
 
 import static seedu.exercise.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.exercise.model.util.DefaultPropertyManagerUtil.getDefaultPropertyManager;
+import static seedu.exercise.model.util.DefaultPropertyBookUtil.getDefaultPropertyBook;
 import static seedu.exercise.testutil.exercise.TypicalExercises.getTypicalExerciseBook;
 
 import java.util.HashMap;
@@ -31,10 +31,10 @@ public class SuggestPossibleCommandTest {
     public void setUp() {
         model = new ModelManager(getTypicalExerciseBook(), new ReadOnlyResourceBook<>(),
                 getTypicalExerciseBook(), new ReadOnlyResourceBook<>(),
-                new UserPrefs(), getDefaultPropertyManager());
+                new UserPrefs(), getDefaultPropertyBook());
         expectedModel = new ModelManager(model.getExerciseBookData(), new ReadOnlyResourceBook<>(),
                 getTypicalExerciseBook(), new ReadOnlyResourceBook<>(),
-                new UserPrefs(), getDefaultPropertyManager());
+                new UserPrefs(), getDefaultPropertyBook());
         targetMuscles = new HashSet<>();
         targetCustomProperties = new HashMap<>();
     }
@@ -55,13 +55,19 @@ public class SuggestPossibleCommandTest {
                 model, SuggestPossibleCommand.MESSAGE_SUCCESS, expectedModel);
     }
 
-    private Predicate<Exercise> getPredicate() {
+    private Predicate<Exercise> getMusclePredicate() {
         return exercise -> {
             for (Muscle muscle : targetMuscles) {
                 if (!(exercise.getMuscles().contains(muscle))) {
                     return false;
                 }
             }
+            return true;
+        };
+    }
+
+    private Predicate<Exercise> getCustomPropertyPredicate() {
+        return exercise -> {
             for (String key : targetCustomProperties.keySet()) {
                 if (!(targetCustomProperties.get(key).equals(exercise.getCustomProperties().get(key)))) {
                     return false;
@@ -69,6 +75,10 @@ public class SuggestPossibleCommandTest {
             }
             return true;
         };
+    }
+
+    private Predicate<Exercise> getPredicate() {
+        return getMusclePredicate().and(getCustomPropertyPredicate());
     }
 
 }

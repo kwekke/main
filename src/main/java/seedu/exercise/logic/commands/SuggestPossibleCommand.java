@@ -2,7 +2,7 @@ package seedu.exercise.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_MUSCLE;
-import static seedu.exercise.logic.parser.CliSyntax.PREFIX_SUGGEST;
+import static seedu.exercise.logic.parser.CliSyntax.PREFIX_SUGGEST_TYPE;
 
 import java.util.Map;
 import java.util.Set;
@@ -21,10 +21,11 @@ public class SuggestPossibleCommand extends SuggestCommand {
     public static final String MESSAGE_SUCCESS = "Listed suggested exercises.";
 
     public static final String MESSAGE_USAGE_SUGGEST_POSSIBLE = "Parameters: "
-            + PREFIX_SUGGEST + "POSSIBLE"
-            + PREFIX_MUSCLE + "MUSCLE]...\n"
+            + PREFIX_SUGGEST_TYPE + "POSSIBLE "
+            + "[" + PREFIX_MUSCLE + "MUSCLE] "
+            + "[" + "CUSTOM-PROPERTY-PREFIX" + "/" + "VALUE]" + "\n"
             + "\t\tExample: " + COMMAND_WORD + " "
-            + PREFIX_SUGGEST + "possible "
+            + PREFIX_SUGGEST_TYPE + "possible "
             + PREFIX_MUSCLE + "Legs";
 
     private Set<Muscle> targetMuscles;

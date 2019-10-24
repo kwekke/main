@@ -1,7 +1,7 @@
 package seedu.exercise.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.exercise.logic.parser.CliSyntax.PREFIX_SUGGEST;
+import static seedu.exercise.logic.parser.CliSyntax.PREFIX_SUGGEST_TYPE;
 import static seedu.exercise.model.util.SampleDataUtil.getBasicExercises;
 
 import java.util.Arrays;
@@ -19,7 +19,7 @@ public class SuggestBasicCommand extends SuggestCommand {
     public static final String MESSAGE_SUCCESS = "Listed all suggested basic exercises.";
 
     public static final String MESSAGE_USAGE_SUGGEST_BASIC = "Parameters: "
-            + PREFIX_SUGGEST + "BASIC";
+            + PREFIX_SUGGEST_TYPE + "BASIC";
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
