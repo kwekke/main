@@ -1,13 +1,18 @@
 package seedu.exercise.model;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.exercise.commons.core.GuiSettings;
+import seedu.exercise.commons.core.State;
+import seedu.exercise.commons.core.index.Index;
 import seedu.exercise.logic.parser.Prefix;
+import seedu.exercise.model.conflict.Conflict;
 import seedu.exercise.model.property.CustomProperty;
-import seedu.exercise.model.property.PropertyManager;
+import seedu.exercise.model.property.Name;
+import seedu.exercise.model.property.PropertyBook;
 import seedu.exercise.model.resource.Exercise;
 import seedu.exercise.model.resource.Regime;
 import seedu.exercise.model.resource.Schedule;
@@ -201,22 +206,50 @@ public interface Model {
     void completeSchedule(Schedule schedule);
 
     /**
-     * Returns the {@code PropertyManager} object that is contained in {@code Model}.
+     * Resolves a conflict based on the indexes provided by user.
+     *
+     * The state of the program must be {@link State#IN_CONFLICT} before calling this method.
+     * The state of the program is not changed after execution of the method. Only command subclasses
+     * can change {@code MainApp}'s state.
+     *
+     * If both list of indexes are empty, the {@code regimeName} provided
+     * will be taken as the resolved schedule and the non-mentioned name is discarded.
+     *
      */
-    PropertyManager getPropertyManager();
+    void resolveConflict(Name regimeName, List<Index> indexFromSchedule, List<Index> indexFromConflict);
 
     /**
-     * Returns true if a prefix with the same identity as {@code prefix} is present in the PropertyManager.
+     * Returns the conflict that is currently happening.
+     *
+     * The state of the program must be {@link State#IN_CONFLICT} before calling this method.
+     * Only then will a conflict be available for fetching from the {@code Model}.
      */
-    boolean isPrefixPresent(Prefix prefix);
+    Conflict getConflict();
 
     /**
-     * Returns true if {@code fullName} is present in the PropertyManager.
+     * Sets the current conflicting schedule to {@code conflict}
+     *
+     * The state of the program must be {@link State#IN_CONFLICT} before calling this method.
      */
-    boolean isFullNamePresent(String fullName);
+    void setConflict(Conflict conflict);
 
     /**
-     * Adds the given {@code customProperty} into the PropertyManager.
+     * Returns the {@code PropertyBook} object that is contained in {@code Model}.
+     */
+    PropertyBook getPropertyBook();
+
+    /**
+     * Returns true if a prefix with the same identity as {@code prefix} is present in the PropertyBook.
+     */
+    boolean isPrefixUsed(Prefix prefix);
+
+    /**
+     * Returns true if {@code fullName} is present in the PropertyBook.
+     */
+    boolean isFullNameUsed(String fullName);
+
+    /**
+     * Adds the given {@code customProperty} into the PropertyBook.
      */
     void addCustomProperty(CustomProperty customProperty);
 
