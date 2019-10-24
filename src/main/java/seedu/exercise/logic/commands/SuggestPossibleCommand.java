@@ -19,9 +19,9 @@ import seedu.exercise.model.resource.Exercise;
 public class SuggestPossibleCommand extends SuggestCommand {
 
     public static final String MESSAGE_USAGE_SUGGEST_POSSIBLE = "Parameters: "
-            + PREFIX_SUGGEST_TYPE + "POSSIBLE "
+            + PREFIX_SUGGEST_TYPE + "SUGGEST_TYPE "
             + "[" + PREFIX_MUSCLE + "MUSCLE] "
-            + "[" + "CUSTOM-PROPERTY-PREFIX" + "/" + "VALUE]" + "\n"
+            + "[" + "CUSTOM_PROPERTY_PREFIX" + "/" + "VALUE]" + "\n"
             + "\t\tExample: " + COMMAND_WORD + " "
             + PREFIX_SUGGEST_TYPE + "possible "
             + PREFIX_MUSCLE + "Legs";

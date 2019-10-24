@@ -17,7 +17,9 @@ import seedu.exercise.model.resource.Exercise;
 public class SuggestBasicCommand extends SuggestCommand {
 
     public static final String MESSAGE_USAGE_SUGGEST_BASIC = "Parameters: "
-            + PREFIX_SUGGEST_TYPE + "BASIC";
+            + PREFIX_SUGGEST_TYPE + "SUGGEST_TYPE" + "\n"
+            + "\t\tExample: " + COMMAND_WORD + " "
+            + PREFIX_SUGGEST_TYPE + "basic";
 
     public static final String MESSAGE_SUCCESS = "Listed all suggested basic exercises.";
     public static final String SUGGEST_TYPE = "basic";
