@@ -3,8 +3,6 @@ package seedu.exercise.logic.parser;
 import static seedu.exercise.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_MUSCLE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_SUGGEST_TYPE;
-import static seedu.exercise.logic.parser.ParserUtil.SUGGEST_TYPE_BASIC;
-import static seedu.exercise.logic.parser.ParserUtil.SUGGEST_TYPE_POSSIBLE;
 import static seedu.exercise.model.property.PropertyBook.getCustomProperties;
 
 import java.util.ArrayList;
@@ -22,6 +20,9 @@ import seedu.exercise.model.property.Muscle;
  * Parses input arguments and creates a new SuggestCommand object
  */
 public class SuggestCommandParser implements Parser<SuggestCommand> {
+
+    public static final String SUGGEST_TYPE_BASIC = "basic";
+    public static final String SUGGEST_TYPE_POSSIBLE = "possible";
 
     /**
      * Parses the given {@code String} of arguments in the context of the SuggestCommand

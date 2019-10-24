@@ -18,8 +18,6 @@ import seedu.exercise.model.resource.Exercise;
  */
 public class SuggestPossibleCommand extends SuggestCommand {
 
-    public static final String MESSAGE_SUCCESS = "Listed suggested exercises.";
-
     public static final String MESSAGE_USAGE_SUGGEST_POSSIBLE = "Parameters: "
             + PREFIX_SUGGEST_TYPE + "POSSIBLE "
             + "[" + PREFIX_MUSCLE + "MUSCLE] "
@@ -27,6 +25,10 @@ public class SuggestPossibleCommand extends SuggestCommand {
             + "\t\tExample: " + COMMAND_WORD + " "
             + PREFIX_SUGGEST_TYPE + "possible "
             + PREFIX_MUSCLE + "Legs";
+
+    public static final String MESSAGE_SUCCESS = "Listed suggested exercises.";
+    public static final String SUGGEST_TYPE = "possible";
+
 
     private Set<Muscle> targetMuscles;
     private Map<String, String> targetCustomPropertiesMap;

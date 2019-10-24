@@ -10,8 +10,6 @@ import static seedu.exercise.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_QUANTITY;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_UNIT;
 import static seedu.exercise.logic.parser.CliSyntax.combinePrefixes;
-import static seedu.exercise.logic.parser.ParserUtil.ADD_CATEGORY_EXERCISE;
-import static seedu.exercise.logic.parser.ParserUtil.ADD_CATEGORY_REGIME;
 
 import java.util.List;
 import java.util.Map;
@@ -34,6 +32,9 @@ import seedu.exercise.model.resource.Exercise;
  * Parses input arguments and creates a new AddExerciseCommand object
  */
 public class AddCommandParser implements Parser<AddCommand> {
+
+    public static final String ADD_CATEGORY_EXERCISE = "exercise";
+    public static final String ADD_CATEGORY_REGIME = "regime";
 
     /**
      * Parses the given {@code String} of arguments in the context of the AddCommand

@@ -1,6 +1,10 @@
 package seedu.exercise.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.exercise.logic.parser.AddCommandParser.ADD_CATEGORY_EXERCISE;
+import static seedu.exercise.logic.parser.AddCommandParser.ADD_CATEGORY_REGIME;
+import static seedu.exercise.logic.parser.SuggestCommandParser.SUGGEST_TYPE_BASIC;
+import static seedu.exercise.logic.parser.SuggestCommandParser.SUGGEST_TYPE_POSSIBLE;
 import static seedu.exercise.model.property.PropertyBook.getCustomProperties;
 
 import java.util.ArrayList;
@@ -29,10 +33,6 @@ import seedu.exercise.model.property.Unit;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
-    public static final String ADD_CATEGORY_EXERCISE = "exercise";
-    public static final String ADD_CATEGORY_REGIME = "regime";
-    public static final String SUGGEST_TYPE_BASIC = "basic";
-    public static final String SUGGEST_TYPE_POSSIBLE = "possible";
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -171,7 +171,8 @@ public class ParserUtil {
     public static String parseCategory(String category) throws ParseException {
         requireNonNull(category);
         String trimmedCategory = category.trim();
-        if (!trimmedCategory.equals(ADD_CATEGORY_EXERCISE) && !trimmedCategory.equals(ADD_CATEGORY_REGIME)) {
+        if (!trimmedCategory.equals(ADD_CATEGORY_EXERCISE)
+                && !trimmedCategory.equals(ADD_CATEGORY_REGIME)) {
             throw new ParseException("Category can only be \'" + ADD_CATEGORY_EXERCISE + "\'"
                     + " or \'" + ADD_CATEGORY_REGIME + "\'");
         }
