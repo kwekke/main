@@ -31,6 +31,7 @@ public class CliSyntax {
 
     /* Prefix definition for suggest command */
     public static final Prefix PREFIX_SUGGEST_TYPE = new Prefix("s/");
+    public static final Prefix PREFIX_OPERATION_TYPE = new Prefix("o/");
 
     /* A set consisting of property prefix definitions for add and edit commands */
     private static final Set<Prefix> PREFIXES_SET = new HashSet<>();

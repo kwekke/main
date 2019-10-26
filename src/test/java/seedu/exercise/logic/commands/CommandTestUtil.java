@@ -92,6 +92,10 @@ public class CommandTestUtil {
     public static final String PARAMETER_TYPE_DESC_REMARK = " " + PREFIX_PARAMETER_TYPE + VALID_PARAMETER_TYPE_REMARK;
     public static final String PARAMETER_TYPE_DESC_ENDDATE = " " + PREFIX_PARAMETER_TYPE + VALID_PARAMETER_TYPE_ENDDATE;
 
+    public static final String VALID_RATING_VALUE = "1";
+    public static final String VALID_REMARK_VALUE = "hi";
+    public static final String VALID_ENDDATE_VALUE = "24/12/2019";
+
     public static final String INVALID_PREFIX_NAME_DESC = " "
             + PREFIX_CUSTOM_NAME + "r r"; // whitespace not allowed in short name
     public static final String INVALID_FULL_NAME_DESC = " "

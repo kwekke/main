@@ -362,6 +362,7 @@ public class ModelManager implements Model {
     @Override
     public void updateSuggestedExerciseList(Predicate<Exercise> predicate) {
         requireNonNull(predicate);
+        List<Exercise> allSuggestions = generateAllSuggestions();
         List<Exercise> filteredSuggestions = generateAllSuggestions().filtered(predicate);
         setSuggestions(filteredSuggestions);
     }

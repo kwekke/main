@@ -5,6 +5,8 @@ import static seedu.exercise.logic.parser.AddCommandParser.ADD_CATEGORY_EXERCISE
 import static seedu.exercise.logic.parser.AddCommandParser.ADD_CATEGORY_REGIME;
 import static seedu.exercise.logic.parser.SuggestCommandParser.SUGGEST_TYPE_BASIC;
 import static seedu.exercise.logic.parser.SuggestCommandParser.SUGGEST_TYPE_POSSIBLE;
+import static seedu.exercise.logic.parser.predicate.PredicateUtil.OPERATION_TYPE_AND;
+import static seedu.exercise.logic.parser.predicate.PredicateUtil.OPERATION_TYPE_OR;
 import static seedu.exercise.model.property.PropertyBook.getCustomProperties;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import java.util.Set;
 import seedu.exercise.commons.core.index.Index;
 import seedu.exercise.commons.util.StringUtil;
 import seedu.exercise.logic.parser.exceptions.ParseException;
+import seedu.exercise.logic.parser.predicate.PredicateUtil;
 import seedu.exercise.model.property.Calories;
 import seedu.exercise.model.property.CustomProperty;
 import seedu.exercise.model.property.Date;
@@ -263,7 +266,9 @@ public class ParserUtil {
      * Parses a {@code String suggestType} into a String.
      * Leading and trailing whitespaces will be trimmed.
      *
-     * @throws ParseException
+     * @param suggestType the intended suggest type
+     * @return a trimmed suggest type of a suggest command
+     * @throws ParseException if the intended suggest type is invalid
      */
     public static String parseSuggestType(String suggestType) throws ParseException {
         requireNonNull(suggestType);
@@ -274,6 +279,28 @@ public class ParserUtil {
                     + " or \'" + SUGGEST_TYPE_POSSIBLE + "\'");
         }
         return trimmedSuggestType;
+    }
+
+    /**
+     * Parses a {@code String operationType} into a boolean.
+     *
+     * @param operationType the intended operation type
+     * @return a {@code boolean} representing the whether the operation type is "and" or "or".
+     * @throws ParseException if the intended operation type is invalid
+     */
+    public static boolean parseOperationType(String operationType) throws ParseException {
+        requireNonNull(operationType);
+        String trimmedOperationType = operationType.trim();
+
+        if (trimmedOperationType.equals(OPERATION_TYPE_AND)) {
+            return true;
+        }
+
+        if (trimmedOperationType.equals(OPERATION_TYPE_OR)) {
+            return false;
+        }
+
+        throw new ParseException(PredicateUtil.OPERATION_TYPE_CONSTRAINTS);
     }
 
     /**
