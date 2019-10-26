@@ -14,6 +14,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.image.ImageView?>
 <fx:root minHeight="600" minWidth="450" onCloseRequest="#handleExit" title="ExerHealth App" type="javafx.stage.Stage"
          xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <icons>
@@ -32,25 +33,20 @@
                         <TabPane fx:id="resourceListPanelPlaceholder" tabClosingPolicy="UNAVAILABLE" styleClass="pane-with-border"
                                  tabMaxHeight="-Infinity" tabMaxWidth="-Infinity">
                             <tabs>
-                                <Tab fx:id="resPlaceholder"><!--
+                                <Tab fx:id="resPlaceholder" styleClass="tab-pane"> <!--
                                                                         <StackPane fx:id="resultPanelPlaceholder" BorderPane.alignment="CENTER"/>
-
                                     -->
                                 </Tab>
-                                <Tab fx:id="regPlaceholder"><!--
+                                <Tab fx:id="regPlaceholder" styleClass="pane-with-border"><!--
                                                                         <StackPane fx:id="regimeListPanelPlaceholder" BorderPane.alignment="CENTER"/>
-
                                     -->
                                 </Tab>
-                                <Tab fx:id="schPlaceholder"><!--
+                                <Tab fx:id="schPlaceholder" styleClass="pane-with-border"><!--
                                                                         <StackPane fx:id="scheduleListPanelPlaceholder" BorderPane.alignment="CENTER"/>
-
                                     -->
                                 </Tab>
-                                <Tab fx:id="sugPlaceholder">
-                                    <!--
-
-                                    <StackPane fx:id="suggestionListPanelPlaceholder" BorderPane.alignment="CENTER"/>
+                                <Tab fx:id="sugPlaceholder" styleClass="pane-with-border">
+                                    <!--                                <StackPane fx:id="suggestionListPanelPlaceholder" BorderPane.alignment="CENTER"/>
                                     -->
                                 </Tab>
                             </tabs>
@@ -65,16 +61,20 @@
                     </right>
                 </BorderPane>
 
-                <BorderPane>
+                <BorderPane styleClass="pane-with-border">
                     <left>
-                        <Text>
-                        icon
-                        </Text>
+                        <StackPane>
+                            <padding>
+                                <Insets left="10" />
+                            </padding>
+                            <ImageView fx:id="logoImageView" fitWidth="100" fitHeight="100"/>
+                        </StackPane>
+
                     </left>
 
                     <center>
                         <StackPane fx:id="resultDisplayPlaceholder" maxHeight="100" minHeight="100" prefHeight="100"
-                                   styleClass="pane-with-border" VBox.vgrow="NEVER">
+                                   styleClass="resultDisplayBox" VBox.vgrow="NEVER">
                             <padding>
                                 <Insets bottom="5" left="10" right="10" top="5"/>
                             </padding>
@@ -82,7 +82,7 @@
                     </center>
 
                     <bottom>
-                    <StackPane fx:id="commandBoxPlaceholder" styleClass="pane-with-border" VBox.vgrow="NEVER">
+                    <StackPane fx:id="commandBoxPlaceholder" styleClass="commandBox" VBox.vgrow="NEVER">
                         <padding>
                             <Insets bottom="5" left="10" right="10" top="5"/>
                         </padding>

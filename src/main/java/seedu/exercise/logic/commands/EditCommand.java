@@ -20,6 +20,7 @@ import java.util.Set;
 
 import seedu.exercise.commons.core.Messages;
 import seedu.exercise.commons.core.index.Index;
+import seedu.exercise.commons.core.index.IndexUtil;
 import seedu.exercise.commons.util.CollectionUtil;
 import seedu.exercise.logic.commands.events.EventHistory;
 import seedu.exercise.logic.commands.events.EventPayload;
@@ -80,7 +81,7 @@ public class EditCommand extends Command implements UndoableCommand, PayloadCarr
         requireNonNull(model);
         List<Exercise> lastShownList = model.getFilteredExerciseList();
 
-        if (index.getZeroBased() >= lastShownList.size()) {
+        if (IndexUtil.isIndexOutOfBounds(index, lastShownList)) {
             throw new CommandException(Messages.MESSAGE_INVALID_EXERCISE_DISPLAYED_INDEX);
         }
 
@@ -95,7 +96,7 @@ public class EditCommand extends Command implements UndoableCommand, PayloadCarr
         model.setExercise(exerciseToEdit, editedExercise);
         EventHistory.getInstance().addCommandToUndoStack(this);
         model.updateFilteredExerciseList(Model.PREDICATE_SHOW_ALL_EXERCISES);
-        return new CommandResult(String.format(MESSAGE_EDIT_EXERCISE_SUCCESS, editedExercise)).showResults();
+        return new CommandResult(String.format(MESSAGE_EDIT_EXERCISE_SUCCESS, editedExercise)).showExercises();
     }
 
     @Override

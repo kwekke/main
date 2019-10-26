@@ -17,10 +17,11 @@ public class CliSyntax {
     public static final Prefix PREFIX_UNIT = new Prefix("u/");
     public static final Prefix PREFIX_CATEGORY = new Prefix("t/");
     public static final Prefix PREFIX_INDEX = new Prefix("i/");
+    public static final Prefix PREFIX_CONFLICT_INDEX = new Prefix("r/");
     public static final Prefix PREFIX_CUSTOM_NAME = new Prefix("s/");
     public static final Prefix PREFIX_FULL_NAME = new Prefix("f/");
     public static final Prefix PREFIX_PARAMETER_TYPE = new Prefix("p/");
-    public static final Prefix PREFIX_SUGGEST = new Prefix("g/");
+    public static final Prefix PREFIX_SUGGEST_TYPE = new Prefix("s/");
 
     /* A set consisting of property prefix definitions for add and edit commands */
     public static final Set<Prefix> PREFIXES_SET = new HashSet<>();

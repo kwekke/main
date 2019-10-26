@@ -7,6 +7,7 @@ import java.util.List;
 
 import seedu.exercise.commons.core.Messages;
 import seedu.exercise.commons.core.index.Index;
+import seedu.exercise.commons.core.index.IndexUtil;
 import seedu.exercise.logic.commands.events.EventHistory;
 import seedu.exercise.logic.commands.events.EventPayload;
 import seedu.exercise.logic.commands.exceptions.CommandException;
@@ -34,7 +35,7 @@ public class DeleteExerciseCommand extends DeleteCommand implements PayloadCarri
         requireNonNull(model);
         List<Exercise> lastShownList = model.getFilteredExerciseList();
 
-        if (targetIndex.getZeroBased() >= lastShownList.size()) {
+        if (IndexUtil.isIndexOutOfBounds(targetIndex, lastShownList)) {
             throw new CommandException(Messages.MESSAGE_INVALID_EXERCISE_DISPLAYED_INDEX);
         }
 
@@ -42,7 +43,7 @@ public class DeleteExerciseCommand extends DeleteCommand implements PayloadCarri
         eventPayload.put(KEY_EXERCISE_TO_DELETE, exerciseToDelete);
         model.deleteExercise(exerciseToDelete);
         EventHistory.getInstance().addCommandToUndoStack(this);
-        return new CommandResult(String.format(MESSAGE_DELETE_EXERCISE_SUCCESS, exerciseToDelete)).showResults();
+        return new CommandResult(String.format(MESSAGE_DELETE_EXERCISE_SUCCESS, exerciseToDelete)).showExercises();
     }
 
     @Override

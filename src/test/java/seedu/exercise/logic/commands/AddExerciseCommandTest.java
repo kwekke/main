@@ -9,18 +9,22 @@ import static seedu.exercise.testutil.Assert.assertThrows;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
 import javafx.collections.ObservableList;
 import seedu.exercise.commons.core.GuiSettings;
+import seedu.exercise.commons.core.index.Index;
 import seedu.exercise.logic.commands.exceptions.CommandException;
 import seedu.exercise.logic.parser.Prefix;
 import seedu.exercise.model.Model;
 import seedu.exercise.model.ReadOnlyResourceBook;
 import seedu.exercise.model.ReadOnlyUserPrefs;
+import seedu.exercise.model.conflict.Conflict;
 import seedu.exercise.model.property.CustomProperty;
+import seedu.exercise.model.property.Name;
 import seedu.exercise.model.property.PropertyBook;
 import seedu.exercise.model.resource.Exercise;
 import seedu.exercise.model.resource.Regime;
@@ -255,10 +259,30 @@ public class AddExerciseCommandTest {
             throw new AssertionError("This method should not be called.");
         }
 
+        @Override
+        public void resolveConflict(Name regimeName, List<Index> indexFromSchedule, List<Index> indexFromConflict) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public Conflict getConflict() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setConflict(Conflict conflict) {
+            throw new AssertionError("This method should not be called.");
+        }
+
         //=======================suggest================================================================================
 
         @Override
-        public ReadOnlyResourceBook<Exercise> getDatabaseBook() {
+        public ObservableList<Exercise> getSuggestedExerciseList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setSuggestions(List<Exercise> suggestions) {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -268,9 +292,15 @@ public class AddExerciseCommandTest {
         }
 
         @Override
-        public ObservableList<Exercise> getSuggestedExerciseList() {
+        public ReadOnlyResourceBook<Exercise> getDatabaseBook() {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public ReadOnlyResourceBook<Exercise> getExerciseDatabaseData() {
+            throw new AssertionError("This method should not be called.");
+        }
+
     }
 
     /**

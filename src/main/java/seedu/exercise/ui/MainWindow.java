@@ -2,15 +2,11 @@ package seedu.exercise.ui;
 
 import java.util.logging.Logger;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextInputControl;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import seedu.exercise.commons.core.GuiSettings;
@@ -34,15 +30,13 @@ public class MainWindow extends UiPart<Stage> {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private ScheduleListPanel scheduleListPanel;
-    private RegimeListPanel regimeListPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
     private ResolveWindow resolveWindow;
-    private ExerciseListPanel resultPanel;
+    private ExerciseListPanel exerciseListPanel;
+    private RegimeListPanel regimeListPanel;
+    private ScheduleListPanel scheduleListPanel;
     private SuggestionListPanel suggestionListPanel;
-
-    private ResourceListPanel resourceListPanel;
     private InfoDisplayPanel infoDisplayPanel;
     private StatsDisplayPanel statsDisplayPanel;
 
@@ -50,49 +44,31 @@ public class MainWindow extends UiPart<Stage> {
     private StackPane commandBoxPlaceholder;
 
     @FXML
-    private MenuItem helpMenuItem;
-
-    @FXML
-    private MenuItem resolveWindowMenuItem;
-
-    @FXML
-    private StackPane scheduleListPanelPlaceholder;
-
-    @FXML
     private StackPane resultDisplayPlaceholder;
-
-    @FXML
-    private StackPane regimeListPanelPlaceholder;
-
-    @FXML
-    private StackPane statusbarPlaceholder;
-
-    @FXML
-    private StackPane suggestionListPanelPlaceholder;
-
-    @FXML
-    private StackPane resultPanelPlaceholder;
 
     @FXML
     private TabPane resourceListPanelPlaceholder;
 
     @FXML
-    private Tab resPlaceholder;
+    private Tab exerciseListTabPlaceholder;
 
     @FXML
-    private Tab regPlaceholder;
+    private Tab regimeListTabPlaceholder;
 
     @FXML
-    private Tab schPlaceholder;
+    private Tab scheduleListTabPlaceholder;
 
     @FXML
-    private Tab sugPlaceholder;
+    private Tab suggestionListTabPlaceholder;
 
     @FXML
     private StackPane infoDisplayPanelPlaceholder;
 
     @FXML
     private StackPane statsDisplayPanelPlaceholder;
+
+    @FXML
+    private ImageView logoImageView;
 
     public MainWindow(Stage primaryStage, Logic logic) {
         super(FXML, primaryStage);
@@ -105,94 +81,48 @@ public class MainWindow extends UiPart<Stage> {
         setWindowDefaultSize(logic.getGuiSettings());
         primaryStage.setTitle("ExerHealth");
 
-        //setAccelerators();
-
         helpWindow = new HelpWindow();
-        resolveWindow = new ResolveWindow(logic);
     }
 
     public Stage getPrimaryStage() {
         return primaryStage;
     }
 
-    private void setAccelerators() {
-        setAccelerator(helpMenuItem, KeyCombination.valueOf("F1"));
-    }
-
-    /**
-     * Sets the accelerator of a MenuItem.
-     * @param keyCombination the KeyCombination value of the accelerator
-     */
-    private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
-        menuItem.setAccelerator(keyCombination);
-
-        /*
-         * TODO: the code below can be removed once the bug reported here
-         * https://bugs.openjdk.java.net/browse/JDK-8131666
-         * is fixed in later version of SDK.
-         *
-         * According to the bug report, TextInputControl (TextField, TextArea) will
-         * consume function-key events. Because CommandBox contains a TextField, and
-         * ResultDisplay contains a TextArea, thus some accelerators (e.g F1) will
-         * not work when the focus is in them because the key event is consumed by
-         * the TextInputControl(s).
-         *
-         * For now, we add following event filter to capture such key events and open
-         * help window purposely so to support accelerators even when focus is
-         * in CommandBox or ResultDisplay.
-         */
-        getRoot().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getTarget() instanceof TextInputControl && keyCombination.match(event)) {
-                menuItem.getOnAction().handle(new ActionEvent());
-                event.consume();
-            }
-        });
-    }
-
-
-
     /**
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
+        Image imageView = new Image(getClass().getResource("/images/logo_eH.png").toExternalForm());
+        logoImageView.setImage(imageView);
+
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
 
-        resultPanel = new ExerciseListPanel(logic.getFilteredExerciseList());
-        //resultPanelPlaceholder.getChildren().add(resultPanel.getRoot());
+        resolveWindow = new ResolveWindow(logic, resultDisplay);
+
+        exerciseListPanel = new ExerciseListPanel(logic.getFilteredExerciseList());
+        exerciseListTabPlaceholder = new Tab();
+        exerciseListTabPlaceholder.setContent((exerciseListPanel).getExerciseListView());
 
         regimeListPanel = new RegimeListPanel(logic.getFilteredRegimeList());
-        //regimeListPanelPlaceholder.getChildren().add(regimeListPanel.getRoot());
+        regimeListTabPlaceholder = new Tab();
+        regimeListTabPlaceholder.setContent(regimeListPanel.getRegimeListView());
 
         scheduleListPanel = new ScheduleListPanel(logic.getFilteredScheduleList());
-        //scheduleListPanelPlaceholder.getChildren().add(scheduleListPanel.getRoot());
+        scheduleListTabPlaceholder = new Tab();
+        scheduleListTabPlaceholder.setContent(scheduleListPanel.getScheduleListView());
 
         suggestionListPanel = new SuggestionListPanel(logic.getSuggestedExerciseList());
-        //suggestionListPanelPlaceholder.getChildren().add(suggestionListPanel.getRoot());
+        suggestionListTabPlaceholder = new Tab();
+        suggestionListTabPlaceholder.setContent(suggestionListPanel.getSuggestionListView());
 
-        resPlaceholder = new Tab();
-        resPlaceholder.setContent((resultPanel).getExerciseListView());
-        regPlaceholder = new Tab();
-        regPlaceholder.setContent(regimeListPanel.getRegimeListView());
-        schPlaceholder = new Tab();
-        schPlaceholder.setContent(scheduleListPanel.getScheduleListView());
-        sugPlaceholder = new Tab();
-        sugPlaceholder.setContent(suggestionListPanel.getSuggestionListView());
-
-
-        resourceListPanel = new ResourceListPanel();
-        resourceListPanelPlaceholder.getTabs().add(resPlaceholder);
-        resourceListPanelPlaceholder.getTabs().add(regPlaceholder);
-        resourceListPanelPlaceholder.getTabs().add(schPlaceholder);
-        resourceListPanelPlaceholder.getTabs().add(sugPlaceholder);
-
-        resourceListPanelPlaceholder.getSelectionModel().select(resPlaceholder);
-        resourceListPanelPlaceholder.getSelectionModel().select(regPlaceholder);
-        resourceListPanelPlaceholder.getSelectionModel().select(schPlaceholder);
-        resourceListPanelPlaceholder.getSelectionModel().select(sugPlaceholder);
+        resourceListPanelPlaceholder.getTabs().add(exerciseListTabPlaceholder);
+        resourceListPanelPlaceholder.getTabs().add(regimeListTabPlaceholder);
+        resourceListPanelPlaceholder.getTabs().add(scheduleListTabPlaceholder);
+        resourceListPanelPlaceholder.getTabs().add(suggestionListTabPlaceholder);
 
         infoDisplayPanel = new InfoDisplayPanel();
         infoDisplayPanelPlaceholder.getChildren().add(infoDisplayPanel.getRoot());
@@ -230,8 +160,7 @@ public class MainWindow extends UiPart<Stage> {
      */
     @FXML
     private void handleResolve() {
-        String testData = "This is clearly test data. DELETE".repeat(1000);
-        resolveWindow.setLeftRightText(testData, testData);
+        resolveWindow.setLeftRightPanel();
         if (resolveWindow.isShowing()) {
             resolveWindow.focus();
         } else {
@@ -252,7 +181,7 @@ public class MainWindow extends UiPart<Stage> {
                 (int) primaryStage.getX(), (int) primaryStage.getY());
         logic.setGuiSettings(guiSettings);
         helpWindow.hide();
-        resolveWindow.hideAndClearText();
+        resolveWindow.hideAndClearPanels();
         primaryStage.hide();
     }
 
@@ -260,28 +189,20 @@ public class MainWindow extends UiPart<Stage> {
         resourceListPanelPlaceholder.getSelectionModel().select(tab);
     }
 
-    private void handleShowResultsList() {
-        resourceListPanelPlaceholder.getSelectionModel().select(resPlaceholder);
+    private void handleShowExerciseList() {
+        resourceListPanelPlaceholder.getSelectionModel().select(exerciseListTabPlaceholder);
     }
 
     private void handleShowRegimeList() {
-        resourceListPanelPlaceholder.getSelectionModel().select(regPlaceholder);
+        resourceListPanelPlaceholder.getSelectionModel().select(regimeListTabPlaceholder);
     }
 
     private void handleShowScheduleList() {
-        resourceListPanelPlaceholder.getSelectionModel().select(schPlaceholder);
+        resourceListPanelPlaceholder.getSelectionModel().select(scheduleListTabPlaceholder);
     }
 
     private void handleShowSuggestionList() {
-        resourceListPanelPlaceholder.getSelectionModel().select(sugPlaceholder);
-    }
-
-    public ScheduleListPanel getScheduleListPanel() {
-        return scheduleListPanel;
-    }
-
-    public RegimeListPanel getRegimeListPanel() {
-        return regimeListPanel;
+        resourceListPanelPlaceholder.getSelectionModel().select(suggestionListTabPlaceholder);
     }
 
     /**
@@ -295,36 +216,66 @@ public class MainWindow extends UiPart<Stage> {
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
 
-            if (commandResult.isShowResultsList()) {
-                handleShowResultsList();
-            }
-
-            if (commandResult.isShowRegimeList()) {
-                handleShowRegimeList();
-            }
-
-            if (commandResult.isShowScheduleList()) {
-                handleShowScheduleList();
-            }
-
-            if (commandResult.isShowSuggestionList()) {
-                handleShowSuggestionList();
-            }
-
-
-            if (commandResult.isShowHelp()) {
-                handleHelp();
-            }
-
-            if (commandResult.isExit()) {
-                handleExit();
-            }
+            shouldShowWindowsBasedOnCommandResult(commandResult);
+            shouldExitAppBasedOnCommandResult(commandResult);
+            updateResourceListTab(commandResult);
 
             return commandResult;
         } catch (CommandException | ParseException e) {
             logger.info("Invalid command: " + commandText);
             resultDisplay.setFeedbackToUser(e.getMessage());
             throw e;
+        }
+    }
+
+    /**
+     * Checks if a secondary window should be shown based on the command results.
+     * Method will show the windows if it is to be shown.
+     */
+    private void shouldShowWindowsBasedOnCommandResult(CommandResult commandResult) {
+        if (commandResult.isShowHelp()) {
+            handleHelp();
+        }
+
+        if (commandResult.isShowResolve()) {
+            handleResolve();
+        }
+    }
+
+    private void shouldExitAppBasedOnCommandResult(CommandResult commandResult) {
+        if (commandResult.isExit()) {
+            handleExit();
+        }
+    }
+
+    private void updateResourceListTab(CommandResult commandResult) {
+        shouldShowExerciseList(commandResult);
+        shouldShowRegimeList(commandResult);
+        shouldShowScheduleList(commandResult);
+        shouldShowSuggestionList(commandResult);
+    }
+
+    private void shouldShowExerciseList(CommandResult commandResult) {
+        if (commandResult.isShowExerciseList()) {
+            handleShowExerciseList();
+        }
+    }
+
+    private void shouldShowRegimeList(CommandResult commandResult) {
+        if (commandResult.isShowRegimeList()) {
+            handleShowRegimeList();
+        }
+    }
+
+    private void shouldShowScheduleList(CommandResult commandResult) {
+        if (commandResult.isShowScheduleList()) {
+            handleShowScheduleList();
+        }
+    }
+
+    private void shouldShowSuggestionList(CommandResult commandResult) {
+        if (commandResult.isShowSuggestionList()) {
+            handleShowSuggestionList();
         }
     }
 }

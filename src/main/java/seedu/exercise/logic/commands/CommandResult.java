@@ -21,38 +21,49 @@ public class CommandResult {
      */
     private final boolean exit;
 
-    private boolean showResultsList;
-    private boolean showRegimeList;
-    private boolean showScheduleList;
-    private boolean showSuggestionlist;
+    private boolean showExerciseList = false;
 
+    private boolean showRegimeList = false;
+
+    private boolean showScheduleList = false;
+
+    private boolean showSuggestionlist = false;
+
+    /**
+     * Show the resolve window to user due to scheduling conflict
+     */
+    private final boolean showResolve;
 
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
-
-    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit) {
+    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit, boolean showResolve) {
         this.feedbackToUser = requireNonNull(feedbackToUser);
         this.showHelp = showHelp;
         this.exit = exit;
+        this.showResolve = showResolve;
     }
 
-    public CommandResult showResults() {
-        this.showResultsList = true;
+    public CommandResult showExercises() {
+        assert !(showExerciseList || showRegimeList || showScheduleList || showSuggestionlist);
+        showExerciseList = true;
         return this;
     }
 
     public CommandResult showRegimes() {
+        assert !(showExerciseList || showRegimeList || showScheduleList || showSuggestionlist);
         this.showRegimeList = true;
         return this;
     }
 
     public CommandResult showSchedules() {
+        assert !(showExerciseList || showRegimeList || showScheduleList || showSuggestionlist);
         this.showScheduleList = true;
         return this;
     }
 
     public CommandResult showSuggestions() {
+        assert !(showExerciseList || showRegimeList || showScheduleList || showSuggestionlist);
         this.showSuggestionlist = true;
         return this;
     }
@@ -62,7 +73,7 @@ public class CommandResult {
      * and other fields set to their default value.
      */
     public CommandResult(String feedbackToUser) {
-        this(feedbackToUser, false, false);
+        this(feedbackToUser, false, false, false);
     }
 
     public String getFeedbackToUser() {
@@ -77,8 +88,8 @@ public class CommandResult {
         return exit;
     }
 
-    public boolean isShowResultsList() {
-        return showResultsList;
+    public boolean isShowExerciseList() {
+        return showExerciseList;
     }
 
     public boolean isShowRegimeList() {
@@ -91,6 +102,10 @@ public class CommandResult {
 
     public boolean isShowSuggestionList() {
         return showSuggestionlist;
+    }
+
+    public boolean isShowResolve() {
+        return showResolve;
     }
 
     @Override
@@ -114,7 +129,5 @@ public class CommandResult {
     public int hashCode() {
         return Objects.hash(feedbackToUser, showHelp, exit);
     }
-
-
 
 }
