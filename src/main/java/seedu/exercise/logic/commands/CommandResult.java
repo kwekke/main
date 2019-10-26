@@ -44,30 +44,6 @@ public class CommandResult {
         this.showResolve = showResolve;
     }
 
-    public CommandResult showExercises() {
-        assert !(showExerciseList || showRegimeList || showScheduleList || showSuggestionlist);
-        showExerciseList = true;
-        return this;
-    }
-
-    public CommandResult showRegimes() {
-        assert !(showExerciseList || showRegimeList || showScheduleList || showSuggestionlist);
-        this.showRegimeList = true;
-        return this;
-    }
-
-    public CommandResult showSchedules() {
-        assert !(showExerciseList || showRegimeList || showScheduleList || showSuggestionlist);
-        this.showScheduleList = true;
-        return this;
-    }
-
-    public CommandResult showSuggestions() {
-        assert !(showExerciseList || showRegimeList || showScheduleList || showSuggestionlist);
-        this.showSuggestionlist = true;
-        return this;
-    }
-
     /**
      * Constructs a {@code CommandResult} with the specified {@code feedbackToUser},
      * and other fields set to their default value.
@@ -78,6 +54,46 @@ public class CommandResult {
 
     public String getFeedbackToUser() {
         return feedbackToUser;
+    }
+
+    /**
+     * Checks that {@code CommandResult} is only showing at most 1 resource list
+     * and sets {@code showExerciseList} to be true
+     */
+    public CommandResult setShowExerciseList() {
+        assert !(showExerciseList || showRegimeList || showScheduleList || showSuggestionlist);
+        showExerciseList = true;
+        return this;
+    }
+
+    /**
+     * Checks that {@code CommandResult} is only showing at most 1 resource list
+     * and sets {@code showRegimeList} to be true
+     */
+    public CommandResult setShowRegimeList() {
+        assert !(showExerciseList || showRegimeList || showScheduleList || showSuggestionlist);
+        this.showRegimeList = true;
+        return this;
+    }
+
+    /**
+     * Checks that {@code CommandResult} is only showing at most 1 resource list
+     * and sets {@code showScheduleList} to be true
+     */
+    public CommandResult setShowScheduleList() {
+        assert !(showExerciseList || showRegimeList || showScheduleList || showSuggestionlist);
+        this.showScheduleList = true;
+        return this;
+    }
+
+    /**
+     * Checks that {@code CommandResult} is only showing at most 1 resource list
+     * and sets {@code showSuggestionList} to be true
+     */
+    public CommandResult setShowSuggestionList() {
+        assert !(showExerciseList || showRegimeList || showScheduleList || showSuggestionlist);
+        this.showSuggestionlist = true;
+        return this;
     }
 
     public boolean isShowHelp() {

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-<HBox spacing="20" alignment="CENTER">
-    <Label styleClass="text-field" text="stats placeholder" />
-</HBox>
+    <HBox spacing="20" alignment="CENTER">
+        <Label styleClass="text-field" text="stats placeholder" />
+    </HBox>
 </VBox>

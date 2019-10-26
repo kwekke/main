@@ -29,7 +29,8 @@ public class ScheduleCompleteCommand extends ScheduleCommand {
         checkValidIndex(model);
         completeSchedule(model);
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Integer.toString(index.getOneBased()))).showSchedules();
+        return new CommandResult(String.format(MESSAGE_SUCCESS, Integer.toString(index.getOneBased())))
+                .setShowScheduleList();
     }
 
     private void completeSchedule(Model model) {

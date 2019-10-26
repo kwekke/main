@@ -51,9 +51,9 @@ public class DeleteRegimeCommand extends DeleteCommand implements PayloadCarrier
 
         CommandResult commandResult;
         if (indexes == null) {
-            commandResult = deleteRegimeFromModel(regimeToDelete, model).showRegimes();
+            commandResult = deleteRegimeFromModel(regimeToDelete, model).setShowRegimeList();
         } else {
-            commandResult = deleteExercisesFromRegime(regimeToDelete, model).showRegimes();
+            commandResult = deleteExercisesFromRegime(regimeToDelete, model).setShowRegimeList();
         }
         EventHistory.getInstance().addCommandToUndoStack(this);
         return commandResult;

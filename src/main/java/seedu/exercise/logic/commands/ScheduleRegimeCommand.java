@@ -44,7 +44,8 @@ public class ScheduleRegimeCommand extends ScheduleCommand {
 
         schedule(model, toSchedule);
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS, regime.getRegimeName(), dateToSchedule)).showSchedules();
+        return new CommandResult(String.format(MESSAGE_SUCCESS, regime.getRegimeName(), dateToSchedule))
+                .setShowScheduleList();
     }
 
     private void checkExistenceOfRegime(Model model) throws CommandException {

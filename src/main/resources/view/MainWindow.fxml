@@ -33,21 +33,13 @@
                         <TabPane fx:id="resourceListPanelPlaceholder" tabClosingPolicy="UNAVAILABLE" styleClass="pane-with-border"
                                  tabMaxHeight="-Infinity" tabMaxWidth="-Infinity">
                             <tabs>
-                                <Tab fx:id="resPlaceholder" styleClass="tab-pane"> <!--
-                                                                        <StackPane fx:id="resultPanelPlaceholder" BorderPane.alignment="CENTER"/>
-                                    -->
+                                <Tab fx:id="exerciseListTabPlaceholder" styleClass="tab-pane">
                                 </Tab>
-                                <Tab fx:id="regPlaceholder" styleClass="pane-with-border"><!--
-                                                                        <StackPane fx:id="regimeListPanelPlaceholder" BorderPane.alignment="CENTER"/>
-                                    -->
+                                <Tab fx:id="regimeListTabPlaceholder" styleClass="tab-pane">
                                 </Tab>
-                                <Tab fx:id="schPlaceholder" styleClass="pane-with-border"><!--
-                                                                        <StackPane fx:id="scheduleListPanelPlaceholder" BorderPane.alignment="CENTER"/>
-                                    -->
+                                <Tab fx:id="scheduleListTabPlaceholder" styleClass="tab-pane">
                                 </Tab>
-                                <Tab fx:id="sugPlaceholder" styleClass="pane-with-border">
-                                    <!--                                <StackPane fx:id="suggestionListPanelPlaceholder" BorderPane.alignment="CENTER"/>
-                                    -->
+                                <Tab fx:id="suggestionListTabPlaceholder" styleClass="tab-pane">
                                 </Tab>
                             </tabs>
                         </TabPane>

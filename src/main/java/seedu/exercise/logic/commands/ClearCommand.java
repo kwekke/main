@@ -27,7 +27,7 @@ public class ClearCommand extends Command implements UndoableCommand, PayloadCar
         eventPayload.put(KEY_EXERCISE_BOOK_CLEARED, exerciseBookCleared);
         EventHistory.getInstance().addCommandToUndoStack(this);
         model.setExerciseBook(new ReadOnlyResourceBook<>());
-        return new CommandResult(MESSAGE_SUCCESS).showSuggestions();
+        return new CommandResult(MESSAGE_SUCCESS).setShowSuggestionList();
     }
 
     @Override

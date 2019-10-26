@@ -248,6 +248,9 @@ public class MainWindow extends UiPart<Stage> {
         }
     }
 
+    /**
+     * Checks if a the resource list has to change based on the {@code CommandResult}
+     */
     private void updateResourceListTab(CommandResult commandResult) {
         shouldShowExerciseList(commandResult);
         shouldShowRegimeList(commandResult);
