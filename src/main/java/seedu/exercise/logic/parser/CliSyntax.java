@@ -33,6 +33,11 @@ public class CliSyntax {
     public static final Prefix PREFIX_SUGGEST_TYPE = new Prefix("s/");
     public static final Prefix PREFIX_OPERATION_TYPE = new Prefix("o/");
 
+    /* Prefix definition for statistic command */
+    public static final Prefix PREFIX_CHART = new Prefix("h/");
+    public static final Prefix PREFIX_START_DATE = new Prefix("s/");
+    public static final Prefix PREFIX_END_DATE = new Prefix("e/");
+
     /* A set consisting of property prefix definitions for add and edit commands */
     private static final Set<Prefix> PREFIXES_SET = new HashSet<>();
 
