@@ -70,7 +70,8 @@ public class CommandResultTest {
         assertNotEquals(commandResult.hashCode(), new CommandResult("feedback", ListResourceType.SUGGESTION));
 
         //multiple different field values -> returns different hashcode
-        assertNotEquals(commandResult.hashCode(), new CommandResult("feedback", false, false, true, ListResourceType.SCHEDULE).hashCode());
+        assertNotEquals(commandResult.hashCode(),
+                new CommandResult("feedback", false, false, true, ListResourceType.SCHEDULE).hashCode());
 
     }
 }
