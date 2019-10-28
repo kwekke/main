@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.exercise.ui.ListResourceType;
+
 public class CommandResultTest {
     @Test
     public void equals() {
@@ -32,6 +34,11 @@ public class CommandResultTest {
 
         // different exit value -> returns false
         assertFalse(commandResult.equals(new CommandResult("feedback", false, true, false)));
+
+        assertFalse(commandResult.equals(new CommandResult("feedback", ListResourceType.EXERCISE)));
+        assertFalse(commandResult.equals(new CommandResult("feedback", ListResourceType.REGIME)));
+        assertFalse(commandResult.equals(new CommandResult("feedback", ListResourceType.SCHEDULE)));
+        assertFalse(commandResult.equals(new CommandResult("feedback", ListResourceType.SCHEDULE)));
     }
 
     @Test

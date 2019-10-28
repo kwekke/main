@@ -34,12 +34,12 @@ public class CommandResult {
     private ListResourceType showListResourceType;
 
     public CommandResult(String feedbackToUser, boolean showHelp,
-                         boolean isExit, boolean showResolve, String listResourceType) {
+                         boolean isExit, boolean showResolve, ListResourceType listResourceType) {
         this.feedbackToUser = requireNonNull(feedbackToUser);
         this.showHelp = showHelp;
         this.exit = isExit;
         this.showResolve = showResolve;
-        this.showListResourceType = ListResourceType.valueOf(listResourceType);
+        this.showListResourceType = listResourceType;
     }
 
     /**
@@ -50,6 +50,7 @@ public class CommandResult {
         this.showHelp = showHelp;
         this.exit = exit;
         this.showResolve = showResolve;
+        this.showListResourceType = ListResourceType.NULL;
     }
 
     /**
@@ -57,7 +58,7 @@ public class CommandResult {
      * and other fields set to their default value.
      */
     public CommandResult(String feedbackToUser) {
-        this(feedbackToUser, false, false, false);
+        this(feedbackToUser, false, false, false, ListResourceType.NULL);
     }
 
     public CommandResult(String feedbackToUser, ListResourceType listResourceType) {
@@ -67,26 +68,6 @@ public class CommandResult {
 
     public String getFeedbackToUser() {
         return feedbackToUser;
-    }
-
-    public CommandResult setHelp() {
-        this.showHelp = true;
-        return this;
-    }
-
-    public CommandResult setExit() {
-        this.exit = true;
-        return this;
-    }
-
-    public CommandResult setResolve() {
-        this.showResolve = true;
-        return this;
-    }
-
-    public CommandResult setShowList(ListResourceType listResourceType) {
-        showListResourceType = listResourceType;
-        return this;
     }
 
     public boolean isShowHelp() {
@@ -120,12 +101,13 @@ public class CommandResult {
         return feedbackToUser.equals(otherCommandResult.feedbackToUser)
             && showHelp == otherCommandResult.showHelp
             && exit == otherCommandResult.exit
-            && showResolve == otherCommandResult.showResolve;
+            && showResolve == otherCommandResult.showResolve
+            && showListResourceType.equals(otherCommandResult.showListResourceType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(feedbackToUser, showHelp, exit, showResolve);
+        return Objects.hash(feedbackToUser, showHelp, exit, showResolve, showListResourceType);
     }
 
 }
