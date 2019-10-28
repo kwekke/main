@@ -2,6 +2,7 @@ package seedu.exercise.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.List;
 import java.util.Objects;
 
 import seedu.exercise.ui.ListResourceType;
@@ -33,6 +34,9 @@ public class CommandResult {
      */
     private ListResourceType showListResourceType;
 
+    /**
+     * Constructs a {@code CommandResult} with the specified fields.
+     */
     public CommandResult(String feedbackToUser, boolean showHelp,
                          boolean isExit, boolean showResolve, ListResourceType listResourceType) {
         this.feedbackToUser = requireNonNull(feedbackToUser);
@@ -46,11 +50,12 @@ public class CommandResult {
      * Constructs a {@code CommandResult} with the specified fields.
      */
     public CommandResult(String feedbackToUser, boolean showHelp, boolean exit, boolean showResolve) {
-        this.feedbackToUser = requireNonNull(feedbackToUser);
-        this.showHelp = showHelp;
-        this.exit = exit;
-        this.showResolve = showResolve;
-        this.showListResourceType = ListResourceType.NULL;
+        this(feedbackToUser, showHelp, exit, showResolve, ListResourceType.NULL);
+    }
+
+    public CommandResult(String feedbackToUser, ListResourceType listResourceType) {
+        this(feedbackToUser);
+        this.showListResourceType = listResourceType;
     }
 
     /**
@@ -61,10 +66,7 @@ public class CommandResult {
         this(feedbackToUser, false, false, false, ListResourceType.NULL);
     }
 
-    public CommandResult(String feedbackToUser, ListResourceType listResourceType) {
-        this(feedbackToUser);
-        this.showListResourceType = listResourceType;
-    }
+
 
     public String getFeedbackToUser() {
         return feedbackToUser;
