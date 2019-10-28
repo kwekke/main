@@ -1,18 +1,18 @@
 package seedu.exercise.logic.parser;
 
-import static seedu.exercise.logic.commands.CommandTestUtil.VALID_FULL_NAME_RATING;
-import static seedu.exercise.logic.commands.CommandTestUtil.VALID_FULL_NAME_REMARK;
-import static seedu.exercise.logic.commands.CommandTestUtil.VALID_MUSCLE_AEROBICS;
-import static seedu.exercise.logic.commands.CommandTestUtil.VALID_MUSCLE_BASKETBALL;
-import static seedu.exercise.logic.commands.CommandTestUtil.VALID_PARAMETER_TYPE_RATING;
-import static seedu.exercise.logic.commands.CommandTestUtil.VALID_PARAMETER_TYPE_REMARK;
-import static seedu.exercise.logic.commands.CommandTestUtil.VALID_PREFIX_NAME_RATING;
-import static seedu.exercise.logic.commands.CommandTestUtil.VALID_PREFIX_NAME_REMARK;
-import static seedu.exercise.logic.commands.CommandTestUtil.VALID_RATING_VALUE;
-import static seedu.exercise.logic.commands.CommandTestUtil.VALID_REMARK_VALUE;
 import static seedu.exercise.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.exercise.logic.parser.predicate.PredicateUtil.predicateShowExerciseWithCustomProperty;
 import static seedu.exercise.logic.parser.predicate.PredicateUtil.predicateShowExercisesWithMuscle;
+import static seedu.exercise.testutil.CommonTestData.VALID_FULL_NAME_RATING;
+import static seedu.exercise.testutil.CommonTestData.VALID_FULL_NAME_REMARK;
+import static seedu.exercise.testutil.CommonTestData.VALID_MUSCLE_AEROBICS;
+import static seedu.exercise.testutil.CommonTestData.VALID_MUSCLE_BASKETBALL;
+import static seedu.exercise.testutil.CommonTestData.VALID_PARAMETER_TYPE_RATING;
+import static seedu.exercise.testutil.CommonTestData.VALID_PARAMETER_TYPE_REMARK;
+import static seedu.exercise.testutil.CommonTestData.VALID_PREFIX_NAME_RATING;
+import static seedu.exercise.testutil.CommonTestData.VALID_PREFIX_NAME_REMARK;
+import static seedu.exercise.testutil.CommonTestData.VALID_VALUE_RATING;
+import static seedu.exercise.testutil.CommonTestData.VALID_VALUE_REMARK;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,7 +28,7 @@ import seedu.exercise.logic.parser.predicate.ExercisePredicate;
 import seedu.exercise.model.property.CustomProperty;
 import seedu.exercise.model.property.Muscle;
 import seedu.exercise.model.resource.Exercise;
-import seedu.exercise.testutil.CustomPropertyBuilder;
+import seedu.exercise.testutil.builder.CustomPropertyBuilder;
 
 public class SuggestPossibleCommandParserTest {
     private SuggestCommandParser parser = new SuggestCommandParser();
@@ -46,8 +46,8 @@ public class SuggestPossibleCommandParserTest {
                 .withFullName(VALID_FULL_NAME_RATING).withParameterType(VALID_PARAMETER_TYPE_RATING).build();
         CustomProperty remark = new CustomPropertyBuilder().withPrefix(VALID_PREFIX_NAME_REMARK)
                 .withFullName(VALID_FULL_NAME_REMARK).withParameterType(VALID_PARAMETER_TYPE_REMARK).build();
-        targetCustomProperties.put(VALID_FULL_NAME_RATING, VALID_RATING_VALUE);
-        targetCustomProperties.put(VALID_FULL_NAME_REMARK, VALID_REMARK_VALUE);
+        targetCustomProperties.put(VALID_FULL_NAME_RATING, VALID_VALUE_RATING);
+        targetCustomProperties.put(VALID_FULL_NAME_REMARK, VALID_VALUE_REMARK);
         Predicate<Exercise> predicateCustomPropertyAnd =
                 predicateShowExerciseWithCustomProperty(targetCustomProperties, true);
         Predicate<Exercise> predicateCustomPropertyOr =
