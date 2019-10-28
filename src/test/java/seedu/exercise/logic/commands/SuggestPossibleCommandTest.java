@@ -40,11 +40,6 @@ public class SuggestPossibleCommandTest {
     private Model expectedModel;
     private Set<Muscle> targetMuscles;
     private Map<String, String> targetCustomProperties;
-    private Predicate<Exercise> predicateMuscleAnd;
-    private Predicate<Exercise> predicateMuscleOr;
-    private Predicate<Exercise> predicateCustomPropertyAnd;
-    private Predicate<Exercise> predicateCustomPropertyOr;
-    private boolean isStrict = true;
 
     @BeforeEach
     public void setUp() {
@@ -55,15 +50,13 @@ public class SuggestPossibleCommandTest {
                 getTypicalExerciseBook(), new ReadOnlyResourceBook<>(),
                 new UserPrefs(), getDefaultPropertyBook());
 
-        boolean isStrict = true;
-
         targetMuscles = new HashSet<Muscle>();
         targetMuscles.add(new Muscle(VALID_MUSCLE_AEROBICS));
         targetMuscles.add(new Muscle(VALID_MUSCLE_BASKETBALL));
-        Predicate<Exercise> predicateMuscleAnd = predicateShowExercisesWithMuscle(targetMuscles, isStrict);
-        Predicate<Exercise> predicateMuscleOr = predicateShowExercisesWithMuscle(targetMuscles, !isStrict);
 
-
+        targetCustomProperties = new HashMap<String, String>();
+        targetCustomProperties.put(VALID_FULL_NAME_RATING, VALID_RATING_VALUE);
+        targetCustomProperties.put(VALID_FULL_NAME_REMARK, VALID_REMARK_VALUE);
         CustomProperty rating = new CustomPropertyBuilder().withPrefix(VALID_PREFIX_NAME_RATING)
                 .withFullName(VALID_FULL_NAME_RATING).withParameterType(VALID_PARAMETER_TYPE_RATING).build();
         CustomProperty remark = new CustomPropertyBuilder().withPrefix(VALID_PREFIX_NAME_REMARK)
@@ -72,19 +65,13 @@ public class SuggestPossibleCommandTest {
         model.getPropertyBook().addCustomProperty(remark);
         expectedModel.getPropertyBook().addCustomProperty(rating);
         expectedModel.getPropertyBook().addCustomProperty(remark);
-        targetCustomProperties = new HashMap<String, String>();
-        targetCustomProperties.put(VALID_FULL_NAME_RATING, VALID_RATING_VALUE);
-        targetCustomProperties.put(VALID_FULL_NAME_REMARK, VALID_REMARK_VALUE);
-        Predicate<Exercise> predicateCustomPropertyAnd =
-                predicateShowExerciseWithCustomProperty(targetCustomProperties, isStrict);
-        Predicate<Exercise> predicateCustomPropertyOr =
-                predicateShowExerciseWithCustomProperty(targetCustomProperties, !isStrict);
+
     }
 
     @Test
     public void execute_suggestPossibleMuscle_success() {
-
-        Predicate<Exercise> predicateMuscleAnd = predicateShowExercisesWithMuscle(targetMuscles, true);
+        boolean isStrict = true;
+        Predicate<Exercise> predicateMuscleAnd = predicateShowExercisesWithMuscle(targetMuscles, isStrict);
 
         expectedModel.updateSuggestedExerciseList(predicateMuscleAnd);
         assertCommandSuccess(new SuggestPossibleCommand(predicateMuscleAnd),
@@ -93,7 +80,7 @@ public class SuggestPossibleCommandTest {
 
     @Test
     public void execute_suggestPossibleCustomProperty_success() {
-
+        boolean isStrict = true;
         Predicate<Exercise> predicateCustomPropertyAnd =
                 predicateShowExerciseWithCustomProperty(targetCustomProperties, isStrict);
 

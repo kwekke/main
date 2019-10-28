@@ -1,7 +1,5 @@
 package seedu.exercise.logic.parser.predicate;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -31,35 +29,11 @@ public class PredicateUtil {
      */
     public static final Predicate<Regime> PREDICATE_SHOW_ALL_REGIMES = unused -> true;
 
-    /**
-     * Parses {@code Set<Muscle> muscles}, {@code Map<String, String> customProperties} and {@code boolean isStrict}
-     * into a {@code Predicate<Exercise>}.
-     */
-    public static Predicate<Exercise> parsePredicate(
-            Set<Muscle> muscles, Map<String, String> customProperties, boolean isStrict) {
-        requireNonNull(muscles);
-        requireNonNull(customProperties);
-        requireNonNull(isStrict);
-        Predicate<Exercise> musclePredicate = new ExerciseMusclePredicate(muscles, isStrict);
-        Predicate<Exercise> customPropertiesPredicate = new ExerciseCustomPropertyPredicate(customProperties, isStrict);
-
-        if (muscles.isEmpty()) {
-            return new ExercisePredicate(isStrict, customPropertiesPredicate);
-        }
-
-        if (customProperties.isEmpty()) {
-            return new ExercisePredicate(isStrict, musclePredicate);
-        }
-
-        Predicate<Exercise> predicate = new ExercisePredicate(isStrict, musclePredicate, customPropertiesPredicate);
-        return predicate;
-    }
-
-    public static Predicate<Exercise> predicateShowExercisesWithMuscle(Set<Muscle> targetMuscles, boolean isStrict) {
+    public static BasePropertyPredicate predicateShowExercisesWithMuscle(Set<Muscle> targetMuscles, boolean isStrict) {
         return new ExerciseMusclePredicate(targetMuscles, isStrict);
     }
 
-    public static Predicate<Exercise> predicateShowExerciseWithCustomProperty(
+    public static BasePropertyPredicate predicateShowExerciseWithCustomProperty(
             Map<String, String> targetCustomPropertiesMap, boolean isStrict) {
         return new ExerciseCustomPropertyPredicate(targetCustomPropertiesMap, isStrict);
     }

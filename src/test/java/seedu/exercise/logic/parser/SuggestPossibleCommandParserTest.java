@@ -23,6 +23,7 @@ import java.util.function.Predicate;
 import org.junit.jupiter.api.Test;
 
 import seedu.exercise.logic.commands.SuggestPossibleCommand;
+import seedu.exercise.logic.parser.predicate.BasePropertyPredicate;
 import seedu.exercise.logic.parser.predicate.ExercisePredicate;
 import seedu.exercise.model.property.CustomProperty;
 import seedu.exercise.model.property.Muscle;
@@ -37,8 +38,8 @@ public class SuggestPossibleCommandParserTest {
         Set<Muscle> targetMuscles = new HashSet<>();
         targetMuscles.add(new Muscle(VALID_MUSCLE_AEROBICS));
         targetMuscles.add(new Muscle(VALID_MUSCLE_BASKETBALL));
-        Predicate<Exercise> predicateMuscleAnd = predicateShowExercisesWithMuscle(targetMuscles, true);
-        Predicate<Exercise> predicateMuscleOr = predicateShowExercisesWithMuscle(targetMuscles, false);
+        BasePropertyPredicate predicateMuscleAnd = predicateShowExercisesWithMuscle(targetMuscles, true);
+        BasePropertyPredicate predicateMuscleOr = predicateShowExercisesWithMuscle(targetMuscles, false);
 
         Map<String, String> targetCustomProperties = new HashMap<>();
         CustomProperty rating = new CustomPropertyBuilder().withPrefix(VALID_PREFIX_NAME_RATING)

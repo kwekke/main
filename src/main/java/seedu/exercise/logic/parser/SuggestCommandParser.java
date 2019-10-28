@@ -4,6 +4,7 @@ import static seedu.exercise.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMA
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_MUSCLE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_OPERATION_TYPE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_SUGGEST_TYPE;
+import static seedu.exercise.logic.parser.ParserUtil.parsePredicate;
 import static seedu.exercise.model.property.PropertyBook.getCustomProperties;
 
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ import seedu.exercise.logic.commands.SuggestBasicCommand;
 import seedu.exercise.logic.commands.SuggestCommand;
 import seedu.exercise.logic.commands.SuggestPossibleCommand;
 import seedu.exercise.logic.parser.exceptions.ParseException;
-import seedu.exercise.logic.parser.predicate.PredicateUtil;
 import seedu.exercise.model.property.CustomProperty;
 import seedu.exercise.model.property.Muscle;
 import seedu.exercise.model.resource.Exercise;
@@ -82,7 +82,7 @@ public class SuggestCommandParser implements Parser<SuggestCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     SuggestCommand.MESSAGE_USAGE));
         }
-        Predicate<Exercise> predicate = PredicateUtil.parsePredicate(muscles, customPropertiesMap, operationType);
+        Predicate<Exercise> predicate = parsePredicate(muscles, customPropertiesMap, operationType);
         return new SuggestPossibleCommand(predicate);
     }
 

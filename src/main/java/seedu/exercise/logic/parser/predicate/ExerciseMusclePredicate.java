@@ -1,7 +1,6 @@
 package seedu.exercise.logic.parser.predicate;
 
 import java.util.Set;
-import java.util.function.Predicate;
 
 import seedu.exercise.model.property.Muscle;
 import seedu.exercise.model.resource.Exercise;
@@ -9,7 +8,7 @@ import seedu.exercise.model.resource.Exercise;
 /**
  * Tests whether an {@code Exercise} matches the {@code predicate}
  */
-public class ExerciseMusclePredicate implements Predicate<Exercise> {
+public class ExerciseMusclePredicate implements BasePropertyPredicate {
 
     private final Set<Muscle> muscles;
     private final boolean isStrict;
@@ -31,7 +30,7 @@ public class ExerciseMusclePredicate implements Predicate<Exercise> {
     /**
      * Returns true if a {@code exercise} has all the {@code Muscle} targeted
      */
-    private boolean testStrict(Exercise exercise) {
+    boolean testStrict(Exercise exercise) {
         Set<Muscle> exerciseMuscles = exercise.getMuscles();
         for (Muscle muscle : muscles) {
             if (!(exerciseMuscles.contains(muscle))) {
@@ -44,7 +43,7 @@ public class ExerciseMusclePredicate implements Predicate<Exercise> {
     /**
      * Returns true if a {@code exercise} has at least one {@code Muscle} targeted
      */
-    private boolean testLoose(Exercise exercise) {
+    boolean testLoose(Exercise exercise) {
         Set<Muscle> exerciseMuscles = exercise.getMuscles();
         for (Muscle muscle : exerciseMuscles) {
             if (muscles.contains(muscle)) {

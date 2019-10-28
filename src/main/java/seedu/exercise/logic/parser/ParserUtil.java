@@ -17,11 +17,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import seedu.exercise.commons.core.index.Index;
 import seedu.exercise.commons.util.StringUtil;
 import seedu.exercise.logic.commands.statistic.Statistic;
 import seedu.exercise.logic.parser.exceptions.ParseException;
+import seedu.exercise.logic.parser.predicate.BasePropertyPredicate;
+import seedu.exercise.logic.parser.predicate.ExerciseCustomPropertyPredicate;
+import seedu.exercise.logic.parser.predicate.ExerciseMusclePredicate;
+import seedu.exercise.logic.parser.predicate.ExercisePredicate;
 import seedu.exercise.logic.parser.predicate.PredicateUtil;
 import seedu.exercise.model.property.Calories;
 import seedu.exercise.model.property.CustomProperty;
@@ -31,6 +36,7 @@ import seedu.exercise.model.property.Name;
 import seedu.exercise.model.property.ParameterType;
 import seedu.exercise.model.property.Quantity;
 import seedu.exercise.model.property.Unit;
+import seedu.exercise.model.resource.Exercise;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -319,6 +325,31 @@ public class ParserUtil {
         }
 
         throw new ParseException(PredicateUtil.OPERATION_TYPE_CONSTRAINTS);
+    }
+
+    /**
+     * Parses {@code Set<Muscle> muscles}, {@code Map<String, String> customProperties} and {@code boolean isStrict}
+     * into a {@code Predicate<Exercise>}.
+     */
+    public static Predicate<Exercise> parsePredicate(
+            Set<Muscle> muscles, Map<String, String> customProperties, boolean isStrict) {
+        requireNonNull(muscles);
+        requireNonNull(customProperties);
+        requireNonNull(isStrict);
+        BasePropertyPredicate musclePredicate = new ExerciseMusclePredicate(muscles, isStrict);
+        BasePropertyPredicate customPropertiesPredicate =
+                new ExerciseCustomPropertyPredicate(customProperties, isStrict);
+
+        if (muscles.isEmpty()) {
+            return new ExercisePredicate(isStrict, customPropertiesPredicate);
+        }
+
+        if (customProperties.isEmpty()) {
+            return new ExercisePredicate(isStrict, musclePredicate);
+        }
+
+        Predicate<Exercise> predicate = new ExercisePredicate(isStrict, musclePredicate, customPropertiesPredicate);
+        return predicate;
     }
 
     /**

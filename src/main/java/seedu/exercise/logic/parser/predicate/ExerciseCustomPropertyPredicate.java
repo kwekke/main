@@ -1,14 +1,13 @@
 package seedu.exercise.logic.parser.predicate;
 
 import java.util.Map;
-import java.util.function.Predicate;
 
 import seedu.exercise.model.resource.Exercise;
 
 /**
  * Tests whether an {@code Exercise} matches the {@code predicate}
  */
-public class ExerciseCustomPropertyPredicate implements Predicate<Exercise> {
+public class ExerciseCustomPropertyPredicate implements BasePropertyPredicate {
 
     private final Map<String, String> customProperties;
     private final boolean isStrict;
@@ -30,7 +29,7 @@ public class ExerciseCustomPropertyPredicate implements Predicate<Exercise> {
     /**
      * Returns true if a {@code exercise} has all the {@code CustomProperty} targeted
      */
-    private boolean testStrict(Exercise exercise) {
+    boolean testStrict(Exercise exercise) {
         Map<String, String> exerciseCustomProperties = exercise.getCustomProperties();
         for (String key : customProperties.keySet()) {
             if (!(customProperties.get(key).equals(exerciseCustomProperties.get(key)))) {
@@ -43,7 +42,7 @@ public class ExerciseCustomPropertyPredicate implements Predicate<Exercise> {
     /**
      * Returns true if a {@code exercise} has at least one {@code CustomProperty} targeted
      */
-    private boolean testLoose(Exercise exercise) {
+    boolean testLoose(Exercise exercise) {
         Map<String, String> exerciseCustomProperties = exercise.getCustomProperties();
         for (String key : customProperties.keySet()) {
             if (customProperties.get(key).equals(exerciseCustomProperties.get(key))) {

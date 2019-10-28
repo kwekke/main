@@ -11,11 +11,11 @@ import seedu.exercise.model.resource.Exercise;
  * Tests whether an {@code Exercise} matches the {@code predicate}
  */
 public class ExercisePredicate implements Predicate<Exercise> {
-    private List<Predicate<Exercise>> predicates = new ArrayList<>();
+    private List<BasePropertyPredicate> predicates = new ArrayList<>();
     private boolean isStrict;
 
     @SafeVarargs
-    public ExercisePredicate(boolean isStrict, Predicate<Exercise>... predicates) {
+    public ExercisePredicate(boolean isStrict, BasePropertyPredicate... predicates) {
         this.isStrict = isStrict;
         this.predicates = Arrays.asList(predicates);
     }
