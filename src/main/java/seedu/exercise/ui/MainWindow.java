@@ -1,6 +1,5 @@
 package seedu.exercise.ui;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import javafx.fxml.FXML;

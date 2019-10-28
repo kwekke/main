@@ -1,7 +1,5 @@
 package seedu.exercise.ui;
 
-import static java.util.Objects.requireNonNull;
-
 /**
  * Encapsulates the different list of resource types to be displayed in GUI.
  */
