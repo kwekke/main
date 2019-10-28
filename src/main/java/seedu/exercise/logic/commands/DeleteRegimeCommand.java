@@ -6,6 +6,7 @@ import static seedu.exercise.logic.commands.events.EditRegimeEvent.KEY_EDITED_RE
 import static seedu.exercise.logic.commands.events.EditRegimeEvent.KEY_IS_REGIME_EDITED;
 import static seedu.exercise.logic.commands.events.EditRegimeEvent.KEY_ORIGINAL_REGIME;
 
+import java.util.HashSet;
 import java.util.List;
 
 import seedu.exercise.commons.core.Messages;
@@ -18,6 +19,7 @@ import seedu.exercise.model.UniqueResourceList;
 import seedu.exercise.model.property.Name;
 import seedu.exercise.model.resource.Exercise;
 import seedu.exercise.model.resource.Regime;
+import seedu.exercise.ui.ListResourceType;
 
 /**
  * Deletes a regime identified using it's name or deletes exercises in regime.
@@ -27,6 +29,7 @@ public class DeleteRegimeCommand extends DeleteCommand implements PayloadCarrier
     public static final String MESSAGE_DELETE_REGIME_SUCCESS = "Deleted Regime: %1$s\n%2$s";
     public static final String MESSAGE_REGIME_DOES_NOT_EXIST = "No such regime in regime book.";
     public static final String MESSAGE_DELETE_EXERCISE_IN_REGIME_SUCCESS = "Deleted exercises in regime.";
+    public static final String MESSAGE_DUPLICATE_INDEX = "There is duplicate index.";
     public static final String RESOURCE_TYPE = "regime";
 
     private final List<Index> indexes;
@@ -51,9 +54,9 @@ public class DeleteRegimeCommand extends DeleteCommand implements PayloadCarrier
 
         CommandResult commandResult;
         if (indexes == null) {
-            commandResult = deleteRegimeFromModel(regimeToDelete, model).setShowRegimeList();
+            commandResult = deleteRegimeFromModel(regimeToDelete, model);
         } else {
-            commandResult = deleteExercisesFromRegime(regimeToDelete, model).setShowRegimeList();
+            commandResult = deleteExercisesFromRegime(regimeToDelete, model);
         }
         EventHistory.getInstance().addCommandToUndoStack(this);
         return commandResult;
@@ -69,9 +72,8 @@ public class DeleteRegimeCommand extends DeleteCommand implements PayloadCarrier
     private CommandResult deleteRegimeFromModel(Regime regimeToDelete, Model model) {
         model.deleteRegime(regimeToDelete);
         addToEventPayloadForDeleteRegime(regimeToDelete);
-        return new CommandResult(String.format(MESSAGE_DELETE_REGIME_SUCCESS,
-                name,
-                regimeToDelete));
+        return new CommandResult(String.format(MESSAGE_DELETE_REGIME_SUCCESS, name, regimeToDelete),
+                ListResourceType.REGIME);
     }
 
     /**
@@ -85,6 +87,7 @@ public class DeleteRegimeCommand extends DeleteCommand implements PayloadCarrier
         Regime editedRegime = originalRegime.deepCopy();
         List<Exercise> currentExerciseList = originalRegime.getRegimeExercises().asUnmodifiableObservableList();
         checkValidIndexes(indexes, currentExerciseList);
+        checkDuplicateIndexes(indexes);
 
         for (Index targetIndex : indexes) {
             Exercise exerciseToDelete = currentExerciseList.get(targetIndex.getZeroBased());
@@ -94,7 +97,8 @@ public class DeleteRegimeCommand extends DeleteCommand implements PayloadCarrier
         addToEventPayloadForEditRegime(originalRegime, editedRegime);
         model.setRegime(originalRegime, editedRegime);
         model.updateFilteredRegimeList(Model.PREDICATE_SHOW_ALL_REGIMES);
-        return new CommandResult(String.format(MESSAGE_DELETE_EXERCISE_IN_REGIME_SUCCESS, editedRegime));
+        return new CommandResult(String.format(MESSAGE_DELETE_EXERCISE_IN_REGIME_SUCCESS, editedRegime),
+                ListResourceType.REGIME);
     }
 
     /**
@@ -122,6 +126,18 @@ public class DeleteRegimeCommand extends DeleteCommand implements PayloadCarrier
             if (targetIndex.getZeroBased() >= exerciseList.size()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_EXERCISE_DISPLAYED_INDEX);
             }
+        }
+    }
+
+    /**
+     * Checks whether the given indexes contain duplicates.
+     *
+     * @throws CommandException If a duplicate index is found
+     */
+    private void checkDuplicateIndexes(List<Index> indexes) throws CommandException {
+        HashSet<Index> set = new HashSet<>(indexes);
+        if (set.size() < indexes.size()) {
+            throw new CommandException(MESSAGE_DUPLICATE_INDEX);
         }
     }
 

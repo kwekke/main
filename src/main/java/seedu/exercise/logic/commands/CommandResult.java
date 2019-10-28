@@ -2,7 +2,10 @@ package seedu.exercise.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.List;
 import java.util.Objects;
+
+import seedu.exercise.ui.ListResourceType;
 
 /**
  * Represents the result of a command execution.
@@ -14,25 +17,31 @@ public class CommandResult {
     /**
      * Help information should be shown to the user.
      */
-    private final boolean showHelp;
+    private boolean showHelp;
 
     /**
      * The application should exit.
      */
-    private final boolean exit;
-
-    private boolean showExerciseList = false;
-
-    private boolean showRegimeList = false;
-
-    private boolean showScheduleList = false;
-
-    private boolean showSuggestionlist = false;
+    private boolean exit;
 
     /**
      * Show the resolve window to user due to scheduling conflict
      */
-    private final boolean showResolve;
+    private boolean showResolve;
+
+    /**
+     * The type of resource to be shown in the GUI.
+     */
+    private ListResourceType showListResourceType;
+
+    public CommandResult(String feedbackToUser, boolean showHelp,
+                         boolean isExit, boolean showResolve, String listResourceType) {
+        this.feedbackToUser = requireNonNull(feedbackToUser);
+        this.showHelp = showHelp;
+        this.exit = isExit;
+        this.showResolve = showResolve;
+        this.showListResourceType = ListResourceType.valueOf(listResourceType);
+    }
 
     /**
      * Constructs a {@code CommandResult} with the specified fields.
@@ -52,47 +61,32 @@ public class CommandResult {
         this(feedbackToUser, false, false, false);
     }
 
+    public CommandResult(String feedbackToUser, ListResourceType listResourceType) {
+        this(feedbackToUser);
+        this.showListResourceType = listResourceType;
+    }
+
     public String getFeedbackToUser() {
         return feedbackToUser;
     }
 
-    /**
-     * Checks that {@code CommandResult} is only showing at most 1 resource list
-     * and sets {@code showExerciseList} to be true
-     */
-    public CommandResult setShowExerciseList() {
-        assert !(showExerciseList || showRegimeList || showScheduleList || showSuggestionlist);
-        showExerciseList = true;
+    public CommandResult setHelp() {
+        this.showHelp = true;
         return this;
     }
 
-    /**
-     * Checks that {@code CommandResult} is only showing at most 1 resource list
-     * and sets {@code showRegimeList} to be true
-     */
-    public CommandResult setShowRegimeList() {
-        assert !(showExerciseList || showRegimeList || showScheduleList || showSuggestionlist);
-        this.showRegimeList = true;
+    public CommandResult setExit() {
+        this.exit = true;
         return this;
     }
 
-    /**
-     * Checks that {@code CommandResult} is only showing at most 1 resource list
-     * and sets {@code showScheduleList} to be true
-     */
-    public CommandResult setShowScheduleList() {
-        assert !(showExerciseList || showRegimeList || showScheduleList || showSuggestionlist);
-        this.showScheduleList = true;
+    public CommandResult setResolve() {
+        this.showResolve = true;
         return this;
     }
 
-    /**
-     * Checks that {@code CommandResult} is only showing at most 1 resource list
-     * and sets {@code showSuggestionList} to be true
-     */
-    public CommandResult setShowSuggestionList() {
-        assert !(showExerciseList || showRegimeList || showScheduleList || showSuggestionlist);
-        this.showSuggestionlist = true;
+    public CommandResult setShowList(ListResourceType listResourceType) {
+        showListResourceType = listResourceType;
         return this;
     }
 
@@ -104,24 +98,12 @@ public class CommandResult {
         return exit;
     }
 
-    public boolean isShowExerciseList() {
-        return showExerciseList;
-    }
-
-    public boolean isShowRegimeList() {
-        return showRegimeList;
-    }
-
-    public boolean isShowScheduleList() {
-        return showScheduleList;
-    }
-
-    public boolean isShowSuggestionList() {
-        return showSuggestionlist;
-    }
-
     public boolean isShowResolve() {
         return showResolve;
+    }
+
+    public ListResourceType getShowListResourceType() {
+        return showListResourceType;
     }
 
     @Override
@@ -138,12 +120,13 @@ public class CommandResult {
         CommandResult otherCommandResult = (CommandResult) other;
         return feedbackToUser.equals(otherCommandResult.feedbackToUser)
             && showHelp == otherCommandResult.showHelp
-            && exit == otherCommandResult.exit;
+            && exit == otherCommandResult.exit
+            && showResolve == otherCommandResult.showResolve;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(feedbackToUser, showHelp, exit);
+        return Objects.hash(feedbackToUser, showHelp, exit, showResolve);
     }
 
 }

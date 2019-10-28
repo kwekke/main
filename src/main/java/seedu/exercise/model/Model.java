@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import seedu.exercise.commons.core.GuiSettings;
 import seedu.exercise.commons.core.State;
 import seedu.exercise.commons.core.index.Index;
+import seedu.exercise.logic.commands.statistic.Statistic;
 import seedu.exercise.logic.parser.Prefix;
 import seedu.exercise.model.conflict.Conflict;
 import seedu.exercise.model.property.CustomProperty;
@@ -187,6 +188,13 @@ public interface Model {
     void addSchedule(Schedule schedule);
 
     /**
+     * Removes a {@code schedule} for the user.
+     * This method will not add the schedule to exercise tracker for tracking.
+     */
+    void removeSchedule(Schedule schedule);
+
+
+    /**
      * Returns the data in the regime book
      */
     ReadOnlyResourceBook<Schedule> getAllScheduleData();
@@ -254,6 +262,11 @@ public interface Model {
     void addCustomProperty(CustomProperty customProperty);
 
     /**
+     * Removes the custom property with the given {@code fullName} from the PropertyBook.
+     */
+    void removeCustomProperty(String fullName);
+
+    /**
      * Returns an unmodifiable view of the list of suggested exercises
      */
     ObservableList<Exercise> getSuggestedExerciseList();
@@ -277,8 +290,22 @@ public interface Model {
     ReadOnlyResourceBook<Exercise> getDatabaseBook();
 
     /**
+     * Update statistic with updated exercises.
+     */
+    void updateStatistic();
+
+    /**
+     * Set the statistic to the updated statistic.
+     */
+    void setStatistic(Statistic statistic);
+
+    /**
+     * Returns the Statistic object currently in focus.
+     */
+    Statistic getStatistic();
+
+    /**
      * Returns the data in the exercise database
      */
-    public ReadOnlyResourceBook<Exercise> getExerciseDatabaseData();
-
+    ReadOnlyResourceBook<Exercise> getExerciseDatabaseData();
 }

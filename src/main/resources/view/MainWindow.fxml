@@ -49,7 +49,7 @@
                     </center>
 
                     <right>
-                        <StackPane fx:id="statsDisplayPanelPlaceholder" BorderPane.alignment="CENTER"/>
+                        <StackPane fx:id="chartPlaceholder" BorderPane.alignment="CENTER"/>
                     </right>
                 </BorderPane>
 

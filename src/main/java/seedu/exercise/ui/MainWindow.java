@@ -1,5 +1,6 @@
 package seedu.exercise.ui;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import seedu.exercise.commons.core.LogsCenter;
 import seedu.exercise.logic.Logic;
 import seedu.exercise.logic.commands.CommandResult;
 import seedu.exercise.logic.commands.exceptions.CommandException;
+import seedu.exercise.logic.commands.statistic.Statistic;
 import seedu.exercise.logic.parser.exceptions.ParseException;
 
 /**
@@ -65,10 +67,10 @@ public class MainWindow extends UiPart<Stage> {
     private StackPane infoDisplayPanelPlaceholder;
 
     @FXML
-    private StackPane statsDisplayPanelPlaceholder;
+    private ImageView logoImageView;
 
     @FXML
-    private ImageView logoImageView;
+    private StackPane chartPlaceholder;
 
     public MainWindow(Stage primaryStage, Logic logic) {
         super(FXML, primaryStage);
@@ -127,10 +129,25 @@ public class MainWindow extends UiPart<Stage> {
         infoDisplayPanel = new InfoDisplayPanel();
         infoDisplayPanelPlaceholder.getChildren().add(infoDisplayPanel.getRoot());
 
-        statsDisplayPanel = new StatsDisplayPanel();
-        statsDisplayPanelPlaceholder.getChildren().add(statsDisplayPanel.getRoot());
+        chartPlaceholder.getChildren().add(new LineChartPanel(logic.getStatistic()).getRoot());
+
     }
 
+    /**
+     * Sets the chart type in chartPlaceholder according to user input.
+     */
+    private void setChart() {
+        Statistic statistic = logic.getStatistic();
+        String chart = statistic.getChart();
+        chartPlaceholder.getChildren().clear();
+        if (chart.equals("barchart")) {
+            chartPlaceholder.getChildren().add(new BarChartPanel(statistic).getRoot());
+        } else if (chart.equals("linechart")) {
+            chartPlaceholder.getChildren().add(new LineChartPanel(statistic).getRoot());
+        } else {
+            chartPlaceholder.getChildren().add(new PieChartPanel(statistic).getRoot());
+        }
+    }
     /**
      * Sets the default size based on {@code guiSettings}.
      */
@@ -140,6 +157,50 @@ public class MainWindow extends UiPart<Stage> {
         if (guiSettings.getWindowCoordinates() != null) {
             primaryStage.setX(guiSettings.getWindowCoordinates().getX());
             primaryStage.setY(guiSettings.getWindowCoordinates().getY());
+        }
+    }
+
+    /**
+     * Executes the command and returns the result.
+     *
+     * @see seedu.exercise.logic.Logic#execute(String)
+     */
+    private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
+        try {
+            CommandResult commandResult = logic.execute(commandText);
+            logger.info("Result: " + commandResult.getFeedbackToUser());
+            resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
+            setChart();
+
+            shouldShowWindowsBasedOnCommandResult(commandResult);
+            shouldExitAppBasedOnCommandResult(commandResult);
+            updateResourceListTab(commandResult);
+
+            return commandResult;
+        } catch (CommandException | ParseException e) {
+            logger.info("Invalid command: " + commandText);
+            resultDisplay.setFeedbackToUser(e.getMessage());
+            throw e;
+        }
+    }
+
+    /**
+     * Checks if a secondary window should be shown based on the command results.
+     * Method will show the windows if it is to be shown.
+     */
+    private void shouldShowWindowsBasedOnCommandResult(CommandResult commandResult) {
+        if (commandResult.isShowHelp()) {
+            handleHelp();
+        }
+
+        if (commandResult.isShowResolve()) {
+            handleResolve();
+        }
+    }
+
+    private void shouldExitAppBasedOnCommandResult(CommandResult commandResult) {
+        if (commandResult.isExit()) {
+            handleExit();
         }
     }
 
@@ -185,6 +246,31 @@ public class MainWindow extends UiPart<Stage> {
         primaryStage.hide();
     }
 
+    /**
+     * Checks if a the resource list has to change based on the {@code CommandResult}
+     */
+    private void updateResourceListTab(CommandResult commandResult) {
+        switch (commandResult.getShowListResourceType().name()) {
+        case "NULL":
+            //no change to GUI
+            return;
+        case "EXERCISE":
+            handleShowExerciseList();
+            return;
+        case "REGIME":
+            handleShowRegimeList();
+            return;
+        case "SCHEDULE":
+            handleShowScheduleList();
+            return;
+        case "SUGGESTION":
+            handleShowSuggestionList();
+            return;
+        default:
+            throw new AssertionError(ListResourceType.LIST_RESOURCE_TYPE_CONSTRAINTS);
+        }
+    }
+
     private void changeTab(Tab tab) {
         resourceListPanelPlaceholder.getSelectionModel().select(tab);
     }
@@ -205,80 +291,4 @@ public class MainWindow extends UiPart<Stage> {
         resourceListPanelPlaceholder.getSelectionModel().select(suggestionListTabPlaceholder);
     }
 
-    /**
-     * Executes the command and returns the result.
-     *
-     * @see seedu.exercise.logic.Logic#execute(String)
-     */
-    private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
-        try {
-            CommandResult commandResult = logic.execute(commandText);
-            logger.info("Result: " + commandResult.getFeedbackToUser());
-            resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
-
-            shouldShowWindowsBasedOnCommandResult(commandResult);
-            shouldExitAppBasedOnCommandResult(commandResult);
-            updateResourceListTab(commandResult);
-
-            return commandResult;
-        } catch (CommandException | ParseException e) {
-            logger.info("Invalid command: " + commandText);
-            resultDisplay.setFeedbackToUser(e.getMessage());
-            throw e;
-        }
-    }
-
-    /**
-     * Checks if a secondary window should be shown based on the command results.
-     * Method will show the windows if it is to be shown.
-     */
-    private void shouldShowWindowsBasedOnCommandResult(CommandResult commandResult) {
-        if (commandResult.isShowHelp()) {
-            handleHelp();
-        }
-
-        if (commandResult.isShowResolve()) {
-            handleResolve();
-        }
-    }
-
-    private void shouldExitAppBasedOnCommandResult(CommandResult commandResult) {
-        if (commandResult.isExit()) {
-            handleExit();
-        }
-    }
-
-    /**
-     * Checks if a the resource list has to change based on the {@code CommandResult}
-     */
-    private void updateResourceListTab(CommandResult commandResult) {
-        shouldShowExerciseList(commandResult);
-        shouldShowRegimeList(commandResult);
-        shouldShowScheduleList(commandResult);
-        shouldShowSuggestionList(commandResult);
-    }
-
-    private void shouldShowExerciseList(CommandResult commandResult) {
-        if (commandResult.isShowExerciseList()) {
-            handleShowExerciseList();
-        }
-    }
-
-    private void shouldShowRegimeList(CommandResult commandResult) {
-        if (commandResult.isShowRegimeList()) {
-            handleShowRegimeList();
-        }
-    }
-
-    private void shouldShowScheduleList(CommandResult commandResult) {
-        if (commandResult.isShowScheduleList()) {
-            handleShowScheduleList();
-        }
-    }
-
-    private void shouldShowSuggestionList(CommandResult commandResult) {
-        if (commandResult.isShowSuggestionList()) {
-            handleShowSuggestionList();
-        }
-    }
 }

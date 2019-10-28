@@ -13,6 +13,7 @@ import seedu.exercise.logic.commands.events.EventPayload;
 import seedu.exercise.logic.commands.exceptions.CommandException;
 import seedu.exercise.model.Model;
 import seedu.exercise.model.resource.Exercise;
+import seedu.exercise.ui.ListResourceType;
 
 /**
  * Deletes an exercise identified using it's displayed index from the exercise book.
@@ -42,9 +43,10 @@ public class DeleteExerciseCommand extends DeleteCommand implements PayloadCarri
         Exercise exerciseToDelete = lastShownList.get(targetIndex.getZeroBased());
         eventPayload.put(KEY_EXERCISE_TO_DELETE, exerciseToDelete);
         model.deleteExercise(exerciseToDelete);
+        model.updateStatistic();
         EventHistory.getInstance().addCommandToUndoStack(this);
-        return new CommandResult(String.format(MESSAGE_DELETE_EXERCISE_SUCCESS, exerciseToDelete))
-                .setShowExerciseList();
+        return new CommandResult(String.format(MESSAGE_DELETE_EXERCISE_SUCCESS, exerciseToDelete),
+                ListResourceType.EXERCISE);
     }
 
     @Override

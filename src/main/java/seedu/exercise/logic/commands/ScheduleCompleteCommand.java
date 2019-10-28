@@ -8,6 +8,7 @@ import seedu.exercise.commons.core.index.IndexUtil;
 import seedu.exercise.logic.commands.exceptions.CommandException;
 import seedu.exercise.model.Model;
 import seedu.exercise.model.resource.Schedule;
+import seedu.exercise.ui.ListResourceType;
 
 /**
  * Completes a schedule and removes it from the schedule list.
@@ -19,6 +20,7 @@ public class ScheduleCompleteCommand extends ScheduleCommand {
     private Index index;
 
     public ScheduleCompleteCommand(Index index) {
+        requireNonNull(index);
         this.index = index;
     }
 
@@ -29,8 +31,15 @@ public class ScheduleCompleteCommand extends ScheduleCommand {
         checkValidIndex(model);
         completeSchedule(model);
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Integer.toString(index.getOneBased())))
-                .setShowScheduleList();
+        return new CommandResult(String.format(MESSAGE_SUCCESS, Integer.toString(index.getOneBased())),
+                ListResourceType.SCHEDULE);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof ScheduleCompleteCommand // instanceof handles nulls
+                && index.equals(((ScheduleCompleteCommand) other).index));
     }
 
     private void completeSchedule(Model model) {

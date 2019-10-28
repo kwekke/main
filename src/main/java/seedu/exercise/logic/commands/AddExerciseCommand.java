@@ -15,6 +15,7 @@ import seedu.exercise.logic.commands.events.EventPayload;
 import seedu.exercise.logic.commands.exceptions.CommandException;
 import seedu.exercise.model.Model;
 import seedu.exercise.model.resource.Exercise;
+import seedu.exercise.ui.ListResourceType;
 
 /**
  * Adds an exercise to the exercise book.
@@ -62,9 +63,10 @@ public class AddExerciseCommand extends AddCommand implements PayloadCarrierComm
         }
 
         model.addExercise(exerciseToAdd);
+        model.updateStatistic();
         eventPayload.put(KEY_EXERCISE_TO_ADD, exerciseToAdd);
         EventHistory.getInstance().addCommandToUndoStack(this);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, exerciseToAdd)).setShowExerciseList();
+        return new CommandResult(String.format(MESSAGE_SUCCESS, exerciseToAdd), ListResourceType.EXERCISE);
     }
 
     @Override
@@ -75,6 +77,7 @@ public class AddExerciseCommand extends AddCommand implements PayloadCarrierComm
     @Override
     public String getResourceType() {
         return RESOURCE_TYPE;
+
     }
 
     @Override

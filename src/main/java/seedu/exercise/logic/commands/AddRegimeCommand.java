@@ -23,6 +23,7 @@ import seedu.exercise.model.UniqueResourceList;
 import seedu.exercise.model.property.Name;
 import seedu.exercise.model.resource.Exercise;
 import seedu.exercise.model.resource.Regime;
+import seedu.exercise.ui.ListResourceType;
 
 /**
  * Adds a regime to the regime book.
@@ -62,14 +63,14 @@ public class AddRegimeCommand extends AddCommand implements PayloadCarrierComman
         requireNonNull(model);
 
         List<Exercise> lastShownList = model.getFilteredExerciseList();
-        checkDuplicateIndexes();
+        checkDuplicateIndexes(toAddIndexes);
         checkValidIndexes(toAddIndexes, lastShownList);
 
         CommandResult commandResult;
         if (!isRegimeInModel(model)) {
-            commandResult = addNewRegimeToModel(model).setShowRegimeList();
+            commandResult = addNewRegimeToModel(model);
         } else {
-            commandResult = addExercisesToExistingRegime(model).setShowRegimeList();
+            commandResult = addExercisesToExistingRegime(model);
         }
         EventHistory.getInstance().addCommandToUndoStack(this);
         return commandResult;
@@ -86,7 +87,7 @@ public class AddRegimeCommand extends AddCommand implements PayloadCarrierComman
         addExercisesToRegime(regime, model);
         model.addRegime(regime);
         addToEventPayloadForAddRegime(regime);
-        return new CommandResult(MESSAGE_SUCCESS_NEW_REGIME);
+        return new CommandResult(MESSAGE_SUCCESS_NEW_REGIME, ListResourceType.REGIME);
     }
 
     /**
@@ -104,7 +105,7 @@ public class AddRegimeCommand extends AddCommand implements PayloadCarrierComman
 
         model.setRegime(originalRegime, editedRegime);
         model.updateFilteredRegimeList(Model.PREDICATE_SHOW_ALL_REGIMES);
-        return new CommandResult(MESSAGE_SUCCESS_ADD_EXERCISE_TO_REGIME);
+        return new CommandResult(MESSAGE_SUCCESS_ADD_EXERCISE_TO_REGIME, ListResourceType.REGIME);
     }
 
     /**
@@ -164,9 +165,9 @@ public class AddRegimeCommand extends AddCommand implements PayloadCarrierComman
      *
      * @throws CommandException If a duplicate index is found
      */
-    private void checkDuplicateIndexes() throws CommandException {
-        HashSet<Index> indexesSet = new HashSet<>(toAddIndexes);
-        if (indexesSet.size() < toAddIndexes.size()) {
+    private void checkDuplicateIndexes(List<Index> indexes) throws CommandException {
+        HashSet<Index> set = new HashSet<>(indexes);
+        if (set.size() < indexes.size()) {
             throw new CommandException(MESSAGE_DUPLICATE_INDEX);
         }
     }

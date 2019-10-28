@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
+import seedu.exercise.ui.ListResourceType;
 
 public class CommandResultTest {
     @Test
@@ -14,7 +15,6 @@ public class CommandResultTest {
 
         // same values -> returns true
         assertTrue(commandResult.equals(new CommandResult("feedback")));
-        assertTrue(commandResult.equals(new CommandResult("feedback", false, false, false)));
 
         // same object -> returns true
         assertTrue(commandResult.equals(commandResult));
