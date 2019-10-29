@@ -57,8 +57,23 @@ public class ExerciseMusclePredicate implements BasePropertyPredicate {
     public boolean equals(Object other) {
         return other == this //short circuit if same object
             || (other instanceof ExerciseMusclePredicate //instanceof handles null
-            && muscles.equals(((ExerciseMusclePredicate) other).muscles)
+            && musclesEquals(muscles, (((ExerciseMusclePredicate) other).muscles))
             && isStrict == ((ExerciseMusclePredicate) other).isStrict);
+    }
+
+    /**
+     * Returns true if two sets of {@code Muscle} contain the same keys.
+     */
+    private boolean musclesEquals(Set<Muscle> muscles, Set<Muscle> otherMuscles) {
+        if (muscles.size() != otherMuscles.size()) {
+            return false;
+        }
+
+        if (muscles.containsAll(otherMuscles) && otherMuscles.containsAll(muscles)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

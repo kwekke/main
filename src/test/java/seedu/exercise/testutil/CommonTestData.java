@@ -2,15 +2,20 @@ package seedu.exercise.testutil;
 
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_CALORIES;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_CATEGORY;
+import static seedu.exercise.logic.parser.CliSyntax.PREFIX_CHART;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_CONFLICT_INDEX;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_CUSTOM_NAME;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_DATE;
+import static seedu.exercise.logic.parser.CliSyntax.PREFIX_END_DATE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_FULL_NAME;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_MUSCLE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.exercise.logic.parser.CliSyntax.PREFIX_OPERATION_TYPE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_PARAMETER_TYPE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_QUANTITY;
+import static seedu.exercise.logic.parser.CliSyntax.PREFIX_START_DATE;
+import static seedu.exercise.logic.parser.CliSyntax.PREFIX_SUGGEST_TYPE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_UNIT;
 
 import seedu.exercise.logic.commands.EditCommand;
@@ -63,6 +68,10 @@ public class CommonTestData {
     public static final String INVALID_PREFIX_DATE_WRONG_FORMAT = " " + PREFIX_DATE + INVALID_DATE_WRONG_FORMAT;
     public static final String INVALID_PREFIX_DATE_ALPHABETS = " " + PREFIX_DATE + INVALID_DATE_ALPHABETS;
     public static final String INVALID_PREFIX_DATE_SYMBOLS = " " + PREFIX_DATE + INVALID_DATE_SYMBOLS;
+
+    //=======================For invalid ALPHABETS AND SPACES=============================
+    public static final String INVALID_NUMBERS_FOR_ALPHABETS_AND_SPACES = "words123";
+    public static final String INVALID_SYMBOLS_FOR_ALPHABETS_AND_SPACES = "legitwords@#%";
 
     //=======================For invalids index=============================
     public static final String INVALID_INDEX_ZERO = "0";
@@ -187,8 +196,14 @@ public class CommonTestData {
     public static final String PARAMETER_TYPE_DESC_END_DATE = " "
             + PREFIX_PARAMETER_TYPE + VALID_PARAMETER_TYPE_END_DATE;
     public static final String VALID_VALUE_RATING = "1";
+    public static final String DESC_PREFIX_WITH_VALUE_RATING = " " + VALID_PREFIX_NAME_RATING + '/'
+            + VALID_VALUE_RATING;
     public static final String VALID_VALUE_REMARK = "hi";
+    public static final String DESC_PREFIX_WITH_VALUE_REMARK = " " + VALID_PREFIX_NAME_REMARK + '/'
+            + VALID_VALUE_REMARK;
     public static final String VALID_VALUE_ENDDATE = "24/12/2019";
+    public static final String DESC_PREFIX_WITH_VALUE_ENDDATE = " " + VALID_PREFIX_NAME_END_DATE + '/'
+            + VALID_VALUE_ENDDATE;
 
     //=======================For invalid custom properties=============================
     public static final String INVALID_PREFIX_NAME_DESC = " "
@@ -198,4 +213,79 @@ public class CommonTestData {
     public static final String INVALID_PARAMETER_TYPE_DESC = " "
             + PREFIX_PARAMETER_TYPE + "integer"; //integer not allowed in parameter type
 
+    //=======================For valid suggestions=============================
+    public static final String VALID_SUGGEST_TYPE_BASIC = "basic";
+    public static final String VALID_SUGGEST_TYPE_POSSIBLE = "possible";
+    public static final String DESC_SUGGEST_TYPE_BASIC = " " + PREFIX_SUGGEST_TYPE + VALID_SUGGEST_TYPE_BASIC;
+    public static final String DESC_SUGGEST_TYPE_POSSIBLE = " " + PREFIX_SUGGEST_TYPE + VALID_SUGGEST_TYPE_POSSIBLE;
+
+    //=======================For invalid suggestions=============================
+    public static final String INVALID_SUGGEST_TYPE = "basicallyimpossible";
+    public static final String INVALID_DESC_SUGGEST_TYPE = " " + PREFIX_SUGGEST_TYPE + INVALID_SUGGEST_TYPE;
+
+    //=======================For valid operation types=============================
+    public static final String VALID_OPERATION_TYPE_AND = "and";
+    public static final String VALID_OPERATION_TYPE_OR = "or";
+    public static final String DESC_OPERATION_TYPE_AND = " " + PREFIX_OPERATION_TYPE + VALID_OPERATION_TYPE_AND;
+    public static final String DESC_OPERATION_TYPE_OR = " " + PREFIX_OPERATION_TYPE + VALID_OPERATION_TYPE_OR;
+
+    //=======================For invalid operation types=============================
+    public static final String INVALID_OPERATION_TYPE = "notALogicalOperator";
+    public static final String INVALID_DESC_OPERATION_TYPE = " " + PREFIX_OPERATION_TYPE + INVALID_OPERATION_TYPE;
+
+    //=======================For valid exercise toString============================
+    public static final String VALID_BASKETBALL_STRING_WITH_CUSTOM_PROPERTY =
+            VALID_NAME_BASKETBALL
+                    + " Date: "
+                    + VALID_DATE_BASKETBALL
+                    + " Calories: "
+                    + VALID_CALORIES_BASKETBALL
+                    + " Quantity: "
+                    + VALID_QUANTITY_BASKETBALL
+                    + " Unit: "
+                    + VALID_UNIT_BASKETBALL
+                    + " Muscle(s): "
+                    +
+                    "["
+                    + VALID_MUSCLE_AEROBICS
+                    + "]"
+                    + "["
+                    + VALID_MUSCLE_BASKETBALL
+                    + "] "
+                    + VALID_PREFIX_NAME_RATING
+                    + ": "
+                    + VALID_PREFIX_NAME_REMARK;
+
+    //=======================For valid regime toString============================
+    public static final String VALID_REGIME_STRING_FOR_TYPICAL_REGIME_CARDIO = "Exercise 1: Walking\n"
+            + "Exercise 2: Swimming\n"
+            + "Exercise 3: Dancing\n"
+            + "Exercise 4: Bench Press\n"
+            + "Exercise 5: Skipping\n"
+            + "Exercise 6: Sprinting\nExercise 7: Snapping\n";
+    //====================For valid statistic=============================================
+    public static final String VALID_LINE_CHART = "linechart";
+    public static final String VALID_BAR_CHART = "barchart";
+    public static final String VALID_PIE_CHART = "piechart";
+    public static final String VALID_END_DATE = "23/10/2019";
+    public static final String VALID_START_DATE = "17/10/2019";
+    public static final String VALID_STATISTIC_CATEGORY_CALORIES = "calories";
+    public static final String VALID_STATISTIC_CATEGORY_EXERCISE = "exercise";
+
+    public static final String LINE_CHART_DESC = " " + PREFIX_CHART + VALID_LINE_CHART;
+    public static final String END_DATE_DESC = " " + PREFIX_END_DATE + VALID_END_DATE;
+    public static final String START_DATE_DESC = " " + PREFIX_START_DATE + VALID_START_DATE;
+    public static final String STATISTIC_CATEGORY_DESC = " " + PREFIX_CATEGORY + VALID_STATISTIC_CATEGORY_CALORIES;
+
+    //======================For invalid statistic=======================================================
+    public static final String INVALID_CHART = "invalidchart";
+    public static final String INVALID_END_DATE = "01/01/2019"; //invalid because is before start date
+    public static final String INVALID_END_DATE_TOO_FAR_APART = "12/12/2019";
+    public static final String INVALID_STATISTIC_CATEGORY = "invalidcalories";
+
+    public static final String INVALID_CHART_DESC = " " + PREFIX_CHART + INVALID_CHART;
+    public static final String INVALID_STATISTIC_CATEGORY_DESC = " " + PREFIX_CATEGORY + INVALID_STATISTIC_CATEGORY;
+    public static final String INVALID_END_DATE_DESC = " " + PREFIX_END_DATE + INVALID_END_DATE;
+    public static final String INVALID_END_DATE_TOO_FAR_APART_DESC = " " + PREFIX_END_DATE
+            + INVALID_END_DATE_TOO_FAR_APART;
 }

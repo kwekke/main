@@ -1,6 +1,8 @@
 package seedu.exercise.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.exercise.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.exercise.commons.core.Messages.MESSAGE_INVALID_TYPE;
 import static seedu.exercise.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.exercise.logic.parser.AddCommandParser.ADD_CATEGORY_EXERCISE;
 import static seedu.exercise.logic.parser.AddCommandParser.ADD_CATEGORY_REGIME;
@@ -12,15 +14,16 @@ import static seedu.exercise.model.property.PropertyBook.getCustomProperties;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.Predicate;
 
 import seedu.exercise.commons.core.index.Index;
 import seedu.exercise.commons.util.StringUtil;
+import seedu.exercise.logic.commands.SuggestCommand;
 import seedu.exercise.logic.commands.statistic.Statistic;
 import seedu.exercise.logic.parser.exceptions.ParseException;
 import seedu.exercise.logic.parser.predicate.BasePropertyPredicate;
@@ -197,9 +200,9 @@ public class ParserUtil {
         requireNonNull(category);
         String trimmedCategory = category.trim();
         if (!trimmedCategory.equals(ADD_CATEGORY_EXERCISE)
-                && !trimmedCategory.equals(ADD_CATEGORY_REGIME)) {
+            && !trimmedCategory.equals(ADD_CATEGORY_REGIME)) {
             throw new ParseException("Category can only be \'" + ADD_CATEGORY_EXERCISE + "\'"
-                    + " or \'" + ADD_CATEGORY_REGIME + "\'");
+                + " or \'" + ADD_CATEGORY_REGIME + "\'");
         }
         return trimmedCategory;
     }
@@ -213,7 +216,7 @@ public class ParserUtil {
         throws ParseException {
         requireNonNull(customProperties);
         List<CustomProperty> allCustomProperties = getCustomProperties();
-        final Map<String, String> customPropertiesMap = new HashMap<>();
+        final Map<String, String> customPropertiesMap = new TreeMap<>();
         for (CustomProperty property : allCustomProperties) {
             String propertyName = property.getFullName();
             if (customProperties.containsKey(propertyName)) {
@@ -296,9 +299,9 @@ public class ParserUtil {
         requireNonNull(suggestType);
         String trimmedSuggestType = suggestType.trim();
         if (!trimmedSuggestType.equals(SUGGEST_TYPE_BASIC)
-                && !trimmedSuggestType.equals(SUGGEST_TYPE_POSSIBLE)) {
-            throw new ParseException("Suggest type can only be \'" + SUGGEST_TYPE_BASIC + "\'"
-                    + " or \'" + SUGGEST_TYPE_POSSIBLE + "\'");
+            && !trimmedSuggestType.equals(SUGGEST_TYPE_POSSIBLE)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_TYPE, "Suggest type", SUGGEST_TYPE_BASIC, SUGGEST_TYPE_POSSIBLE));
         }
         return trimmedSuggestType;
     }
@@ -330,13 +333,17 @@ public class ParserUtil {
      * into a {@code Predicate<Exercise>}.
      */
     public static Predicate<Exercise> parsePredicate(
-            Set<Muscle> muscles, Map<String, String> customProperties, boolean isStrict) {
+            Set<Muscle> muscles, Map<String, String> customProperties, boolean isStrict) throws ParseException {
         requireNonNull(muscles);
         requireNonNull(customProperties);
-        requireNonNull(isStrict);
+
+        if (muscles.isEmpty() && customProperties.isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SuggestCommand.MESSAGE_USAGE));
+        }
+
         BasePropertyPredicate musclePredicate = new ExerciseMusclePredicate(muscles, isStrict);
         BasePropertyPredicate customPropertiesPredicate =
-                new ExerciseCustomPropertyPredicate(customProperties, isStrict);
+            new ExerciseCustomPropertyPredicate(customProperties, isStrict);
 
         if (muscles.isEmpty()) {
             return new ExercisePredicate(isStrict, customPropertiesPredicate);

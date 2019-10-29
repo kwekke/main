@@ -2,7 +2,7 @@ package seedu.exercise.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.exercise.logic.commands.events.EditEvent.KEY_EDITED_EXERCISE;
-import static seedu.exercise.logic.commands.events.EditEvent.KEY_EXERCISE_TO_EDIT;
+import static seedu.exercise.logic.commands.events.EditEvent.KEY_ORIGINAL_EXERCISE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_CALORIES;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_MUSCLE;
@@ -12,12 +12,12 @@ import static seedu.exercise.logic.parser.CliSyntax.PREFIX_UNIT;
 import static seedu.exercise.logic.parser.predicate.PredicateUtil.PREDICATE_SHOW_ALL_EXERCISES;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeMap;
 
 import seedu.exercise.commons.core.Messages;
 import seedu.exercise.commons.core.index.Index;
@@ -34,6 +34,7 @@ import seedu.exercise.model.property.Name;
 import seedu.exercise.model.property.Quantity;
 import seedu.exercise.model.property.Unit;
 import seedu.exercise.model.resource.Exercise;
+import seedu.exercise.ui.ListResourceType;
 
 /**
  * Edits the details of an existing exercise in the exercise book.
@@ -98,7 +99,8 @@ public class EditCommand extends Command implements UndoableCommand, PayloadCarr
         EventHistory.getInstance().addCommandToUndoStack(this);
         model.updateFilteredExerciseList(PREDICATE_SHOW_ALL_EXERCISES);
         model.updateStatistic();
-        return new CommandResult(String.format(MESSAGE_EDIT_EXERCISE_SUCCESS, editedExercise));
+        return new CommandResult(String.format(MESSAGE_EDIT_EXERCISE_SUCCESS, editedExercise),
+                ListResourceType.EXERCISE);
     }
 
     @Override
@@ -118,7 +120,7 @@ public class EditCommand extends Command implements UndoableCommand, PayloadCarr
      * @param editedExercise the exercise after it is edited
      */
     private void addToEventPayload(Exercise exerciseToEdit, Exercise editedExercise) {
-        eventPayload.put(KEY_EXERCISE_TO_EDIT, exerciseToEdit);
+        eventPayload.put(KEY_ORIGINAL_EXERCISE, exerciseToEdit);
         eventPayload.put(KEY_EDITED_EXERCISE, editedExercise);
     }
 
@@ -136,9 +138,9 @@ public class EditCommand extends Command implements UndoableCommand, PayloadCarr
         Quantity updatedQuantity = editExerciseDescriptor.getQuantity().orElse(exerciseToEdit.getQuantity());
         Unit updatedUnit = editExerciseDescriptor.getUnit().orElse(exerciseToEdit.getUnit());
         Set<Muscle> updatedMuscles = editExerciseDescriptor.getMuscles().orElse(exerciseToEdit.getMuscles());
-        Map<String, String> updatedCustomProperties = new HashMap<>(exerciseToEdit.getCustomProperties());
+        Map<String, String> updatedCustomProperties = new TreeMap<>(exerciseToEdit.getCustomPropertiesMap());
         Map<String, String> newCustomProperties = editExerciseDescriptor.getCustomProperties()
-            .orElse(new HashMap<>());
+            .orElse(new TreeMap<>());
         updatedCustomProperties.putAll(newCustomProperties);
 
         return new Exercise(updatedName, updatedDate, updatedCalories, updatedQuantity, updatedUnit,
@@ -271,7 +273,7 @@ public class EditCommand extends Command implements UndoableCommand, PayloadCarr
          * Sets {@code customProperties} to this object's {@code customProperties}.
          */
         public void setCustomProperties(Map<String, String> customProperties) {
-            this.customProperties = (customProperties != null) ? new HashMap<>(customProperties) : null;
+            this.customProperties = (customProperties != null) ? new TreeMap<>(customProperties) : null;
         }
 
         @Override

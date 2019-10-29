@@ -20,6 +20,7 @@ import seedu.exercise.model.UniqueResourceList;
 import seedu.exercise.model.property.Name;
 import seedu.exercise.model.resource.Exercise;
 import seedu.exercise.model.resource.Regime;
+import seedu.exercise.ui.ListResourceType;
 
 /**
  * Deletes a regime identified using it's name or deletes exercises in regime.
@@ -72,9 +73,8 @@ public class DeleteRegimeCommand extends DeleteCommand implements PayloadCarrier
     private CommandResult deleteRegimeFromModel(Regime regimeToDelete, Model model) {
         model.deleteRegime(regimeToDelete);
         addToEventPayloadForDeleteRegime(regimeToDelete);
-        return new CommandResult(String.format(MESSAGE_DELETE_REGIME_SUCCESS,
-                name,
-                regimeToDelete));
+        return new CommandResult(String.format(MESSAGE_DELETE_REGIME_SUCCESS, name, regimeToDelete),
+                ListResourceType.REGIME);
     }
 
     /**
@@ -98,7 +98,8 @@ public class DeleteRegimeCommand extends DeleteCommand implements PayloadCarrier
         addToEventPayloadForEditRegime(originalRegime, editedRegime);
         model.setRegime(originalRegime, editedRegime);
         model.updateFilteredRegimeList(PREDICATE_SHOW_ALL_REGIMES);
-        return new CommandResult(String.format(MESSAGE_DELETE_EXERCISE_IN_REGIME_SUCCESS, editedRegime));
+        return new CommandResult(String.format(MESSAGE_DELETE_EXERCISE_IN_REGIME_SUCCESS, editedRegime),
+                ListResourceType.REGIME);
     }
 
     /**
@@ -175,8 +176,19 @@ public class DeleteRegimeCommand extends DeleteCommand implements PayloadCarrier
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
-            || (other instanceof DeleteRegimeCommand // instanceof handles nulls
-            && indexes.equals(((DeleteRegimeCommand) other).indexes)); // state check
+        if (other == this) {
+            return true;
+        }
+
+        if (other instanceof DeleteRegimeCommand) {
+            if (indexes == null) {
+                return name.equals(((DeleteRegimeCommand) other).name);
+            } else {
+                return name.equals(((DeleteRegimeCommand) other).name)
+                    && indexes.equals(((DeleteRegimeCommand) other).indexes);
+            }
+        }
+
+        return false;
     }
 }

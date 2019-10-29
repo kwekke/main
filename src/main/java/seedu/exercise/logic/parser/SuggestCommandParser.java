@@ -45,13 +45,10 @@ public class SuggestCommandParser implements Parser<SuggestCommand> {
 
         if (suggestType.equals(SUGGEST_TYPE_BASIC)) {
             return new SuggestBasicCommand();
-        }
-
-        if (suggestType.equals(SUGGEST_TYPE_POSSIBLE)) {
+        } else {
+            assert(suggestType.equals(SUGGEST_TYPE_POSSIBLE));
             return parsePossible(argMultimap);
         }
-
-        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SuggestCommand.MESSAGE_USAGE));
     }
 
     private Prefix[] getPrefixes() {
@@ -69,7 +66,8 @@ public class SuggestCommandParser implements Parser<SuggestCommand> {
      * Parses arguments and returns SuggestPossibleCommand for execution
      */
     private static SuggestCommand parsePossible(ArgumentMultimap argMultimap) throws ParseException {
-        if (!argMultimap.arePrefixesPresent(PREFIX_OPERATION_TYPE) || !argMultimap.getPreamble().isEmpty()) {
+        assert(argMultimap.getPreamble().isEmpty());
+        if (!argMultimap.arePrefixesPresent(PREFIX_OPERATION_TYPE)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     SuggestCommand.MESSAGE_USAGE));
         }
@@ -78,10 +76,6 @@ public class SuggestCommandParser implements Parser<SuggestCommand> {
         Set<Muscle> muscles = ParserUtil.parseMuscles(argMultimap.getAllValues(PREFIX_MUSCLE));
         Map<String, String> customPropertiesMap =
                 ParserUtil.parseCustomProperties(argMultimap.getAllCustomProperties());
-        if (muscles.isEmpty() && customPropertiesMap.isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    SuggestCommand.MESSAGE_USAGE));
-        }
         Predicate<Exercise> predicate = parsePredicate(muscles, customPropertiesMap, operationType);
         return new SuggestPossibleCommand(predicate);
     }

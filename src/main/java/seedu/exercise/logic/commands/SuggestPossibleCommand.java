@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 import seedu.exercise.logic.commands.exceptions.CommandException;
 import seedu.exercise.model.Model;
 import seedu.exercise.model.resource.Exercise;
+import seedu.exercise.ui.ListResourceType;
 
 /**
  * Lists possible exercises to the user.
@@ -38,7 +39,7 @@ public class SuggestPossibleCommand extends SuggestCommand {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         model.updateSuggestedExerciseList(predicate);
-        return new CommandResult(MESSAGE_SUCCESS);
+        return new CommandResult(MESSAGE_SUCCESS, ListResourceType.SUGGESTION);
     }
 
     @Override

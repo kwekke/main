@@ -1,5 +1,7 @@
 package seedu.exercise.logic.commands;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.exercise.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.exercise.logic.parser.predicate.PredicateUtil.predicateShowExerciseWithCustomProperty;
 import static seedu.exercise.logic.parser.predicate.PredicateUtil.predicateShowExercisesWithMuscle;
@@ -16,10 +18,10 @@ import static seedu.exercise.testutil.CommonTestData.VALID_VALUE_RATING;
 import static seedu.exercise.testutil.CommonTestData.VALID_VALUE_REMARK;
 import static seedu.exercise.testutil.typicalutil.TypicalExercises.getTypicalExerciseBook;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +35,7 @@ import seedu.exercise.model.property.CustomProperty;
 import seedu.exercise.model.property.Muscle;
 import seedu.exercise.model.resource.Exercise;
 import seedu.exercise.testutil.builder.CustomPropertyBuilder;
+import seedu.exercise.ui.ListResourceType;
 
 public class SuggestPossibleCommandTest {
 
@@ -44,17 +47,17 @@ public class SuggestPossibleCommandTest {
     @BeforeEach
     public void setUp() {
         model = new ModelManager(getTypicalExerciseBook(), new ReadOnlyResourceBook<>(),
-                getTypicalExerciseBook(), new ReadOnlyResourceBook<>(),
-                new UserPrefs(), getDefaultPropertyBook());
+            getTypicalExerciseBook(), new ReadOnlyResourceBook<>(),
+            new UserPrefs(), getDefaultPropertyBook());
         expectedModel = new ModelManager(model.getExerciseBookData(), new ReadOnlyResourceBook<>(),
-                getTypicalExerciseBook(), new ReadOnlyResourceBook<>(),
-                new UserPrefs(), getDefaultPropertyBook());
+            getTypicalExerciseBook(), new ReadOnlyResourceBook<>(),
+            new UserPrefs(), getDefaultPropertyBook());
 
-        targetMuscles = new HashSet<Muscle>();
+        targetMuscles = new HashSet<>();
         targetMuscles.add(new Muscle(VALID_MUSCLE_AEROBICS));
         targetMuscles.add(new Muscle(VALID_MUSCLE_BASKETBALL));
 
-        targetCustomProperties = new HashMap<String, String>();
+        targetCustomProperties = new TreeMap<>();
         targetCustomProperties.put(VALID_FULL_NAME_RATING, VALID_VALUE_RATING);
         targetCustomProperties.put(VALID_FULL_NAME_REMARK, VALID_VALUE_REMARK);
         CustomProperty rating = new CustomPropertyBuilder().withPrefix(VALID_PREFIX_NAME_RATING)
@@ -65,7 +68,6 @@ public class SuggestPossibleCommandTest {
         model.getPropertyBook().addCustomProperty(remark);
         expectedModel.getPropertyBook().addCustomProperty(rating);
         expectedModel.getPropertyBook().addCustomProperty(remark);
-
     }
 
     @Test
@@ -74,8 +76,11 @@ public class SuggestPossibleCommandTest {
         Predicate<Exercise> predicateMuscleAnd = predicateShowExercisesWithMuscle(targetMuscles, isStrict);
 
         expectedModel.updateSuggestedExerciseList(predicateMuscleAnd);
+        String expectedMessage = SuggestPossibleCommand.MESSAGE_SUCCESS;
+
+        CommandResult expectedCommandResult = new CommandResult(expectedMessage, ListResourceType.SUGGESTION);
         assertCommandSuccess(new SuggestPossibleCommand(predicateMuscleAnd),
-                model, SuggestPossibleCommand.MESSAGE_SUCCESS, expectedModel);
+            model, expectedCommandResult, expectedModel);
     }
 
     @Test
@@ -85,8 +90,39 @@ public class SuggestPossibleCommandTest {
                 predicateShowExerciseWithCustomProperty(targetCustomProperties, isStrict);
 
         expectedModel.updateSuggestedExerciseList(predicateCustomPropertyAnd);
+        String expectedMessage = SuggestPossibleCommand.MESSAGE_SUCCESS;
+
+        CommandResult expectedCommandResult = new CommandResult(expectedMessage, ListResourceType.SUGGESTION);
         assertCommandSuccess(new SuggestPossibleCommand(predicateCustomPropertyAnd),
-                model, SuggestPossibleCommand.MESSAGE_SUCCESS, expectedModel);
+            model, expectedCommandResult, expectedModel);
+    }
+
+    @Test
+    public void equals() {
+        boolean isStrict = true;
+        Predicate<Exercise> predicateMuscleAnd = predicateShowExercisesWithMuscle(targetMuscles, isStrict);
+        SuggestCommand suggestPossibleCommand = new SuggestPossibleCommand(predicateMuscleAnd);
+
+        // same object -> returns true
+        assertTrue(suggestPossibleCommand.equals(suggestPossibleCommand));
+
+        // same class -> returns true
+        SuggestCommand suggestPossibleCommandCopy = new SuggestPossibleCommand(predicateMuscleAnd);
+        assertTrue(suggestPossibleCommand.equals(suggestPossibleCommandCopy));
+
+        // different types -> returns false
+        assertFalse(suggestPossibleCommand.equals(1));
+
+        // null -> returns false
+        assertFalse(suggestPossibleCommand.equals(null));
+
+        //different predicate with same values -> returns true
+        Predicate<Exercise> predicateMuscleAndCopy = predicateShowExercisesWithMuscle(targetMuscles, isStrict);
+        assertTrue(suggestPossibleCommand.equals(new SuggestPossibleCommand(predicateMuscleAndCopy)));
+
+        //different predicate with different values -> returns false
+        Predicate<Exercise> predicateMuscleOr = predicateShowExercisesWithMuscle(targetMuscles, false);
+        assertFalse(suggestPossibleCommand.equals(new SuggestPossibleCommand(predicateMuscleOr)));
     }
 
 }
