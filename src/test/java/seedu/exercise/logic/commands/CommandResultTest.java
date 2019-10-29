@@ -11,6 +11,20 @@ import seedu.exercise.ui.ListResourceType;
 
 public class CommandResultTest {
     @Test
+    public void execute_accessors_success() {
+        CommandResult commandResult = new CommandResult("feedback", true, true, true);
+
+        //boolean field accessors
+        assertTrue(commandResult.isShowHelp() == true);
+        assertTrue(commandResult.isExit() == true);
+        assertTrue(commandResult.isShowResolve() == true);
+
+        //listResourceType accessor
+        assertTrue(commandResult.getShowListResourceType().equals(ListResourceType.NULL));
+
+    }
+
+    @Test
     public void equals() {
         CommandResult commandResult = new CommandResult("feedback");
 
@@ -35,9 +49,21 @@ public class CommandResultTest {
         // different exit value -> returns false
         assertFalse(commandResult.equals(new CommandResult("feedback", false, true, false)));
 
+        // different resolve value -> returns false
+        assertFalse(commandResult.equals(new CommandResult("feedback", false, false, true)));
+
         //undefined list resource type -> returns true
         assertTrue(commandResult.equals(new CommandResult("feedback", ListResourceType.NULL)));
         assertTrue(commandResult.equals(new CommandResult("feedback", false, false, false, ListResourceType.NULL)));
+
+        assertFalse(commandResult.equals(
+                new CommandResult("feedback", false, false, false, ListResourceType.EXERCISE)));
+        assertFalse(commandResult.equals(
+                new CommandResult("feedback", false, false, false, ListResourceType.REGIME)));
+        assertFalse(commandResult.equals(
+                new CommandResult("feedback", false, false, false, ListResourceType.SCHEDULE)));
+        assertFalse(commandResult.equals(
+                new CommandResult("feedback", false, false, false, ListResourceType.SUGGESTION)));
 
         //different list resource type -> returns false
         assertFalse(commandResult.equals(new CommandResult("feedback", ListResourceType.EXERCISE)));
