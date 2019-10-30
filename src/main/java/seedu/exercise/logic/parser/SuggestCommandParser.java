@@ -46,7 +46,7 @@ public class SuggestCommandParser implements Parser<SuggestCommand> {
         if (suggestType.equals(SUGGEST_TYPE_BASIC)) {
             return new SuggestBasicCommand();
         }
-        
+
         if (suggestType.equals(SUGGEST_TYPE_POSSIBLE)) {
             return parsePossible(argMultimap);
         }
