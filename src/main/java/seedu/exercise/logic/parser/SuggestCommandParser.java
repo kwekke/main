@@ -45,10 +45,13 @@ public class SuggestCommandParser implements Parser<SuggestCommand> {
 
         if (suggestType.equals(SUGGEST_TYPE_BASIC)) {
             return new SuggestBasicCommand();
-        } else {
-            assert(suggestType.equals(SUGGEST_TYPE_POSSIBLE));
+        }
+        
+        if (suggestType.equals(SUGGEST_TYPE_POSSIBLE)) {
             return parsePossible(argMultimap);
         }
+
+        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SuggestCommand.MESSAGE_USAGE));
     }
 
     private Prefix[] getPrefixes() {
@@ -66,8 +69,7 @@ public class SuggestCommandParser implements Parser<SuggestCommand> {
      * Parses arguments and returns SuggestPossibleCommand for execution
      */
     private static SuggestCommand parsePossible(ArgumentMultimap argMultimap) throws ParseException {
-        assert(argMultimap.getPreamble().isEmpty());
-        if (!argMultimap.arePrefixesPresent(PREFIX_OPERATION_TYPE)) {
+        if ((!argMultimap.arePrefixesPresent(PREFIX_OPERATION_TYPE) || !argMultimap.getPreamble().isEmpty())) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     SuggestCommand.MESSAGE_USAGE));
         }
