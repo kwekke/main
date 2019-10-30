@@ -14,6 +14,7 @@ import static seedu.exercise.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_OPERATION_TYPE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_PARAMETER_TYPE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_QUANTITY;
+import static seedu.exercise.logic.parser.CliSyntax.PREFIX_REMOVE_CUSTOM;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_START_DATE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_SUGGEST_TYPE;
 import static seedu.exercise.logic.parser.CliSyntax.PREFIX_UNIT;
@@ -204,6 +205,7 @@ public class CommonTestData {
     public static final String VALID_VALUE_ENDDATE = "24/12/2019";
     public static final String DESC_PREFIX_WITH_VALUE_ENDDATE = " " + VALID_PREFIX_NAME_END_DATE + '/'
             + VALID_VALUE_ENDDATE;
+    public static final String VALID_PREFIX_REMOVE_CUSTOM_PROPERTY = " " + PREFIX_REMOVE_CUSTOM;
 
     //=======================For invalid custom properties=============================
     public static final String INVALID_PREFIX_NAME_DESC = " "
