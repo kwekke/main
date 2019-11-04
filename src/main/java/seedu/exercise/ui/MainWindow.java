@@ -36,6 +36,7 @@ public class MainWindow extends UiPart<Stage> {
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
     private ResolveWindow resolveWindow;
+    private CustomPropertiesWindow customPropertiesWindow;
     private ExerciseListPanel exerciseListPanel;
     private RegimeListPanel regimeListPanel;
     private ScheduleListPanel scheduleListPanel;
@@ -105,6 +106,8 @@ public class MainWindow extends UiPart<Stage> {
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
 
         resolveWindow = new ResolveWindow(logic, resultDisplay);
+
+        customPropertiesWindow = new CustomPropertiesWindow();
 
         exerciseListPanel = new ExerciseListPanel(logic.getFilteredExerciseList());
 
@@ -244,6 +247,10 @@ public class MainWindow extends UiPart<Stage> {
         if (commandResult.isShowResolve()) {
             handleResolve();
         }
+
+        if (commandResult.isShowCustomProperties()) {
+            handleViewCustom();
+        }
     }
 
     private void shouldExitAppBasedOnCommandResult(CommandResult commandResult) {
@@ -277,6 +284,19 @@ public class MainWindow extends UiPart<Stage> {
         }
     }
 
+    /**
+     * Opens the custom properties window or focuses on it if it's already opened.
+     */
+    @FXML
+    private void handleViewCustom() {
+        customPropertiesWindow.initialiseTable();
+        if (!customPropertiesWindow.isShowing()) {
+            customPropertiesWindow.show();
+        } else {
+            customPropertiesWindow.focus();
+        }
+    }
+
     void show() {
         primaryStage.show();
     }
@@ -298,20 +318,20 @@ public class MainWindow extends UiPart<Stage> {
      * Checks if a the resource list has to change based on the {@code CommandResult}
      */
     private void updateResourceListTab(CommandResult commandResult) {
-        switch (commandResult.getShowListResourceType().name()) {
-        case "NULL":
+        switch (commandResult.getShowListResourceType()) {
+        case NULL:
             //no change to GUI
             return;
-        case "EXERCISE":
+        case EXERCISE:
             handleShowExerciseList();
             return;
-        case "REGIME":
+        case REGIME:
             handleShowRegimeList();
             return;
-        case "SCHEDULE":
+        case SCHEDULE:
             handleShowScheduleList();
             return;
-        case "SUGGEST":
+        case SUGGEST:
             handleShowSuggestionList();
             return;
         default:

@@ -2,6 +2,7 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Scene?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.image.Image?>
@@ -9,25 +10,24 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.Scene?>
 <?import javafx.stage.Stage?>
-<fx:root minHeight="600" minWidth="450" onCloseRequest="#handleExit" title="ExerHealth App" type="javafx.stage.Stage"
-         xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+<fx:root minHeight="800" minWidth="1400" onCloseRequest="#handleExit" title="ExerHealth App" type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <icons>
-        <Image url="@/images/logo_eH.png"/>
+        <Image url="@/images/logo_eH.png" />
     </icons>
     <scene>
         <Scene>
             <stylesheets>
-                <URL value="@CustomTheme.css"/>
-                <URL value="@Extensions.css"/>
+                <URL value="@CustomTheme.css" />
+                <URL value="@Extensions.css" />
             </stylesheets>
 
             <VBox>
-                <BorderPane prefHeight="58.0" prefWidth="410.0" styleClass="pane-with-border" VBox.vgrow="ALWAYS">
+                <BorderPane minWidth="800" prefHeight="58.0" styleClass="pane-with-border" VBox.vgrow="ALWAYS">
                     <left>
-                        <TabPane fx:id="resourceListPanelPlaceholder" tabClosingPolicy="UNAVAILABLE" styleClass="resourceListPanelBox"
-                                 tabMaxHeight="-Infinity" tabMaxWidth="-Infinity">
+                        <TabPane minWidth="200" fx:id="resourceListPanelPlaceholder"
+                                 styleClass="resourceListPanelBox" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="-Infinity" tabMaxWidth="-Infinity">
                             <tabs>
                                 <Tab fx:id="exerciseListTabPlaceholder" styleClass="tab-pane">
                                 </Tab>
@@ -40,19 +40,19 @@
                             </tabs>
                         </TabPane>
                     </left>
+
                     <center>
-                        <StackPane fx:id="infoDisplayPanelPlaceholder" BorderPane.alignment="CENTER"/>
+                        <StackPane minWidth="300" fx:id="infoDisplayPanelPlaceholder" BorderPane.alignment="CENTER" />
                     </center>
 
                     <right>
-                        <BorderPane styleClass="pane-with-border">
+                        <BorderPane minWidth="300" styleClass="pane-with-border">
                             <center>
-                                <StackPane fx:id="chartPlaceholder" BorderPane.alignment="CENTER"
-                                           styleClass="chartBox"/>
+                                <StackPane minWidth="300" fx:id="chartPlaceholder" BorderPane.alignment="CENTER" styleClass="chartBox"/>
                             </center>
 
                             <bottom>
-                                <StackPane fx:id="statsPlaceholder"/>
+                                <StackPane minWidth="300" fx:id="statsPlaceholder" />
                             </bottom>
                         </BorderPane>
                     </right>
@@ -62,17 +62,16 @@
                     <left>
                         <StackPane styleClass="logoBox">
                             <padding>
-                                <Insets left="10"/>
+                                <Insets left="10" />
                             </padding>
-                            <ImageView fx:id="logoImageView" fitWidth="100" fitHeight="100"/>
+                            <ImageView fx:id="logoImageView" fitHeight="100" fitWidth="100" />
                         </StackPane>
                     </left>
 
                     <center>
-                        <StackPane fx:id="resultDisplayPlaceholder" maxHeight="100" minHeight="100" prefHeight="100"
-                                   styleClass="resultDisplayBox" VBox.vgrow="NEVER">
+                        <StackPane fx:id="resultDisplayPlaceholder" maxHeight="111.0" minHeight="100" prefHeight="105.0" prefWidth="302.0" styleClass="resultDisplayBox" VBox.vgrow="NEVER">
                             <padding>
-                                <Insets bottom="5" left="10" right="10" top="5"/>
+                                <Insets bottom="5" left="10" right="10" top="5" />
                             </padding>
                         </StackPane>
                     </center>
@@ -80,7 +79,7 @@
                     <bottom>
                         <StackPane fx:id="commandBoxPlaceholder" styleClass="commandBox" VBox.vgrow="NEVER">
                             <padding>
-                                <Insets bottom="5" left="10" right="10" top="5"/>
+                                <Insets bottom="5" left="10" right="10" top="5" />
                             </padding>
                         </StackPane>
                     </bottom>

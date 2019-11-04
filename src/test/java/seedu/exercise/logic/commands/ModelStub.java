@@ -8,14 +8,11 @@ import javafx.collections.ObservableList;
 import seedu.exercise.commons.core.GuiSettings;
 import seedu.exercise.commons.core.index.Index;
 import seedu.exercise.logic.commands.statistic.Statistic;
-import seedu.exercise.logic.parser.Prefix;
 import seedu.exercise.model.Model;
 import seedu.exercise.model.ReadOnlyResourceBook;
 import seedu.exercise.model.ReadOnlyUserPrefs;
 import seedu.exercise.model.conflict.Conflict;
-import seedu.exercise.model.property.CustomProperty;
 import seedu.exercise.model.property.Name;
-import seedu.exercise.model.property.PropertyBook;
 import seedu.exercise.model.resource.Exercise;
 import seedu.exercise.model.resource.Regime;
 import seedu.exercise.model.resource.Schedule;
@@ -149,36 +146,6 @@ class ModelStub implements Model {
     }
 
     @Override
-    public PropertyBook getPropertyBook() {
-        throw new AssertionError("This method should not be called.");
-    }
-
-    @Override
-    public boolean isPrefixUsed(Prefix prefix) {
-        throw new AssertionError("This method should not be called.");
-    }
-
-    @Override
-    public boolean isFullNameUsed(String fullName) {
-        throw new AssertionError("This method should not be called.");
-    }
-
-    @Override
-    public boolean isFullNameUsedByCustomProperty(String fullName) {
-        throw new AssertionError("This method should not be called.");
-    }
-
-    @Override
-    public void addCustomProperty(CustomProperty customProperty) {
-        throw new AssertionError("This method should not be called.");
-    }
-
-    @Override
-    public void removeCustomProperty(String fullName) {
-        throw new AssertionError("This method should not be called.");
-    }
-
-    @Override
     public boolean hasSchedule(Schedule schedule) {
         throw new AssertionError("This method should not be called.");
     }
@@ -204,7 +171,7 @@ class ModelStub implements Model {
     }
 
     @Override
-    public void resolveConflict(Name regimeName, List<Index> indexFromSchedule, List<Index> indexFromConflict) {
+    public Schedule resolveConflict(Name regimeName, List<Index> indexFromSchedule, List<Index> indexFromConflict) {
         throw new AssertionError("This method should not be called.");
     }
 

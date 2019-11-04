@@ -9,11 +9,8 @@ import seedu.exercise.commons.core.GuiSettings;
 import seedu.exercise.commons.core.State;
 import seedu.exercise.commons.core.index.Index;
 import seedu.exercise.logic.commands.statistic.Statistic;
-import seedu.exercise.logic.parser.Prefix;
 import seedu.exercise.model.conflict.Conflict;
-import seedu.exercise.model.property.CustomProperty;
 import seedu.exercise.model.property.Name;
-import seedu.exercise.model.property.PropertyBook;
 import seedu.exercise.model.resource.Exercise;
 import seedu.exercise.model.resource.Regime;
 import seedu.exercise.model.resource.Schedule;
@@ -204,8 +201,9 @@ public interface Model {
      * If both list of indexes are empty, the {@code regimeName} provided
      * will be taken as the resolved schedule and the non-mentioned name is discarded.
      *
+     * @return resolved schedule to be added to schedule book
      */
-    void resolveConflict(Name regimeName, List<Index> indexFromSchedule, List<Index> indexFromConflict);
+    Schedule resolveConflict(Name regimeName, List<Index> indexFromSchedule, List<Index> indexFromConflict);
 
     /**
      * Returns the conflict that is currently happening.
@@ -228,36 +226,6 @@ public interface Model {
      * The state of the program must be {@link State#IN_CONFLICT} before calling this method.
      */
     boolean isSelectedIndexesFromRegimeDuplicate(List<Index> scheduledIndex, List<Index> conflictingIndex);
-
-    /**
-     * Returns the {@code PropertyBook} object that is contained in {@code Model}.
-     */
-    PropertyBook getPropertyBook();
-
-    /**
-     * Returns true if a prefix with the same identity as {@code prefix} is present in the PropertyBook.
-     */
-    boolean isPrefixUsed(Prefix prefix);
-
-    /**
-     * Returns true if {@code fullName} is present in the PropertyBook.
-     */
-    boolean isFullNameUsed(String fullName);
-
-    /**
-     * Returns true if {@code fullName} is used by a custom property.
-     */
-    boolean isFullNameUsedByCustomProperty(String fullName);
-
-    /**
-     * Adds the given {@code customProperty} into the PropertyBook.
-     */
-    void addCustomProperty(CustomProperty customProperty);
-
-    /**
-     * Removes the custom property with the given {@code fullName} from the PropertyBook.
-     */
-    void removeCustomProperty(String fullName);
 
     /**
      * Returns an unmodifiable view of the list of suggested exercises
