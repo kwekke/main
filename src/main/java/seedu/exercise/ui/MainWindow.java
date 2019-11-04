@@ -272,7 +272,7 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Opens the resolve window and blocks all events until closed
+     * Opens the resolve window and blocks all events until closed.
      */
     @FXML
     private void handleResolve() {
