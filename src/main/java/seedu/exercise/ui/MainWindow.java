@@ -343,19 +343,44 @@ public class MainWindow extends UiPart<Stage> {
         resourceListPanelPlaceholder.getSelectionModel().select(tab);
     }
 
+    /**
+     * Updates the GUI to show the exercise list tab and refresh info display panel if the tab did change.
+     */
     private void handleShowExerciseList() {
+        if (!(resourceListPanelPlaceholder.getSelectionModel().getSelectedItem().equals(exerciseListTabPlaceholder))) {
+            infoDisplayPanel.showDefaultMessage();
+        }
         resourceListPanelPlaceholder.getSelectionModel().select(exerciseListTabPlaceholder);
     }
 
+    /**
+     * Updates the GUI to show the regime list tab and refresh info display panel if the tab did change.
+     */
     private void handleShowRegimeList() {
+        if (!(resourceListPanelPlaceholder.getSelectionModel().getSelectedItem().equals(regimeListTabPlaceholder))) {
+            infoDisplayPanel.showDefaultMessage();
+        }
         resourceListPanelPlaceholder.getSelectionModel().select(regimeListTabPlaceholder);
     }
 
+    /**
+     * Updates the GUI to show the schedule list tab and refresh info display panel if the tab did change.
+     */
     private void handleShowScheduleList() {
+        if (!(resourceListPanelPlaceholder.getSelectionModel().getSelectedItem().equals(scheduleListTabPlaceholder))) {
+            infoDisplayPanel.showDefaultMessage();
+        }
         resourceListPanelPlaceholder.getSelectionModel().select(scheduleListTabPlaceholder);
     }
 
+    /**
+     * Updates the GUI to show the suggestion list tab and refresh info display panel if the tab did change.
+     */
     private void handleShowSuggestionList() {
+        if (!(resourceListPanelPlaceholder.getSelectionModel().getSelectedItem()
+                .equals(suggestionListTabPlaceholder))) {
+            infoDisplayPanel.showDefaultMessage();
+        }
         resourceListPanelPlaceholder.getSelectionModel().select(suggestionListTabPlaceholder);
     }
 }
