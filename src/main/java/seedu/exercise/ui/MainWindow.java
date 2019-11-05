@@ -2,8 +2,6 @@ package seedu.exercise.ui;
 
 import java.util.logging.Logger;
 
-import javax.swing.*;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
