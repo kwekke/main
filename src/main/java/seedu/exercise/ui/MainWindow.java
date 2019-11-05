@@ -2,6 +2,8 @@ package seedu.exercise.ui;
 
 import java.util.logging.Logger;
 
+import javax.swing.*;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -347,7 +349,7 @@ public class MainWindow extends UiPart<Stage> {
      * Updates the GUI to show the exercise list tab and refresh info display panel if the tab did change.
      */
     private void handleShowExerciseList() {
-        if (!(resourceListPanelPlaceholder.getSelectionModel().getSelectedItem().equals(exerciseListTabPlaceholder))) {
+        if (!(isResourceListPanelShown(exerciseListTabPlaceholder))) {
             infoDisplayPanel.showDefaultMessage();
         }
         resourceListPanelPlaceholder.getSelectionModel().select(exerciseListTabPlaceholder);
@@ -357,7 +359,7 @@ public class MainWindow extends UiPart<Stage> {
      * Updates the GUI to show the regime list tab and refresh info display panel if the tab did change.
      */
     private void handleShowRegimeList() {
-        if (!(resourceListPanelPlaceholder.getSelectionModel().getSelectedItem().equals(regimeListTabPlaceholder))) {
+        if (!(isResourceListPanelShown(regimeListTabPlaceholder))) {
             infoDisplayPanel.showDefaultMessage();
         }
         resourceListPanelPlaceholder.getSelectionModel().select(regimeListTabPlaceholder);
@@ -367,7 +369,7 @@ public class MainWindow extends UiPart<Stage> {
      * Updates the GUI to show the schedule list tab and refresh info display panel if the tab did change.
      */
     private void handleShowScheduleList() {
-        if (!(resourceListPanelPlaceholder.getSelectionModel().getSelectedItem().equals(scheduleListTabPlaceholder))) {
+        if (!(isResourceListPanelShown(scheduleListTabPlaceholder))) {
             infoDisplayPanel.showDefaultMessage();
         }
         resourceListPanelPlaceholder.getSelectionModel().select(scheduleListTabPlaceholder);
@@ -377,10 +379,13 @@ public class MainWindow extends UiPart<Stage> {
      * Updates the GUI to show the suggestion list tab and refresh info display panel if the tab did change.
      */
     private void handleShowSuggestionList() {
-        if (!(resourceListPanelPlaceholder.getSelectionModel().getSelectedItem()
-                .equals(suggestionListTabPlaceholder))) {
+        if (!(isResourceListPanelShown(suggestionListTabPlaceholder))) {
             infoDisplayPanel.showDefaultMessage();
         }
         resourceListPanelPlaceholder.getSelectionModel().select(suggestionListTabPlaceholder);
+    }
+
+    private boolean isResourceListPanelShown(Tab resourceListPlaceholder) {
+        return resourceListPanelPlaceholder.getSelectionModel().getSelectedItem().equals(resourceListPlaceholder);
     }
 }
