@@ -211,6 +211,13 @@ Examples:
 
 * `delete t/exercise i/2`
 
+image::deleteExerciseBefore.png[]
+
+Expected result:
+
+
+image::deleteExerciseAfter.png[]
+
 ==== Deleting exercise from scheduling regime
 
 Deletes exercises from a certain scheduling regime.
