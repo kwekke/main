@@ -357,7 +357,6 @@ public class ModelManager implements Model {
     @Override
     public void updateSuggestedExerciseList(Predicate<Exercise> predicate) {
         requireNonNull(predicate);
-        List<Exercise> allSuggestions = generateAllSuggestions();
         List<Exercise> filteredSuggestions = generateAllSuggestions().filtered(predicate);
         setSuggestions(filteredSuggestions);
     }
@@ -368,11 +367,31 @@ public class ModelManager implements Model {
      */
     private ObservableList<Exercise> generateAllSuggestions() {
         ObservableList<Exercise> allSuggestions = FXCollections.observableArrayList();
-        List<Exercise> trackedExercises = getExerciseBookData().getSortedResourceList();
         List<Exercise> databaseExercises = getDatabaseBook().getSortedResourceList();
-        allSuggestions.addAll(trackedExercises);
         allSuggestions.addAll(databaseExercises);
-        return allSuggestions;
+        return addTrackedExercises(allSuggestions);
+    }
+
+    /**
+     * Returns an unmodifiable view of the list of exercises from {@code exerciseBook} to an {@code exerciseList},
+     * excluding any exercise that has a duplicate name.
+     */
+    private ObservableList<Exercise> addTrackedExercises(ObservableList<Exercise> exerciseList) {
+        ObservableList<Exercise> allExercises = FXCollections.observableArrayList(exerciseList);
+        List<Exercise> trackedExercises = getExerciseBookData().getSortedResourceList();
+        for (Exercise trackedExercise : trackedExercises) {
+            boolean isDuplicate = false;
+            for (Exercise e : exerciseList) {
+                if (e.getName().equals(trackedExercise.getName())) {
+                    isDuplicate = true;
+                    break;
+                }
+            }
+            if (!isDuplicate) {
+                allExercises.add(trackedExercise);
+            }
+        }
+        return allExercises;
     }
 
     @Override
