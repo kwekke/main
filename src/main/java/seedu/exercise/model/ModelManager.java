@@ -357,7 +357,7 @@ public class ModelManager implements Model {
     @Override
     public void updateSuggestedExerciseList(Predicate<Exercise> predicate) {
         requireNonNull(predicate);
-        List<Exercise> filteredSuggestions = generateAllSuggestions().filtered(predicate);
+        List<Exercise> filteredSuggestions = generateAllSuggestions(predicate);
         setSuggestions(filteredSuggestions);
     }
 
@@ -365,33 +365,34 @@ public class ModelManager implements Model {
      * Returns an unmodifiable view of the list of {@code suggestions} backed by the internal list of
      * {@code exerciseBook} and {@code databaseBook}
      */
-    private ObservableList<Exercise> generateAllSuggestions() {
+    private ObservableList<Exercise> generateAllSuggestions(Predicate<Exercise> predicate) {
+        List<Exercise> trackedExercises = getExerciseBookData().getSortedResourceList().filtered(predicate);
+        List<Exercise> databaseExercises = getDatabaseBook().getSortedResourceList().filtered(predicate);
         ObservableList<Exercise> allSuggestions = FXCollections.observableArrayList();
-        List<Exercise> databaseExercises = getDatabaseBook().getSortedResourceList();
-        allSuggestions.addAll(databaseExercises);
-        return addTrackedExercises(allSuggestions);
+        ObservableList<Exercise> addedTrackedExercises = addExerciseList(allSuggestions, trackedExercises);
+        return addExerciseList(addedTrackedExercises, databaseExercises);
     }
 
     /**
-     * Returns an unmodifiable view of the list of exercises from {@code exerciseBook} to an {@code exerciseList},
+     * Returns an unmodifiable view of the list of exercises from {@code exerciseList} to an {@code exerciseList},
      * excluding any exercise that has a duplicate name.
      */
-    private ObservableList<Exercise> addTrackedExercises(ObservableList<Exercise> exerciseList) {
-        ObservableList<Exercise> allExercises = FXCollections.observableArrayList(exerciseList);
-        List<Exercise> trackedExercises = getExerciseBookData().getSortedResourceList();
-        for (Exercise trackedExercise : trackedExercises) {
+    private ObservableList<Exercise> addExerciseList(ObservableList<Exercise> originalExerciseList,
+                                                     List<Exercise> exerciseList) {
+        ObservableList<Exercise> newExerciseList = FXCollections.observableArrayList(originalExerciseList);
+        for (Exercise exercise : exerciseList) {
             boolean isDuplicate = false;
-            for (Exercise e : exerciseList) {
-                if (e.getName().equals(trackedExercise.getName())) {
+            for (Exercise e : newExerciseList) {
+                if (exercise.getName().equals(e.getName())) {
                     isDuplicate = true;
                     break;
                 }
             }
             if (!isDuplicate) {
-                allExercises.add(trackedExercise);
+                newExerciseList.add(exercise);
             }
         }
-        return allExercises;
+        return newExerciseList;
     }
 
     @Override
