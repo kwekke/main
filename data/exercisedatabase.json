@@ -77,7 +77,7 @@
     "calories" : "200",
     "quantity" : "10",
     "unit" : "km",
-    "muscles" : [ "km" ],
+    "muscles" : [ "Legs" ],
     "customProperties" : { }
   }, {
     "name" : "Sit ups",
