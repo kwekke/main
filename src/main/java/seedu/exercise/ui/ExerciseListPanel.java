@@ -2,15 +2,12 @@ package seedu.exercise.ui;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.logging.Logger;
-
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import seedu.exercise.commons.core.LogsCenter;
 import seedu.exercise.model.resource.Exercise;
 
 /**
@@ -19,7 +16,6 @@ import seedu.exercise.model.resource.Exercise;
 public class ExerciseListPanel extends ResourceListPanel {
 
     private static final String FXML = "ExerciseListPanel.fxml";
-    private final Logger logger = LogsCenter.getLogger(getClass());
 
     @FXML
     private ListView<Exercise> exerciseListView;
@@ -34,7 +30,7 @@ public class ExerciseListPanel extends ResourceListPanel {
         exerciseListView.getFocusModel().focusedItemProperty().addListener(getDefaultListViewListener());
     }
 
-    public ListView<Exercise> getExerciseListView() {
+    public ListView<Exercise> getResourceListView() {
         return exerciseListView;
     }
 
@@ -56,6 +52,11 @@ public class ExerciseListPanel extends ResourceListPanel {
              */
             Platform.runLater(() -> selectFocusAndScrollTo(exerciseListView, index));
         }
+    }
+
+    @Override
+    protected void resetListSelection() {
+        exerciseListView.getSelectionModel().clearSelection();
     }
 
     /**

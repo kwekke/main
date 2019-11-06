@@ -12,6 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import seedu.exercise.commons.core.GuiSettings;
 import seedu.exercise.commons.core.LogsCenter;
+import seedu.exercise.commons.core.index.Index;
 import seedu.exercise.logic.Logic;
 import seedu.exercise.logic.commands.CommandResult;
 import seedu.exercise.logic.commands.exceptions.CommandException;
@@ -37,10 +38,10 @@ public class MainWindow extends UiPart<Stage> {
     private HelpWindow helpWindow;
     private ResolveWindow resolveWindow;
     private CustomPropertiesWindow customPropertiesWindow;
-    private ExerciseListPanel exerciseListPanel;
-    private RegimeListPanel regimeListPanel;
-    private ScheduleListPanel scheduleListPanel;
-    private SuggestionListPanel suggestionListPanel;
+    private ResourceListPanel exerciseListPanel;
+    private ResourceListPanel regimeListPanel;
+    private ResourceListPanel scheduleListPanel;
+    private ResourceListPanel suggestionListPanel;
     private InfoDisplayPanel infoDisplayPanel;
     private StatsDisplayPanel statsDisplayPanel;
 
@@ -110,21 +111,20 @@ public class MainWindow extends UiPart<Stage> {
         customPropertiesWindow = new CustomPropertiesWindow();
 
         exerciseListPanel = new ExerciseListPanel(logic.getSortedExerciseList());
-
         exerciseListTabPlaceholder = new Tab();
-        exerciseListTabPlaceholder.setContent((exerciseListPanel).getExerciseListView());
+        exerciseListTabPlaceholder.setContent(exerciseListPanel.getResourceListView());
 
         regimeListPanel = new RegimeListPanel(logic.getSortedRegimeList());
         regimeListTabPlaceholder = new Tab();
-        regimeListTabPlaceholder.setContent(regimeListPanel.getRegimeListView());
+        regimeListTabPlaceholder.setContent(regimeListPanel.getResourceListView());
 
         scheduleListPanel = new ScheduleListPanel(logic.getSortedScheduleList());
         scheduleListTabPlaceholder = new Tab();
-        scheduleListTabPlaceholder.setContent(scheduleListPanel.getScheduleListView());
+        scheduleListTabPlaceholder.setContent(scheduleListPanel.getResourceListView());
 
         suggestionListPanel = new SuggestionListPanel(logic.getSuggestedExerciseList());
         suggestionListTabPlaceholder = new Tab();
-        suggestionListTabPlaceholder.setContent(suggestionListPanel.getSuggestionListView());
+        suggestionListTabPlaceholder.setContent(suggestionListPanel.getResourceListView());
 
         resourceListPanelPlaceholder.getTabs().add(exerciseListTabPlaceholder);
         resourceListPanelPlaceholder.getTabs().add(regimeListTabPlaceholder);
@@ -164,8 +164,8 @@ public class MainWindow extends UiPart<Stage> {
 
     private String getTotalAndAverage() {
         Statistic statistic = logic.getStatistic();
-        return ChartTextUtil.totalFormatter(statistic.getCategory(), statistic.getTotal()) + "\n"
-                + ChartTextUtil.averageFormatter(statistic.getCategory(), statistic.getAverage());
+        return ChartUtil.totalFormatter(statistic.getCategory(), statistic.getTotal()) + "\n"
+            + ChartUtil.averageFormatter(statistic.getCategory(), statistic.getAverage());
     }
 
     private void setStats() {
@@ -222,10 +222,11 @@ public class MainWindow extends UiPart<Stage> {
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
             setChart();
             setStats();
+            resetResourceListTabs();
 
             shouldShowWindowsBasedOnCommandResult(commandResult);
             shouldExitAppBasedOnCommandResult(commandResult);
-            updateResourceListTab(commandResult);
+            updateResourceListTab(commandResult, -1); // Negative index means nothing is selected.
 
             return commandResult;
         } catch (CommandException | ParseException e) {
@@ -233,6 +234,16 @@ public class MainWindow extends UiPart<Stage> {
             resultDisplay.setFeedbackToUser(e.getMessage());
             throw e;
         }
+    }
+
+    /**
+     * Resets the selection models of the resource list panels on the left of the GUI.
+     */
+    private void resetResourceListTabs() {
+        exerciseListPanel.resetListSelection();
+        regimeListPanel.resetListSelection();
+        scheduleListPanel.resetListSelection();
+        suggestionListPanel.resetListSelection();
     }
 
     /**
@@ -250,6 +261,10 @@ public class MainWindow extends UiPart<Stage> {
 
         if (commandResult.isShowCustomProperties()) {
             handleViewCustom();
+        }
+
+        if (commandResult.isSelectResource()) {
+            handleSelectResource(commandResult);
         }
     }
 
@@ -272,7 +287,7 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Opens the resolve window and blocks all events until closed
+     * Opens the resolve window and blocks all events until closed.
      */
     @FXML
     private void handleResolve() {
@@ -297,6 +312,16 @@ public class MainWindow extends UiPart<Stage> {
         }
     }
 
+    /**
+     * Selects the resource at the given index of the desired resource list.
+     */
+    @FXML
+    private void handleSelectResource(CommandResult commandResult) {
+        Index selectedIndex = commandResult.getSelectedIndex().get();
+        updateResourceListTab(commandResult, selectedIndex.getZeroBased());
+
+    }
+
     void show() {
         primaryStage.show();
     }
@@ -307,32 +332,37 @@ public class MainWindow extends UiPart<Stage> {
     @FXML
     private void handleExit() {
         GuiSettings guiSettings = new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(),
-                (int) primaryStage.getX(), (int) primaryStage.getY());
+            (int) primaryStage.getX(), (int) primaryStage.getY());
         logic.setGuiSettings(guiSettings);
         helpWindow.hide();
         resolveWindow.hideAndClearPanels();
+        customPropertiesWindow.hide();
         primaryStage.hide();
     }
 
     /**
      * Checks if a the resource list has to change based on the {@code CommandResult}
      */
-    private void updateResourceListTab(CommandResult commandResult) {
+    private void updateResourceListTab(CommandResult commandResult, int index) {
         switch (commandResult.getShowListResourceType()) {
         case NULL:
             //no change to GUI
             return;
         case EXERCISE:
             handleShowExerciseList();
+            exerciseListPanel.selectGivenIndex(index);
             return;
         case REGIME:
             handleShowRegimeList();
+            regimeListPanel.selectGivenIndex(index);
             return;
         case SCHEDULE:
             handleShowScheduleList();
+            scheduleListPanel.selectGivenIndex(index);
             return;
-        case SUGGEST:
+        case SUGGESTION:
             handleShowSuggestionList();
+            suggestionListPanel.selectGivenIndex(index);
             return;
         default:
             throw new AssertionError(ListResourceType.LIST_RESOURCE_TYPE_CONSTRAINTS);
@@ -343,19 +373,47 @@ public class MainWindow extends UiPart<Stage> {
         resourceListPanelPlaceholder.getSelectionModel().select(tab);
     }
 
+    /**
+     * Updates the GUI to show the exercise list tab and refresh info display panel if the tab did change.
+     */
     private void handleShowExerciseList() {
+        if (!(isResourceListPanelShown(exerciseListTabPlaceholder))) {
+            infoDisplayPanel.showDefaultMessage();
+        }
         resourceListPanelPlaceholder.getSelectionModel().select(exerciseListTabPlaceholder);
     }
 
+    /**
+     * Updates the GUI to show the regime list tab and refresh info display panel if the tab did change.
+     */
     private void handleShowRegimeList() {
+        if (!(isResourceListPanelShown(regimeListTabPlaceholder))) {
+            infoDisplayPanel.showDefaultMessage();
+        }
         resourceListPanelPlaceholder.getSelectionModel().select(regimeListTabPlaceholder);
     }
 
+    /**
+     * Updates the GUI to show the schedule list tab and refresh info display panel if the tab did change.
+     */
     private void handleShowScheduleList() {
+        if (!(isResourceListPanelShown(scheduleListTabPlaceholder))) {
+            infoDisplayPanel.showDefaultMessage();
+        }
         resourceListPanelPlaceholder.getSelectionModel().select(scheduleListTabPlaceholder);
     }
 
+    /**
+     * Updates the GUI to show the suggestion list tab and refresh info display panel if the tab did change.
+     */
     private void handleShowSuggestionList() {
+        if (!(isResourceListPanelShown(suggestionListTabPlaceholder))) {
+            infoDisplayPanel.showDefaultMessage();
+        }
         resourceListPanelPlaceholder.getSelectionModel().select(suggestionListTabPlaceholder);
+    }
+
+    private boolean isResourceListPanelShown(Tab resourceListPlaceholder) {
+        return resourceListPanelPlaceholder.getSelectionModel().getSelectedItem().equals(resourceListPlaceholder);
     }
 }

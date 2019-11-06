@@ -69,6 +69,11 @@ can be used as `{nbsp}` (i.e. 0 times), `m/glutes`, `m/glutes m/chest` etc.
 ====
 
 === Viewing help : `help`
+Views the help dialog box which will bring you to this UserGuide. You can expect to see a window as shown below.
+
+image::HelpDialogBox.png[]
+
+Clicking on the `Copy URL` button will copy the link to your clipboard and you can open any browser of your choice to access the UserGuide for `ExerHealth`.
 
 Format: `help`
 
@@ -121,14 +126,17 @@ Adds the 1st, 2nd and 3rd exercise in the list to the regime named `power sets`.
 
 Adds the 4th exercise in the list to the regime named `cardio`.
 
-=== Listing all exercises : `list`
+[[list]]
+=== Listing information : `list`
 
-Retrieves all categories of information - Exercise, Regime or Scheduled Regime - from ExerHealth.
+Retrieves a list of information - Exercise, Regime, Scheduled Regime or Suggestion - from ExerHealth.
 
-Type of information shown when will be specified by the category type specified. For example,
-if you wish to see your current list of regimes, you may specify the `CAT_NAME` as `regime`.
+Format: `list t/LIST_TYPE`
 
-Format: `list t/CAT_NAME`
+****
+* There are 4 types of list in ExerHealth: `exercise`, `regime`, `schedule` and `suggest`.
+* The `suggest` list will only be displayed if you have used the <<suggestion, suggestion>> feature before.
+****
 
 Example:
 
@@ -149,6 +157,17 @@ image::ListRegimeResult.png[]
 Expected result:
 
 image::ListScheduleResult.png[]
+
+=== Selecting an item: `select`
+
+Selects the item at the given index of the chosen category list.
+
+Format: `select t/LIST_TYPE i/INDEX`
+
+[TIP]
+ `LIST_TYPE` can only be one of the following: `exercise`, `regime`, `schedule`, `suggest`.
+
+Example: `select t/exercise i/1`
 
 === Edit exercise information: `edit`
 
@@ -282,169 +301,147 @@ If there is no command has been undone after the latest undoable command, redo c
 
 Format: `redo`
 
-// tag::custom[]
-[[customproperty]]
-=== Custom properties
-
-==== Adding custom properties: `custom`
-
-Adds in a custom property which you can define for the exercises.
-
-Once a new custom property is created, you can simply use the prefix name which you defined for the
-property to the `add` and `edit` command to include information for the new property.
-
-****
-* The prefix name can only contain alphabets and should not contain spaces.
-* You must choose exactly one of the following as the parameter type for your custom property:
-`Text`, `Number`, `Date`.
-* Every word in the full name of each custom property will be changed to Start Case style, where the first letter of each
-word is capitalised with the other letters in lower case e.g. `enD DaTe` will be changed to `End Date`.
-* The date entered for the custom properties must follow the same requirements as that of `add` command.
-* You need not include the custom properties when adding a new exercise to the app.
-****
-
-Format: `custom s/PREFIX_NAME f/FULL_NAME p/PARAMETER_TYPE`
-
-Example:
-
-* `custom s/a f/Ratings p/Number`
-
-Creates a `Ratings` property for each exercise.
-Information for this property can be updated for each exercise by using `a/NUMBER` in the relevant command where `NUMBER` refers to
-a number.
-
-* `custom s/b f/rEmaRk p/Text`
-
-Creates a `Remark` property for each exercise.
-Information for this property can be updated for each exercise by using `b/TEXT` in the relevant command where
-`TEXT` refers to a text sentence.
-
-* `custom s/c f/End Date p/Date`
-
-Creates a `End Date` property for each exercise.
-Information for this property can be updated for each exercise by using `s/DATE` in the relevant command where
-`DATE` refers to a date.
-
-Using `Ratings` as an example, you can now perform the following actions after adding it:
-
-* `add t/exercise n/Run d/01/10/2019 a/5`
-
-Adds an exercise with the name `Run`, date `01/10/2019` and ratings `5` into the app.
-
-* `edit t/exercise i/4 a/3`
-
-Edits the ratings of the 4th exercise in the list to `3`.
-
-==== Removing custom properties: `custom`
-
-Removes a custom property which you have previously defined either from a single exercise
-or from Exerhealth.
-
-In the second case, you will still be able to add back the deleted custom property if you
-wish to.
-
-****
-* `FULL_NAME` denotes the name of the previously defined custom property.
-* The index, if provided, must be a positive integer 1, 2, 3, …​
-****
-
-Format: `custom rm/FULL_NAME [i/INDEX]`
-
-Example:
-
-* `custom rm/Ratings`
-
-Removes the custom property `Ratings` from all of the exercises and from ExerHealth.
-
-* `custom rm/Ratings i/1`
-
-Removes the custom property `Ratings` from the 1st exercise in the list.
-
-==== Viewing custom properties: `viewcustom`
-
-Opens up a window for you to view the custom properties you have defined.
-The name, prefix and parameter type of all existing custom properties will be shown.
-
-Format: `viewcustom`
-
-Example:
-
-* `viewcustom`
-
-Opens up a window containing information of all existing custom properties.
-// end::custom[]
-
 // tag::scheduleresolve[]
 
 === Scheduling exercises: `schedule`
 
 ==== Schedules a regime
 
-Schedules an exercise regime for a certain date. If regime clashes with another scheduled regime, users will be prompted to resolve the conflict via a popup window. Refer to <<resolve>> for details on resolving scheduling conflicts.
+Schedules an exercise regime for a certain date. If the regime clashes with another scheduled regime, you will be prompted to resolve the conflict via a popup window. Refer to <<resolve>> for details on resolving scheduling conflicts.
 
 Format: `schedule n/REGIME_NAME d/DATE`
 
-Example:
+****
+* To schedule a regime, `REGIME_NAME` must exist in your regime list. You can use <<list, `list t/regime`>> command to view the regimes that you currently have.
+* The format of `DATE` must be of the form `dd/MM/YYYY`. For example, `12/12/2019` or `01/01/2020`. Even if the number has only one digit, please ensure you include a 0 at the front to ensure that it adheres to the format required.
+* You will not be allowed to schedule a regime on a date that falls before the date displayed on your system clock
+* You are allowed to schedule a regime of the same name on the same date. The resolve window will pop up for you as per normal.
+****
+*Example 1:*
 
 * `schedule n/cardio d/12/12/2019`
 
 Schedules the regime called `cardio` on the date `12/12/2019`. If there are no other regimes scheduled on `12/12/2019` then the command is successful. Otherwise, you will be prompted to resolve the scheduling conflict.
 
+Expected Result:
+
+image::ScheduleRegimeCardio.png[]
+
+Expected Result (if other schedule exist on `12/12/2019`):
+
+image::ScheduleRegimeCardioConflict.png[]
+
+If the resolve window pops up for you, please refer to <<resolve>> for details on resolving a scheduling conflict.
+
 ==== Completes a schedule regime
 
-Once a scheduled regime is completed, users can add that regime to the exercise tracker. The schedule is then deleted from the scheduling list.
+Once a scheduled regime is completed, you can add that completed schedule to the exercise tracker. The schedule is then deleted from the scheduling list.
 
-Format: `schedule i/INDEX_OF_REGIME_IN_SCHEDULE`
+Format: `schedule i/INDEX_OF_SCHEDULE`
 
-Example:
+
+[TIP]
+The `INDEX_OF_SCHEDULE` provided must be a valid index from your schedule list. Please use <<list, `list t/schedule`>> to view you index of the schedule you wish to complete.
+
+*Example:*
 
 * `schedule i/2`
 
-Completes all the exercises that are in the schedule at index `2`. All the exercises will be added to the exercise list and the schedule at index `2` is deleted.
+Completes all the exercises that are in the schedule at index `2`. All the exercises scheduled will be added to the exercise list and the schedule at index `2` is deleted.
+
+Expected Result:
+
+Before execution of `schedule i/2`
+
+image::ScheduleCompleteBefore.png[]
+
+In your exercise tracker
+
+image::ScheduleCompleteExerciseTracker.png[]
+
+In your schedule tracker after completing execution of `schedule i/2`
+
+image::ScheduleCompleteScheduleTracker.png[]
+
+// end::scheduleresolve[]
+
 [[resolve]]
 === Resolving scheduling conflicts: `resolve`
+Described in the following two sections are two possible ways to resolve a scheduling conflict in the resolve window that pops up.
 
-==== Taking one of the conflicting regimes completely
+****
+* Once the resolve window pops up, you are not allowed to interact with the main `ExerHealth` window anymore. You are required to resolve the scheduling conflict before continuing to use the application as normal.
+* Any *valid* commands that are not `resolve` will not get executed in the resolve window. Only the `resolve` command is allowed in the resolve window.
+****
 
-Takes the scheduled regime or the conflicting regime completely and discarding the other. Neither regimes will be completely deleted from the user’s collection.
+[[resolvetakeone]]
+==== Taking one of the regimes completely
+
+Takes the scheduled regime or the conflicting regime completely and discarding the other. Neither regimes will be deleted from the user’s collection.
 
 Format: `resolve n/SCHEDULED_OR_CONFLICTING`
 
-Example:
+[TIP]
+You can only enter `n/scheduled` or `n/conflicting` to tell ExerHealth which schedule you wish to take. The scheduled or conflicting regimes are stated at the top of the list of exercises as shown below.
+
+image::ResolveScheduledOrConflicting.png[]
+
+*Example:*
 
 * `resolve n/scheduled`
 
 Takes the already scheduled regime and schedule it at conflicting date.
 
-* `resolve n/conflicting`
+*Expected Result:*
 
-Takes the conflicting regime and schedule it at conflicting date.
+The resolve window and inputting the example command
 
-==== Taking some exercises from some regime
-Takes some exercises from the scheduled regime and some from the conflicting regime to make a brand new regime. The new regime that is a result of the combination will be added  to the user’s collection and scheduled at the date of conflict. This new regime will also be added to the user’s collection of regimes
+image::ResolveScheduled.png[]
 
-Format: `resolve n/REGIME_NAME [i/INDEX_OF_EXERCISE_IN_SCHEDULED]... [r/INDEX_OF_EXERCISE_IN_CONFLICTING]...`
+Once resolve window closes, the scheduled regime should be taken and scheduled at the correct date.
+
+image::ResolveScheduledResult.png[]
+
+
+==== Taking some exercises from both regimes
+Takes some exercises from the scheduled regime and some from the conflicting regime to make a brand new regime. The new regime will be scheduled at the date of conflict. This new regime will also be added to your collection of regimes.
+
+Format: `resolve n/NEW_REGIME_NAME [i/INDEX_OF_EXERCISE_IN_SCHEDULED] [r/INDEX_OF_EXERCISE_IN_CONFLICTING]`
 
 ****
-* Takes the exercise at the specified `INDEX`.
-* A new regime with `REGIME_NAME` will be created and added to user's collection
-* `REGIME_NAME` must be a new name that does not exist in user's collection
-* The index refers to the index number shown in the displayed conflict resolving window.
+* Takes the exercise at the specified indexes of `i/` and `r/`
+* `NEW_REGIME_NAME` must be a new name that does not exist in your collection of regimes
+* The index refers to the index number shown in the displayed resolve window
 * The index *must be a positive integer* 1, 2, 3, ...
 * i/ is for index of the scheduled regime
 * r/ is for index of the conflicting regime
+* At least one `i/` or `r/` must exist in your input for this command to succeed. Otherwise, ExerHealth will think you are trying to take one regime completely as stated in the <<resolvetakeone, previous section>>.
 ****
 
-Example:
+*Example:*
 
-* `resolve n/cardios i/1 i/2 i/3 r/4 r/2`
+* `resolve n/new cardio i/1 r/4 r/2`
 
-Takes exercise 1, 2, 3 from scheduled regime and exercise 2, 4 from conflicting regime and adds them to a new regime called cardios
+Expected Result:
 
-// end::scheduleresolve[]
+Takes exercise `1` from `scheduled regime` and exercises `2` and `4` from `conflicting regime` and adds them to a new regime called `new cardio`
+
+image::ResolveTakeOneOrOther.png[]
+
+The `new cardio` regime is now scheduled at the conflicting date with the new exercises that have been resolved.
+
+image::ResolveTakeResolved.png[]
+
+The `new cardio` regime is now added to your collection of regimes
+
+image::ResolveRegimeTracker.png[]
+
 
 // tag::suggest[]
+
+[[suggestion]]
 === Suggesting ideas: `suggest`
+
 ==== Suggest basic exercises
 Recommends exercises from ExerHealth's inbuilt database for beginners.
 
@@ -495,6 +492,113 @@ Then, the following input will display a list of exercises which are tagged with
 Thus the command will display only the exercise named "Bench Press".
 // end::suggest[]
 
+// tag::customfeature[]
+[[customproperty]]
+=== Custom properties
+
+==== Adding custom properties: `custom`
+
+Adds in a custom property which you can define for the exercises.
+
+Once a new custom property is created, you can simply use the prefix name which you defined for the
+property to the `add` and `edit` command to include information for the new property.
+
+****
+* The prefix name can only contain alphabets and should not contain spaces.
+* You must choose exactly one of the following as the parameter type for your custom property:
+`Text`, `Number`, `Date`.
+* Every word in the full name of each custom property will be changed to Start Case style, where the first letter of each
+word is capitalised with the other letters in lower case e.g. `enD DaTe` will be changed to `End Date`.
+* The date entered for the custom properties must follow the same requirements as that of `add` command.
+* You need not include the custom properties when adding a new exercise to the app.
+****
+
+Format: `custom s/PREFIX_NAME f/FULL_NAME p/PARAMETER_TYPE`
+
+[TIP]
+The following names and prefix names have been used for existing add / edit command parameters and properties and so,
+cannot be used.
+|===========
+|Names used | Prefix names used
+|Name       |  n
+|Date       |  d
+|Calories   |  c
+|Quantity   |  q
+|Unit       |  u
+|Muscle     |  m
+|-          |  t
+|-          |  i
+|===========
+
+Example:
+
+* `custom s/a f/Rating p/Number`
+
+Creates a `Rating` property for each exercise.
+Information for this property can be updated for each exercise by using `a/NUMBER` in the relevant command where `NUMBER` refers to
+a number.
+
+* `custom s/b f/rEmaRk p/Text`
+
+Creates a `Remark` property for each exercise.
+Information for this property can be updated for each exercise by using `b/TEXT` in the relevant command where
+`TEXT` refers to a text sentence.
+
+* `custom s/ed f/End Date p/Date`
+
+Creates a `End Date` property for each exercise.
+Information for this property can be updated for each exercise by using `ed/DATE` in the relevant command where
+`DATE` refers to a date.
+
+Using `Rating` as an example, you can now perform the following actions after adding it:
+
+* `add t/exercise n/Run d/01/10/2019 a/5`
+
+Adds an exercise with the name `Run`, date `01/10/2019` and rating `5` into the app.
+
+* `edit t/exercise i/4 a/3`
+
+Edits the rating of the 4th exercise in the list to `3`.
+
+==== Removing custom properties: `custom`
+
+Removes a custom property which you have previously defined either from a single exercise
+or from ExerHealth.
+
+In the second case, you will still be able to add back the deleted custom property if you
+wish to.
+
+****
+* `FULL_NAME` denotes the name of the previously defined custom property.
+* The index, if provided, must be a positive integer 1, 2, 3, …​
+****
+
+Format: `custom rm/FULL_NAME [i/INDEX]`
+
+Example:
+
+* `custom rm/Rating`
+
+Removes the custom property `Rating` from all of the exercises and from ExerHealth.
+
+* `custom rm/Rating i/1`
+
+Removes the custom property `Rating` from the 1st exercise in the list.
+
+==== Viewing custom properties: `viewcustom`
+
+Opens up a window for you to view the custom properties you have defined.
+The name, prefix and parameter type of all existing custom properties will be shown.
+
+Format: `viewcustom`
+
+Example:
+
+* `viewcustom`
+
+Opens up a window containing information of all existing custom properties.
+// end::customfeature[]
+
 === Exiting the program : `exit`
 
 Exits the program. +
@@ -506,6 +610,8 @@ ExerHealth data are saved in the hard disk automatically after any command that 
 There is no need to save manually.
 
 === Suggest intensity `[Coming in v2.0]`
+
+Suggesting the amount of repetitions to complete for exercises.
 
 === Remind to do exercises `[coming in v2.0]`
 
@@ -522,7 +628,7 @@ Imports data to update inbuilt database of exercises.
 // tag::dataencryption[]
 === Encrypting data files `[coming in v2.0]`
 
-_{explain how the user can enable/disable data encryption}_
+Allows you to encrypt your data files for more security.
 // end::dataencryption[]
 
 == FAQ
@@ -536,8 +642,10 @@ _{explain how the user can enable/disable data encryption}_
 e.g. `add t/exercise n/Bench press d/19/09/2019 c/500 q/50 u/reps m/Chest`
 * *Add regimes* : `add t/regime n/REGIME_NAME [i/INDEX_OF_EXERCISE]...`
 e.g. `add t/regime n/Cardio i/1 i/2 i/3`
-* *List* : `list t/CAT_NAME`
+* *List* : `list t/LIST_TYPE`
 e.g. `list t/exercise`
+* *Select* : `select t/LIST_TYPE i/INDEX`
+e.g. `select t/exercise i/1`
 * *Edit exercise* : `edit i/INDEX [n/EXERCISE_NAME] [d/DATE] [c/CALORIES] [q/QUANTITY] [u/UNITS] [m/MUSCLE]... `
 e.g. `edit i/3 n/Bench press d/22/09/2019 c/240 q/10 u/sets m/Chest`
 * *Delete exercise* : `delete t/exercise i/INDEX`
@@ -553,16 +661,19 @@ e.g. `stats t/exercise h/barchart s/20/09/2019 e/27/09/2019`
 * *Undo* : `undo`
 * *Redo* : `redo`
 * *Schedule* : `schedule n/REGIME_NAME d/DATE`
-e.g. `schedule n/cardio d/19/09/2019`
-* *Resolve(Take one regime)* : `resolve n/REGIME_TO_TAKE`
-e.g. `resolve n/cardio`
-* *Resolve(Take some exercise from both regime)* : `resolve n/NEW_REGIME_NAME [i/INDEX_OF_SCHEDULED_EXERCISE]... [r/INDEX_OF_CONFLICTING_EXERCISE]...`
+e.g. `schedule n/cardio d/12/12/2019`
+* *Complete Schedule* : `schedule i/INDEX_OF_SCHEDULE`
+e.g. `schedule i/2`
+* *Resolve(Take one regime)* : `resolve n/SCHEDULED_OR_CONFLICTING`
+e.g. `resolve n/scheduled`, `resolve n/conflicting`
+* *Resolve(Take some exercise from both regime)* : `resolve n/NEW_REGIME_NAME [i/INDEX_OF_SCHEDULED_EXERCISE] [r/INDEX_OF_CONFLICTING_EXERCISE]`
 e.g. `resolve n/new cardio i/1 i/3 r/2`
 * *Suggest basic* : `suggest s/basic`
 * *Suggest possible* : `suggest s/possible [o/OPERATION_TYPE] [m/MUSCLE]... [CUSTOM_PROPERTY_PREFIX/VALUE]...`
 e.g. `suggest s/possible m/Legs`, `suggest s/possible o/and m/Chest m/Leg`
 * *Add custom property* : `custom s/PREFIX_NAME f/FULL_NAME p/PARAMETER_TYPE`
-e.g. `custom s/c f/End Date p/Date`
+e.g. `custom s/ed f/End Date p/Date`
 * *Remove custom property* : `custom rm/FULL_NAME [i/INDEX]`
+e.g. `custom s/End Date i/1`
 * *View custom property* : `viewcustom`
 * *Exit* : `exit`
