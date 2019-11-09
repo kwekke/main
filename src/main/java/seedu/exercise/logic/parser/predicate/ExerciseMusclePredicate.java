@@ -5,6 +5,7 @@ import java.util.Set;
 import seedu.exercise.model.property.Muscle;
 import seedu.exercise.model.resource.Exercise;
 
+//@@author kwekke
 /**
  * Tests whether an {@code Exercise} matches the {@code predicate}
  */

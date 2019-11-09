@@ -4,6 +4,7 @@ import java.util.Map;
 
 import seedu.exercise.model.resource.Exercise;
 
+//@@author kwekke
 /**
  * Tests whether an {@code Exercise} matches the {@code predicate}
  */

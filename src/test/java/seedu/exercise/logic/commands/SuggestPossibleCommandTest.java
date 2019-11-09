@@ -39,6 +39,8 @@ import seedu.exercise.model.resource.Exercise;
 import seedu.exercise.testutil.builder.CustomPropertyBuilder;
 import seedu.exercise.ui.ListResourceType;
 
+//@@author kwekke
+
 public class SuggestPossibleCommandTest {
 
     private Model model;

@@ -24,6 +24,8 @@ import seedu.exercise.logic.parser.predicate.ExercisePredicate;
 import seedu.exercise.model.property.Muscle;
 import seedu.exercise.model.resource.Exercise;
 
+//@@author kwekke
+
 public class SuggestPossibleCommandParserTest {
     private SuggestCommandParser parser = new SuggestCommandParser();
 

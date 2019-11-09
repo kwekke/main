@@ -6,8 +6,8 @@ import java.util.function.Predicate;
 
 import seedu.exercise.model.property.Muscle;
 import seedu.exercise.model.resource.Exercise;
-import seedu.exercise.model.resource.Regime;
 
+//@@author kwekke
 /**
  * Contains Utility methods used for generating Predicates.
  */
@@ -23,11 +23,6 @@ public class PredicateUtil {
      * {@code Predicate} that always evaluate to true
      */
     public static final Predicate<Exercise> PREDICATE_SHOW_ALL_EXERCISES = unused -> true;
-
-    /**
-     * {@code Predicate} that always evaluate to true
-     */
-    public static final Predicate<Regime> PREDICATE_SHOW_ALL_REGIMES = unused -> true;
 
     public static BasePropertyPredicate predicateShowExercisesWithMuscle(Set<Muscle> targetMuscles, boolean isStrict) {
         return new ExerciseMusclePredicate(targetMuscles, isStrict);
