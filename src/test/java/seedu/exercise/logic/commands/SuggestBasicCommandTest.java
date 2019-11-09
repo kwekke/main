@@ -8,8 +8,6 @@ import static seedu.exercise.model.resource.ResourceComparator.DEFAULT_SCHEDULE_
 import static seedu.exercise.model.util.DefaultExerciseDatabaseUtil.getBasicExercises;
 import static seedu.exercise.testutil.typicalutil.TypicalExercises.getTypicalExerciseBook;
 
-import java.util.Arrays;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

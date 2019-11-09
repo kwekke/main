@@ -7,7 +7,7 @@
 
 == Overview
 
-My team of 4 computer science students were tasked with changing a basic command line application. Our team
+My team of 5 computer science students were tasked with changing a basic command line application. Our team
 decided to morph the application into ExerHealth. **ExerHealth** is a desktop application used for tracking
 and scheduling the user's exercises. The application has statistical analysis of exercises users have completed
 in the past. Additionally, it also acts as a personal trainer by suggesting different exercises which both
@@ -16,9 +16,9 @@ The user interacts with it using a command line interface, and it has a GUI crea
 
 Below is a screenshot of what our desktop application looks like:
 
-**//TODO: Add image of UI**
+image::Ui.png[]
 
-
+<<<
 
 == Summary of contributions
 
@@ -45,7 +45,7 @@ The implementation too was challenging as it required multiple new predicate and
 ** Enhancements to existing features:
 *** Refactored the GUI (Pull requests https://github.com/AY1920S1-CS2103T-T09-2/main/pull/121[#121]
 ** Community:
-*** PRs reviewed (with non-trivial review comments):  https://github.com/AY1920S1-CS2103T-T09-2/main/pull/114[#114]
+*** PRs reviewed (with non-trivial review comments):  https://github.com/AY1920S1-CS2103T-T09-2/main/pull/114[#114], https://github.com/AY1920S1-CS2103T-T09-2/main/pull/81[#81]
 *** Reported bugs and suggestions for other projects (https://github.com/AY1920S1-CS2103T-F12-1/main/issues/199[#199], https://github.com/AY1920S1-CS2103T-F12-1/main/issues/198[#198],
  https://github.com/AY1920S1-CS2103T-F12-1/main/issues/196[#196], https://github.com/AY1920S1-CS2103T-F12-1/main/issues/190[#190], https://github.com/AY1920S1-CS2103T-F12-1/main/issues/185[#185])
 
@@ -65,9 +65,3 @@ include::../UserGuide.adoc[tag=suggest]
 |===
 
 include::../DeveloperGuide.adoc[tag=suggest]
-
-== PROJECT: PowerPointLabs
-
----
-
-_{Optionally, you may include other projects in your portfolio.}_

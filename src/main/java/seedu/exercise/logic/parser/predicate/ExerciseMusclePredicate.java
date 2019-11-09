@@ -1,5 +1,7 @@
 package seedu.exercise.logic.parser.predicate;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Set;
 
 import seedu.exercise.model.property.Muscle;
@@ -15,6 +17,7 @@ public class ExerciseMusclePredicate implements BasePropertyPredicate {
     private final boolean isStrict;
 
     public ExerciseMusclePredicate(Set<Muscle> muscles, boolean isStrict) {
+        requireNonNull(muscles);
         this.muscles = muscles;
         this.isStrict = isStrict;
     }

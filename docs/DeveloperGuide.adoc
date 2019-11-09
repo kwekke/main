@@ -538,6 +538,8 @@ based on `Muscle` and `CustomProperty`.
 The `SuggestBasic` command displays a list of exercises from our database to the user.
 The `SuggestPossible` command is created by parsing the user's inputs to form a `Predicate` before filtering ExerHealth's database and the user's tracked exercises.
 
+<<<
+
 The following activity diagram (Figure 21) summarizes what happens when a user enters a suggest possible command:
 
 .Activity diagram showing the workflow of a suggest possible command
@@ -546,6 +548,8 @@ image::SuggestActivityDiagram.png[]
 In detail, when a `SuggestPossibleCommand` is entered, the `Logic` component is responsible for parsing the inputs into a `Predicate`.
 The `Predicate` is then used to instantiate a `SuggestPossibleCommand`, and later used to filter a list of `Exercise` when the command is executed.
 The interactions between the multiple objects can be captured using a sequence diagram.
+
+<<<
 
 The following sequence diagram (Figure 22) shows the sequence flow from the when a user enters a valid `SuggestPossibleCommand`:
 
@@ -571,6 +575,8 @@ to parse the user input to create an `ExercisePredicate` object (named `p` in th
 
 8. `SuggestPossibleCommand` creates a new `CommandResult` to be returned.
 
+<<<
+
 In step 3, the process in which the `ExercisePredicate` object is created can be explored deeper (Figure 23).
 
 .Sequence diagram of how an `ExercisePredicate` is created
@@ -595,6 +601,8 @@ image::SuggestCommandClassDiagram.png[]
 
 Creating classes such as `ExerciseCustomPropertyPredicate` and `ExerciseMusclePredicate`
 allow us to conduct better testing because we can compare the `Collection` of `Muscle`/`CustomProperty` being considered.
+
+<<<
 
 ==== Design Considerations
 ===== Aspect: Implementation of predicate creation

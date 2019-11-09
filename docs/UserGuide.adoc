@@ -681,7 +681,7 @@ Suppose you have created a new Custom Property and have been tracking a few exer
 
 `custom s/r f/Rating p/Number`
 
-`add t/exercise n/Run d/02/11/2019 c/200 q/10 u/km m/Legs r/8`
+`add t/exercise n/Run d/03/11/2019 c/200 q/10 u/km m/Legs r/8`
 
 `add t/exercise n/Bench Press d/05/11/2019 c/150 q/40 u/kg m/Chest r/8`
 
@@ -692,13 +692,13 @@ Then, the following input will display a list of exercises which are tagged with
 
 Thus the command will display only the exercise named "Bench Press".
 
+<<<
+
 Expected Result:
 
 image::suggestPossibleAfter1.png[]
 
 The input, `suggest s/possible o/or m/Chest r/8`, however, will display a list of exercises with "Chest" *or* have a rating of 8.
-
-image::suggestPossibleBefore2.png[]
 
 Expected Result:
 
@@ -712,6 +712,8 @@ as it has a "Chest" muscle tag.
 
 Sometimes, you may track exercises of the same name. Instead of displaying all suggestions of the same name, this function
 display the information of the most recently tracked exercise of that name.
+As can be seen below, there are two exercises named "Bench Press".
+What suggest command will do is to use the information from the most recent occurence.
 
 image::suggestPossibleBefore3.png[]
 
@@ -719,15 +721,7 @@ Expected Result:
 
 image::suggestPossibleAfter3.png[]
 
-As seen on the image above, the tracked exercise named "Bench Press" on "06/11/2019" is displayed instead of the one on "05/11/2019".
-
-****
-*Notes:*
-
-* Suggestions from the database have dates displayed refer to the last time ExerHealth's database was updated.
-
-****
-
+As seen on the image above, the information from the "Bench Press" on "06/11/2019" is displayed instead of the one on "05/11/2019" (observe that the calories are different).
 // end::suggest[]
 
 // tag::customfeature[]
