@@ -729,7 +729,7 @@ Format: `suggest s/basic`
 Suggests exercises matching specified tags.
 
 ===== Based on matching muscle tags
-Format: `suggest s/possible o/OPERATION_TYPE [m/MUSCLE CUSTOM_PROPERTY_PREFIX_NAME/VALUE]`
+Format: `suggest s/possible o/OPERATION_TYPE [m/MUSCLE]... CUSTOM_PROPERTY_PREFIX_NAME/VALUE]...`
 
 ****
 * You must choose one of the following operation types: `and` / `or` i.e. commands such as `suggest s/possible m/Chest m/Legs` will fail whereas `suggest s/possible o/or m/Chest m/Legs` will succeed.
